@@ -1,0 +1,24 @@
+// ============================
+// 新規ユーザー登録画面　（一部　ログイン画面と共通あり）
+// @include mq(){}対応
+// ============================
+
+
+.p-regist{
+
+    &__form{
+        margin-bottom: 1rem;
+        display: block;
+        box-sizing: border-box;
+    }
+    &__input{
+        padding: 5px;
+    }
+    &__btn-primary{
+        text-align: center;
+    }
+    &__potision-center{
+        text-align: center;
+    }
+
+}

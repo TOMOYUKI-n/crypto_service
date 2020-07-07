@@ -1,0 +1,73 @@
+
+.p-policy{
+    display: block;
+
+    &__main-container{
+        width: 100%;
+        text-align: center;
+        max-width: 870px;
+        margin: auto;
+    }
+
+    &__container{
+        display: block;
+        //width: 70%;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        color: $color_black;
+        @include mq(){
+            width: 100%;
+            margin: 0 auto;
+            padding: $space_2l $space_l;
+        }
+    }
+    &__title{
+        margin-top: 0px;
+        font-size: $font-size_m;
+        padding: 30px;
+        &--sub{
+            text-align: left;
+            margin-top: 30px;
+            font-size: $font-size_xs;
+            font-weight: bold;
+            padding: 10px;
+        }
+    }
+    &__text{
+        box-sizing: border-box;
+        text-align: left;
+        display: block;
+        font-size: $font-size-base;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        //padding: 0px 25px;
+        a{
+            display: contents;
+            color: $color_border-line;
+            font-weight: 600;
+            margin: 0px 5px;
+        }
+
+    }
+    &__list{
+        box-sizing: border-box;
+        text-align: left;
+        display: block;
+        counter-reset: my-counter;
+        margin-top: $space_l;
+        padding-left: $space_m;
+        font-size: $font-size-base;
+        margin-left: 40px;
+        &__item{
+            //padding-left: 40px;
+            margin-bottom: $space_m;
+            line-height: 1.8;
+            &::before{
+                content: counter(my-counter)'.';
+                counter-increment: my-counter;
+            }
+        }
+    }
+
+}

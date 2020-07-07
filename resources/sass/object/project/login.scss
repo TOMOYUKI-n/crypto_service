@@ -1,0 +1,95 @@
+// ============================
+// login画面　（一部　新規登録と共通あり）
+// ============================
+
+.p-login{
+    // ============================
+    // カバーパーツ
+    // ============================
+    &__container{
+        width: 40%;
+        margin: 60px auto;
+        padding: 30px;
+        box-sizing: border-box;
+        background: #f4f5f6;
+        font-size: $font-size_xxs;
+        @include mq(){
+            width: 100%;
+            margin: 0px auto;
+        }
+    }
+    // ============================
+    // フォーム部分 入力エリア
+    // ============================
+    &__inner{
+        margin-bottom: 10px;
+    }
+    &__form{
+        display: block;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    &__input{
+        box-sizing: border-box;
+        justify-content: space-between;
+        margin: 5px auto;
+        padding: 5px;
+        @include mq(){
+            width: 100%;
+        }
+    }
+    // ============================
+    // フォーム部分 ログインエリア
+    // ============================
+    &__check{
+        margin: 5px auto;
+        width: fit-content;
+    }
+    &__form-check-input{
+        position: absolute;
+        margin-top: 0.3rem;
+        margin-left: -1.25rem;
+    }
+    &__form-check-label{
+        margin-bottom: 0;
+    }
+
+    &__text{
+        color: $color-black;
+        //margin: 40px auto -20px auto;
+        font-size: $space_l;
+        text-align: center;
+        @include mq(){
+            width: 100%;
+        }
+    }
+    &__forgot{
+        padding: 10px;
+        color: $color-black;
+    }
+    &__alarttext{
+        font-weight: bold;
+        
+    }
+}
+// ============================
+// css調整用
+// ============================
+.p-login-add-margin{
+    &__1{
+        margin: 10px;
+    }
+    &__3{
+        margin-top: 30px;
+    }
+}

@@ -1,0 +1,69 @@
+
+// ============================
+// フッター下部固定用
+// ============================
+.wrapper--main{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    @include mq(){
+        max-width: 100vw;
+    }
+}
+
+// ============================
+// 読み込むベースの要素
+// ============================
+.l-base{
+    padding: 0;
+    margin: 0;
+    color: $color_black;
+    background-color: #f9f9ff;
+    font-family: $font-family-base-TimesNewRoman;
+    @include mq(){
+        width: 100%;
+        display: block;
+    }
+}
+.l-main-container{
+    width: 100%;
+    text-align: center;
+    //max-width: 640px;
+    max-width: 870px;
+    //min-height: 100vh;
+    margin: auto;
+    background-color: $color-backbase;
+    @include mq(){
+        padding: 0px 0px 20px 0px;
+    }
+
+}
+// ============================
+// 共通パーツ
+// ============================
+.c-main{
+    &__title{
+        font-size: $font-size_l;
+        padding: $space_xxl;
+        text-align: center;
+        @include mq(){
+            padding: 10px;
+            text-align: center;
+        }
+        &__text{
+            display: inline-block;
+            @include mq(){
+                display: inline-block;
+            }
+        }
+    }
+    &__function-head{
+        border-bottom: solid 1px $color_placeholder;
+        margin: 10px 0px 20px 0px;
+        padding: $space_xl;
+        @include mq(){
+            padding: 5px;
+        }
+    }
+}

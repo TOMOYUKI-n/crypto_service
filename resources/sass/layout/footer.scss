@@ -1,0 +1,51 @@
+// ============================
+// フッター下部固定用
+// ============================
+footer{
+    display: flex;
+    min-height: 5vh;
+    margin-top: auto;
+    background-color: $color_black;
+    @include mq(){
+        max-width: 100vw;
+    }
+  }
+.p-footer{ //中央寄せにする
+    justify-content:center;
+    font-size: 40%;
+    color: $color_4;
+    @include mq(){
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        font-size: 30%;
+        justify-content: center;
+        align-items: center;
+    }
+    &__copyright{
+        display: flex;
+        box-sizing: border-box;
+        margin-left: 5px;
+    }
+    &__info{
+        -webkit-margin-before: 1em;
+        margin-block-start: 1em;
+        -webkit-margin-after: 1em;
+        margin-block-end: 1em;
+        box-sizing: border-box;
+        margin-left: 10px;
+
+    }
+    &__menu{
+        display: flex;
+    }
+    &__list{
+        display: flex;
+        position: relative;
+        a{
+            color: $color-white;
+        }
+
+    }
+
+}

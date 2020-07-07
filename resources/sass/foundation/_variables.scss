@@ -1,0 +1,92 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-base-TimesNewRoman: 'Times New Roman', Times, serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+//backgroundのベース色
+$color-backbase: #7ac3ff;
+
+$color_black: #111111;//黒系
+$color_black_fade: rgba(1, 1, 1, 0.9);
+$color_black2: #3e3e3e;//黒系
+$color_gray: #e3a8b1;//
+$color_placeholder: rgb(82, 82, 82);
+//$color_date: #e37b89;//青系
+$color_border-line: #253858;
+
+$color_base:#b6a489;
+//$color-background: #253858;
+$color_1: #a8d0eb;
+$color_2: #40bad5;
+$color_3: floralwhite;
+$color_4 : #f1f2f3;
+$color_orange : #fcb901;
+$color_pink: #c184ff;
+$color_brown: rgb(95, 87, 87);
+$color-white: #fff;
+$font-color_default: #777;
+$border_color: rgba(128, 130, 131, 0.644);
+
+$color_cancel: rgba(155, 156, 152, 0.5);
+
+//size
+$site-width_full: 100%;
+
+$font-size_min: 13px;
+$font-size_default: 16px;
+$font-size_xxs: 0.9rem;
+$font-size_xs: 1.2rem;
+$font-size_s: 1.4rem;
+$font-size_m: 1.6rem;
+$font-size_l: 1.8rem;
+$font-size_xl: 2rem;
+$font-size_2l: 2.4rem;
+$font-size_3l: 2.8rem;
+$font-size_4l: 3.2rem;
+$font-size_5l: 3.6rem;
+$font-size_6l: 4rem;
+
+$font-size_wxl: 3vw;
+
+$space_s: 5px;
+$space_m: 10px;
+$space_l: 15px;
+$space_xl: 20px;
+$space_xxl: 30px;
+$space_3l: 40px;
+$space_s: 5px;
+$space_m: 10px;
+$space_l: 15px;
+$space_xl: 20px;
+$space_2l: 25px;
+$space_3l: 30px;
+$space_4l: 40px;
+$space_5l: 50px;
+$space_6l: 60px;
+$space_7l: 70px;
+$space_8l: 80px;
+
+$breakpoints: (
+  'sm': 'screen and (max-width: 414px)',
+  'md': 'screen and (max-width: 768px)',
+  'lg': 'screen and (max-width: 1000px)',
+  'xl': 'screen and (max-width: 1200px)',
+) !default;
+
+$font-family-base: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif, "Crimson Text"; // TODO:リファクタ必要（変数にする）
+

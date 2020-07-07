@@ -1,0 +1,81 @@
+// ============================
+// NEWS一覧ページ panel 
+// ============================
+.p-news{
+    &__section{
+        width: 870px;
+        margin: 0px auto;
+        @include mq(){
+            width: 100%;
+            display: block;
+        }
+    }
+
+    // ============================
+    // 記事パネル
+    // ============================
+    &__panel-wrap{
+        &:hover{
+            transition: all .5s;
+            transform: translateY(-2px);
+            opacity: 0.8;
+        }
+        @include mq(){
+            width: 100%;
+            display: block;
+        }
+    }
+    &__inner{
+        width:425px;
+        height: 210px;
+        margin: 5px;
+        padding: 20px 10px;
+        float: left;//footerを固定を優先
+        border-radius: 6px;
+        box-shadow: 0 2px 4px 0 #b2b5be;
+        background-color: #fff;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 0.1px solid #eeeeee;
+        @include mq(){
+            width: 100%;
+            display: block;
+            margin: 5px auto;
+            height: auto;
+            padding: 10px 10px;
+            border: 0.1px solid #eeeeee;
+        }
+    }
+    &__news-inner2{
+        display: flex;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
+    // ============================
+    // 記事　詳細パーツ　
+    // ============================
+    &__newstitle{
+        margin-bottom: 5px;
+        font-size: 1.025rem;
+        &:visited{
+            color:#0026ff;
+        }
+    }
+    &__newssource{
+        opacity: .7;
+        margin: 0px;
+        font-size: 0.7625rem;
+        margin-right: 10px;
+
+    }
+    &__newspubDate{
+        opacity: .7;
+        margin: 0px;
+        font-size: 0.7625rem;
+
+
+
+    }
+}

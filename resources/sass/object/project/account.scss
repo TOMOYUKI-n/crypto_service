@@ -1,0 +1,100 @@
+// ============================
+// アカウント一覧画面
+// ============================
+
+.p-account{
+    // ============================
+    // functionエリア
+    // ============================
+    &__text{
+        padding: 10px;
+        margin: 0px auto;
+        text-align: left;
+        color: $black;
+        font-size: $font-size_min;
+        &__attend{
+            text-align: center;
+            margin-bottom: 5px;
+        }
+    }
+    &__intro{
+        text-align: left;
+    }
+
+    &__flex{
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    // ============================
+    // アカウントリスト表示エリア
+    // ============================
+    &__panel-wrap{
+        font-size: $font-size_min;
+        padding: 5px;
+    }
+    &__inner{
+        display: block;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px 0 #b2b5be;
+        background-color: #fff;
+        box-sizing: border-box;
+        padding: 20px 0;
+    }
+
+    // ============================
+    // 名前表示エリア
+    // ============================
+       &__section-top{
+        display: flex;
+        padding: 10px 15px;
+    }
+    &__inner2{
+        text-align: left;
+        width: 50%;
+    }
+    &__name{ 
+        font-size: $font-size_default;
+        font-weight: bold;
+    }
+    //&__username{}
+    // ============================
+    // フォロー数表示エリア
+    // ============================
+    &__inner3{
+        width: 25%;
+    }
+    //&__title{}
+    //&__follow{}
+    &__inner4{
+        width: 25%;
+    }
+
+    // ============================
+    // プロフィール表示エリア
+    // ============================
+    &__section-middle{
+        padding: 10px 15px;
+        text-align: left;
+    }
+    //&__prof{}
+
+    // ============================
+    // Twitter表示エリア
+    // ============================
+    &__section-bottom{
+        margin: 5px;
+        display: block;
+        border-radius: 6px;
+        padding: 10px;
+        box-sizing: border-box;
+        box-shadow: 0 2px 4px 0 $color_border-line;
+
+    }
+    //&__tweet{}
+
+    &__connected{
+        font-weight: bold;
+        color: $color_orange;
+        margin: 20px auto;
+    }
+}

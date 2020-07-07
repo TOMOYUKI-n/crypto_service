@@ -1,0 +1,63 @@
+
+// ============================
+// base
+// ============================
+html, body {
+  box-sizing: border-box;
+  width: 100%;
+  color: $font-color_default;
+  font-size: $color_black;
+  line-height: 1.6;
+  font-family: $font-family-base;
+  text-size-adjust: 100%;
+  letter-spacing: 0.1em;
+  -webkit-font-smoothing: antialiased;
+}
+
+p, a {
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  transition: .3s;
+  display: block;
+  position: relative;
+  color: $color_black;
+}
+
+a:hover {
+  color: $color_black;;
+  transition: .3s;
+  text-decoration: none;
+}
+
+img {
+  width: 100%;
+  vertical-align: bottom;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+h2 {
+  display: block;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+main {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

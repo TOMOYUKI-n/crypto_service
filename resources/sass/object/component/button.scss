@@ -1,0 +1,62 @@
+// ============================
+// ボタン
+// ============================
+.p-btn{
+    margin: 10px auto 0px auto;
+    padding: 5px 35px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px 0 #24262c;
+    box-sizing: border-box;
+    padding: 5px 30px;
+
+    // ============================
+    // アカウント一覧画面ボタン
+    // ============================
+    &__follow{
+        margin:0;
+    }
+    &__new{
+        color: $color_black;
+        background-color: $color_orange;
+        box-shadow: 0 2px 4px 0 #5a5b5e;
+        box-sizing: border-box;
+        padding: 10px 0;//5→10
+        border-radius: 6px;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        border: none;
+    }
+    // ============================
+    // TOPページボタン
+    // ============================
+    &__tw-new{
+        color: $color_black;
+        background-color: $blue;
+        box-shadow: 0 2px 4px 0 #5a5b5e;
+        box-sizing: border-box;
+        padding: 10px 0;//5→10
+        border-radius: 6px;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        border: none;
+    }
+    &__login{
+        color: $color_black;
+        background-color: $blue;
+        box-shadow: 0 2px 4px 0 #5a5b5e;
+        box-sizing: border-box;
+        padding: 10px 0;//5→10
+        border-radius: 6px;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        border: none;
+    }
+
+    &__margin{
+        margin-bottom: 10px ;
+    }
+
+}

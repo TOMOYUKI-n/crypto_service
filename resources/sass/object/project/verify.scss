@@ -1,0 +1,43 @@
+// ============================
+// 新規ユーザー登録画面　（一部　ログイン画面と共通あり）
+// @include mq(){}対応
+// ============================
+.p-verify{
+    // ============================
+    // カバーパーツ
+    // ============================
+    &__container{
+        width: 530px;
+        margin: 60px auto;
+        padding: 30px;
+        box-sizing: border-box;
+        background: #f4f5f6;
+        font-size: $font-size_xxs;
+        @include mq(){
+            width: 100%;
+            padding: 10px;
+            margin: 0px auto;
+        }
+    }
+    &__here{
+        border-radius: 6px;
+        box-shadow: 0 2px 4px 0 #b2b5be;
+        background-color: #fff;
+        box-sizing: border-box;
+        border: 0.1px solid #eeeeee;
+        padding: 0.75rem 1.25rem;
+        @include mq(){
+            width: 100%;
+            margin: 0px auto;
+            padding: 0.75rem 1.25rem;
+        }
+        &:hover{
+            transition: all .5s;
+            transform: translateY(-2px);
+            opacity: 0.8;
+        }
+    }
+    &__text{
+        padding: 0.75rem 1.25rem;
+    }
+}
