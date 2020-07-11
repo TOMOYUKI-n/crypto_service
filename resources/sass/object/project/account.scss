@@ -12,6 +12,8 @@
         text-align: left;
         color: $black;
         font-size: $font-size_min;
+        box-sizing: border-box;
+        display: block;
         &__attend{
             text-align: center;
             margin-bottom: 5px;
@@ -23,7 +25,7 @@
 
     &__flex{
         display: inline-block;
-        margin-bottom: 20px;
+        //margin-bottom: 20px;
     }
     // ============================
     // アカウントリスト表示エリア

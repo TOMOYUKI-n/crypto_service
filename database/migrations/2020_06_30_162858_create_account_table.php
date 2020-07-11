@@ -24,6 +24,7 @@ class CreateAccountTable extends Migration
             $table->string('followers_count')->nullable(true);
             $table->datetime('account_created_at')->nullable(true);
             $table->string('following')->nullable(true);
+            $table->text('text')->nullable(true);
             $table->timestamps();
         });
     }

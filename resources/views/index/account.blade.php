@@ -4,7 +4,7 @@
 
 <div id="app">
     <account-component
-    :userinfo="{{ $userinfo }}"
+    :accountdata="{{ $accountdata }}"
     >
     </account-component>
 </div>

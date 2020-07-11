@@ -52,71 +52,77 @@ class GetAccountCommand extends Command
      */
     public function handle()
     {   
+        /**
+         * 関連アカウント収集->DB保存
+         * 存在しないアカウントはstatusデータがないため、エラーで弾く
+         * 15分180回制限あり 50ページ*20件=1000件がMAX
+         * 1日1回更新
+         */
         Log::Debug('関連アカウント収集処理 == 開始');
-        // テーブルの初期化
         DB::table('account')->truncate();
-        //DB::table('temp')->truncate();
-        // 15分180回の制限より、160回分は銘柄で実行しているので、残り20回分を実行 :2000件取得
+        DB::table('temp')->truncate();
         $word = '仮想通貨';
-        $words = "-RT ".$word;
-        for($k = 0; $k < 20; $k++){
-            // DBにデータがあるか確認
-            $query = DB::table('account')->get();
 
-            if (is_object($query)) {
-                $max = $query->min('tweet_id');
-                $max_id = $max -1;
-            } else {
-                $max_id = null;
-            }
-            // データ取得
-            $twitter_api = \Twitter::get("search/tweets", [
-                'q' => $words, 'count' => 100, 'max_id' => $max_id
+        for($p =0; $p < 50; $p++){
+            $twitter_api = \Twitter::get("users/search", [
+                'q' => $word,
+                'count' => 20,
+                'page' => $p,
             ]);
+            //DBへ保存
+            for ($i = 0; $i < count($twitter_api); $i++) {
+                $account = new Account;
+                try{
+                    $ex_create_at = date('Y-m-d H:i:s', strtotime((string) $twitter_api[$i]->created_at));
+                    $resStatus = (array)$twitter_api[$i]->status;
 
-            //ステータス情報の取得
-            $statuses = $twitter_api->statuses;
-            //TwitterAPIからデータが返ってきているか確認
-            if (is_object($twitter_api)) {
-                //念の為ツイートデータが入ってるか確認
-                if (isset($twitter_api->statuses)) {
-                    // Accountに保存
-                    for ($i=0; $i < count($statuses); $i++){
-                        $accounts = new Account;
-                        $ex_create_at = date('Y-m-d H:i:s', strtotime((string) $statuses[$i]->user->created_at));
+                    $account['id_str'] = $twitter_api[$i]->id_str;
+                    $account['name'] = $twitter_api[$i]->name;
+                    $account['screen_name'] = $twitter_api[$i]->screen_name;
+                    $account['description'] = $twitter_api[$i]->description;
+                    $account['friends_count'] = $twitter_api[$i]->friends_count;
+                    $account['followers_count'] = $twitter_api[$i]->followers_count;
+                    $account['account_created_at'] = $ex_create_at;
+                    $account['following'] = $twitter_api[$i]->following;
+                    $account['text'] = $resStatus['text'];
+                    $account->save();
                     
-                        $accounts['id_str'] = $statuses[$i]->user->id_str;
-                        $accounts['name'] = $statuses[$i]->user->name;
-                        $accounts['screen_name'] = $statuses[$i]->user->screen_name;
-                        $accounts['description'] = $statuses[$i]->user->description;
-                        $accounts['friends_count'] = $statuses[$i]->user->friends_count;
-                        $accounts['followers_count'] = $statuses[$i]->user->followers_count;
-                        $accounts['account_created_at'] = $ex_create_at;
-                        $accounts['following'] = $statuses[$i]->user->following;
-                        $accounts->save();
-                    }
+                }
+                catch(\Exception $e){
+                    Log::error($e->getMessage());
+                    Log::Debug("== account wirte error ==");
+                    Log::Debug($p.'page目の'.$i.'回目データ');
                 }
             }
+            Log::Debug('AccountDB保存　==完了==');
         }
+        Log::Debug('TempDB保存 ==開始==');
+
         //一意データのみ、別テーブルにうつす
-
-
-
+        $account_scorp = Account::distinct()->where('name' , 'like' , '%'.$word.'%')
+                            ->orWhere('description' , 'like' , '%'.$word.'%')->get();
         for( $n =0; $n < count($account_scorp); $n++ )
         {
-            $temp = new Temp;
-            $temp['id_str'] = $account_scorp[$n]["id_str"];
-            $temp['name'] = $account_scorp[$n]["name"];
-            $temp['screen_name'] = $account_scorp[$n]["screen_name"];
-            $temp['description'] = $account_scorp[$n]["description"];
-            $temp['friends_count'] = $account_scorp[$n]["friends_count"];
-            $temp['followers_count'] = $account_scorp[$n]["followers_count"];
-            $temp['account_created_at'] = $account_scorp[$n]["account_created_at"];
-            $temp['following'] = $account_scorp[$n]["following"];
-            $temp->save();
+
+            try{
+                    $temp = new Temp;
+                    $temp['id_str'] = $account_scorp[$n]["id_str"];
+                    $temp['name'] = $account_scorp[$n]["name"];
+                    $temp['screen_name'] = $account_scorp[$n]["screen_name"];
+                    $temp['description'] = $account_scorp[$n]["description"];
+                    $temp['friends_count'] = $account_scorp[$n]["friends_count"];
+                    $temp['followers_count'] = $account_scorp[$n]["followers_count"];
+                    $temp['account_created_at'] = $account_scorp[$n]["account_created_at"];
+                    $temp['following'] = $account_scorp[$n]["following"];
+                    $temp['text'] = $account_scorp[$n]["text"];
+                    $temp->save();
+            }
+            catch(\Exception $e){
+                Log::error($e->getMessage());
+                Log::Debug("== temp write error ==");
+                Log::Debug($n.'レコード目のデータ');
+            }
         };
         Log::Debug('関連アカウント収集処理 == DB登録正常終了');
-
-        $userinfo = Account::GetUsersInfo();
     }
 }

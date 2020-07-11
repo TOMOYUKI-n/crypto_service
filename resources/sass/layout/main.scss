@@ -45,7 +45,7 @@
 .c-main{
     &__title{
         font-size: $font-size_l;
-        padding: $space_xxl;
+        padding: 20px 0px 10px;
         text-align: center;
         @include mq(){
             padding: 10px;
@@ -60,8 +60,10 @@
     }
     &__function-head{
         border-bottom: solid 1px $color_placeholder;
-        margin: 10px 0px 20px 0px;
-        padding: $space_xl;
+        width: 70%;
+        margin: 0px auto;
+        //margin: 10px 0px 20px 0px;
+        //padding: $space_xl;
         @include mq(){
             padding: 5px;
         }

@@ -17447,7 +17447,7 @@ footer {
 
 .c-main__title {
   font-size: 1.8rem;
-  padding: 30px;
+  padding: 20px 0px 10px;
   text-align: center;
 }
 
@@ -17470,8 +17470,8 @@ footer {
 
 .c-main__function-head {
   border-bottom: solid 1px #525252;
-  margin: 10px 0px 20px 0px;
-  padding: 20px;
+  width: 70%;
+  margin: 0px auto;
 }
 
 @media screen and (max-width: 768px) {
@@ -17606,6 +17606,10 @@ footer {
   box-shadow: 0 2px 4px 0 #24262c;
   box-sizing: border-box;
   padding: 5px 30px;
+}
+
+.p-btn__autobtn {
+  margin-left: 36px;
 }
 
 .p-btn__follow {
@@ -17802,6 +17806,8 @@ footer {
   text-align: left;
   color: #000;
   font-size: 13px;
+  box-sizing: border-box;
+  display: block;
 }
 
 .p-account__text__attend {
@@ -17815,7 +17821,6 @@ footer {
 
 .p-account__flex {
   display: inline-block;
-  margin-bottom: 20px;
 }
 
 .p-account__panel-wrap {

@@ -18,7 +18,6 @@ Route::get('/term', 'IndexController@term')->name('term');// 利用規約への�
 Route::get('/policy', 'IndexController@policy')->name('policy');// ポリシーへの遷移
 Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/test', 'indexController@test')->name('test');
-//Route::get('/trendback', 'IndexController@trendback');//一時的な画面
 
 
 // 認証必要

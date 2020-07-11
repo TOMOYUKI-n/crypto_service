@@ -95,9 +95,8 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
+var _this = undefined;
+
 //
 //
 //
@@ -153,28 +152,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['userinfo'],
-  name: 'userinfo',
+  //["accountdata"],
+  props: {
+    accountdata: {
+      type: Object
+    }
+  },
+  name: "accountdata",
   data: function data() {
     return {
-      userInfoData: this.userinfo,
+      accountdata: _this.accountdata,
       //propsを直接操作するのはNGなので、データとして保持
       errored: false,
-      cheched: false
+      isChecked: false,
+      targetId: '1252388152221655049'
     };
   },
+  // created(){
+  //     axios.get('./account?page=1')
+  //     .then(res => {
+  //       this.accountdata = res.data;
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
   methods: {
-    followed: function followed() {
-      var _this = this;
+    testFollow: function testFollow() {
+      var _this2 = this;
 
-      if (this.cheched === true) {
-        // 選択したvalue値をkeywordとして送信
-        axios.get("/trend/search?q=".concat(keyword)).then(function (res) {
-          _this.trendData = _this.res.data;
-          _this.keyword = _this.res.keyword;
-        })["catch"](function (error) {
-          _this.errored = true;
-        });
+      console.log("Followed!");
+      axios.post('friendships/create', {
+        params: {
+          user_id: this.targetId
+        }
+      }).then(function (res) {
+        _this2.accountdata = _this2.res.data;
+        console.log("success!");
+      })["catch"](function (error) {
+        _this2.errored = true;
+        console.log("error!");
+      });
+    },
+    manualFollow: function manualFollow() {
+      console.log("manualFollowed!"); // 選択したvalue値をkeywordとして送信
+      // axios
+      //   .get(`/trend/search?q=${keyword}`)
+      //   .then(res => {
+      //     this.trendData = this.res.data;
+      //     this.keyword = this.res.keyword;
+      //   })
+      //   .catch(error => {
+      //     this.errored = true;
+      //   });
+    },
+    autoFollow: function autoFollow() {
+      if (this.isChecked === true) {
+        if (confirm("自動フォローを実行しますか？")) {
+          console.log("running!!"); //実行処理
+        } else {
+          console.log("false"); //処理しない
+        }
+      } else {
+        alert("Checkしてください"); //処理しない
       }
     }
   }
@@ -1500,9 +1540,87 @@ var render = function() {
         _vm._v(_vm._s("Trend Account Index"))
       ]),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "c-main__function-head" }, [
+        _c("div", { staticClass: "p-account__text" }, [
+          _vm._v(
+            "\n      twitterで「仮想通貨」というキーワードを\n      ユーザ名またはプロフィールに記載しているユーザを一覧で表示します。(1日1回更新)\n    "
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "p-btn p-btn__follow",
+            on: {
+              click: function($event) {
+                return _vm.testFollow()
+              }
+            }
+          },
+          [_vm._m(0)]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-account__flex" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.isChecked,
+                expression: "isChecked"
+              }
+            ],
+            attrs: { type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.isChecked)
+                ? _vm._i(_vm.isChecked, null) > -1
+                : _vm.isChecked
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.isChecked,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.isChecked = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.isChecked = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.isChecked = $$c
+                }
+              }
+            }
+          }),
+          _vm._v("自動フォロー\n      "),
+          _c(
+            "button",
+            {
+              staticClass: "p-btn p-btn__follow p-btn__autobtn",
+              on: {
+                click: function($event) {
+                  return _vm.autoFollow()
+                }
+              }
+            },
+            [_vm._v("実行")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-account__text p-account__text__attend" }, [
+          _vm._v(
+            "※一覧に表示されているアカウントを全て自動でフォローしていきます"
+          )
+        ])
+      ]),
       _vm._v(" "),
-      _vm._l(_vm.userInfoData, function(info) {
+      _vm._l(_vm.accountdata.data, function(info) {
         return _c(
           "div",
           { key: info.index, staticClass: "p-account__panel-wrap" },
@@ -1511,19 +1629,11 @@ var render = function() {
               _c("div", { staticClass: "p-account__section-top" }, [
                 _c("div", { staticClass: "p-account__inner2" }, [
                   _c("div", { staticClass: "p-account__name" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(info.name) +
-                        "\n                    "
-                    )
+                    _vm._v(_vm._s(info.name))
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "p-account__username" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(info.screen_name) +
-                        "\n                    "
-                    )
+                    _vm._v(_vm._s(info.screen_name))
                   ])
                 ]),
                 _vm._v(" "),
@@ -1550,25 +1660,28 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "p-account__section-middle" }, [
                 _c("div", { staticClass: "p-account__prof" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(info.description) +
-                      "\n                "
-                  )
+                  _vm._v(_vm._s(info.description))
                 ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "p-account__section-bottom" }, [
                 _c("div", { staticClass: "p-account__tweet" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(info.status.text) +
-                      "\n                "
-                  )
+                  _vm._v(_vm._s(info.text))
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(1, true)
+              _c(
+                "button",
+                {
+                  staticClass: "p-btn p-btn__follow",
+                  on: {
+                    click: function($event) {
+                      return _vm.manualFollow()
+                    }
+                  }
+                },
+                [_vm._m(1, true)]
+              )
             ])
           ]
         )
@@ -1582,32 +1695,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "c-main__function-head" }, [
-      _c("div", { staticClass: "p-account__text" }, [
-        _vm._v(
-          "twitterで「仮想通貨」というキーワードを\n            ユーザ名またはプロフィールに記載しているユーザを一覧で表示します。(1日1回更新)\n        "
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-account__flex" }, [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v("自動フォロー\n            "),
-        _c("button", { staticClass: "p-btn p-btn__follow" }, [_vm._v("実行")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-account__text p-account__text__attend" }, [
-        _vm._v(
-          "\n            ※一覧に表示されているアカウントを全て自動でフォローしていきます\n        "
-        )
-      ])
+    return _c("a", [
+      _c("i", { staticClass: "fab fa-twitter" }),
+      _vm._v("テスト用")
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "p-btn p-btn__follow" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("フォローする")])
+    return _c("a", [
+      _c("i", { staticClass: "fab fa-twitter" }),
+      _vm._v("フォローする\n        ")
     ])
   }
 ]

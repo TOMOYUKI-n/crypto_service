@@ -16,6 +16,7 @@ use App\Day;
 use App\Hour;
 use App\Minute;
 use App\Account;
+use App\Temp;
 use App\Intercoin;
 
 class IndexController extends Controller
@@ -60,9 +61,10 @@ class IndexController extends Controller
 
     public function account()
     {
-        //このままではページ更新ごとにuser/searchが実行されてしまうので変更する
-        $userinfo = Account::GetUsersInfo();
-        return view('index.account', ['userinfo' => $userinfo]);
+        // paginateのデータをjson形式で渡す
+        $account = Temp::orderBy('id_str', 'desc')->paginate(50);
+        $accountdata = json_encode($account, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+        return view('index.account')->with('accountdata' , $accountdata);
     }
 
 
