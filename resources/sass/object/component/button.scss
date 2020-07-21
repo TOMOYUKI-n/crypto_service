@@ -57,6 +57,18 @@
         margin-right: auto;
         border: none;
     }
+    &__newregister{
+        background-color: $color_orange;
+        color: $color_black;
+        box-shadow: 0 2px 4px 0 #5a5b5e;
+        box-sizing: border-box;
+        padding: 10px 0;//5→10
+        border-radius: 6px;
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        border: none;
+    }
 
     &__margin{
         margin-bottom: 10px ;

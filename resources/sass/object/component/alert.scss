@@ -1,0 +1,23 @@
+// ============================
+// アラート
+// ============================
+
+
+    // ============================
+    // misslogin 注意テキスト
+    // ============================
+.c-alert{
+    &__caution1{
+        color: red !important;
+        line-height: 1.2;
+    }
+    &__caution2{
+        color: red !important;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+    &__caution3{
+        line-height: 1.2;
+        margin-top: 80px;
+    }
+}

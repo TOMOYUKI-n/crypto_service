@@ -77,9 +77,9 @@ class LoginController extends Controller
             $providerUser = \Socialite::with($provider)->user();
 
         } catch(\Exception $e) {
-            return redirect('/login')->with('oauth_error', '予期せぬエラーが発生しました');
+            return redirect('/login')->with('error_message', '予期せぬエラーが発生しました');
         }
-        //Log::debug('111111111111');
+
         // ユーザー情報の中からEmailと名前を取得
         if ($email = $providerUser->getEmail()) {
 
@@ -92,10 +92,11 @@ class LoginController extends Controller
             ]
             ));
             //return redirect($this->redirectTo);
-            return redirect('/trend')->with('scc_message', __(('Login!')));
+            return redirect('/trend')->with('flash_message', __(('Login!')));
         } else {
             // 存在しない場合は通常のログイン画面へ遷移する
-            return redirect('/login')->with('oauth_error', 'メールアドレスが取得できませんでした');
+            // Log::Debug($providerUser);
+            return redirect('/misslogin')->with('error_message', 'メールアドレスを取得できませんでした');
         }
     }
 }

@@ -9,7 +9,9 @@
       </div>
 
       <button class="p-btn p-btn__follow" v-on:click="testFollow()">
-        <a><i class="fab fa-twitter"></i>テスト用</a>
+        <div>
+          <i class="fab fa-twitter"></i>テスト用
+        </div>
       </button>
 
       <div class="p-account__flex">
@@ -42,7 +44,7 @@
         <div class="p-account__section-bottom">
           <div class="p-account__tweet">{{ info.text }}</div>
         </div>
-        <button class="p-btn p-btn__follow" v-on:click="manualFollow()">
+        <button class="p-btn p-btn__follow" v-on:click="manualFollow(info)">
           <a>
             <i class="fab fa-twitter"></i>フォローする
           </a>
@@ -53,8 +55,10 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  //["accountdata"],
+  // props:["accountdata"],
   props: {
     accountdata: {
       type: Object
@@ -63,42 +67,39 @@ export default {
   name: "accountdata",
   data: () => {
     return {
-      accountdata: this.accountdata, //propsを直接操作するのはNGなので、データとして保持
+      // accountdatas: this.accountdata.data, //propsを直接操作するのはNGなので、データとして保持
       errored: false,
       isChecked: false,
-      targetId: '1252388152221655049'
+      //targetId: "1284754391442968578",
     };
   },
-  // created(){
-  //     axios.get('./account?page=1')
-  //     .then(res => {
-  //       this.accountdata = res.data;
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
   methods: {
-    testFollow() {
-      console.log("Followed!");
+    manualFollow(key) {
+      const data = {
+        user_id: key.id_str
+      };
+      var self = this;
+      console.log("start manuall Follow");
+      console.log(data);
       axios
-        .post('friendships/create', {
-          params: {
-            user_id: this.targetId
-          }
-        })
+        .post("/api/account",data)
         .then(res => {
-          this.accountdata = this.res.data;
-          console.log("success!");
+          self.postResponce = this.res.data;
+          console.log("axios success!");
+          console.log(res.data);
+          console.log(res.status);
+          console.log(res.statusText);
+          console.log(res.headers);
+          console.log(res.config);
         })
         .catch(error => {
           this.errored = true;
-          console.log("error!");
+          console.log("axios error!");
+          console.log(error);
         });
-
-    },
-    manualFollow() {
-      console.log("manualFollowed!");
+    // },
+    // testmanualFollow() {
+    //   console.log("manualFollowed!");
       // 選択したvalue値をkeywordとして送信
       // axios
       //   .get(`/trend/search?q=${keyword}`)

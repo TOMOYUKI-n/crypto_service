@@ -47,17 +47,16 @@ class Get_CoinBatch extends Command
     public function handle()
     {
 
-        try{
+
+        try {
             $twitter_api = \Twitter::get("users/search", [
-                'q' => 'acountD3',
-                'count' => 20,
-                'page' => 1,
+                'q' => 'unTKa8x7qJBwhjw',
+                'count' => 3,
             ]);
             var_dump($twitter_api);
-        }
-        catch(\Exception $e){
-                Log::error($e->getMessage());
-                Log::Debug("== error ==");
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            Log::Debug("== error ==");
         }
 
     }

@@ -36,6 +36,8 @@
 @import "object/component/top";
 @import "object/component/button";
 @import "object/component/trend";
+@import "object/component/alert";
+
 
 // -----------------------------------------------------------------
 // Project
@@ -54,3 +56,4 @@
 // Utility
 // -----------------------------------------------------------------
 @import "object/Utility/parts";
+@import "object/Utility/message";

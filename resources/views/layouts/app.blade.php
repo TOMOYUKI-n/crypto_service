@@ -30,6 +30,20 @@
     <div id="app"  class="wrapper--main">
         <main class="l-base">
             @include('header')
+            
+                <!-- フラッシュメッセージ -->
+                    @if (session('flash_message'))
+                    <div class="flash_message flash_message__fade">
+                        {{ session('flash_message') }}
+                    </div>
+                    @endif
+                    
+                    @if (session('error_message'))
+                    <div class="error_message">
+                        {{ session('error_message') }}
+                    </div>
+                    @endif
+
             @yield('content')
         </main>
         <footer-component></footer-component>

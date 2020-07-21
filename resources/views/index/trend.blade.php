@@ -3,6 +3,7 @@
 @section('content')
 
 <div id="app">
+
     <trend-component
     :trends="{{ $trends }}"
     >

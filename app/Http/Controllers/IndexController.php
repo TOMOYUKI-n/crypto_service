@@ -26,7 +26,10 @@ class IndexController extends Controller
     {
         return view('test');
     }
-
+    public function misslogin()
+    {
+        return view('misslogin');
+    }
     public function top()
     {
         return view('top');
@@ -42,10 +45,7 @@ class IndexController extends Controller
     //public function trendback(){ return view('index.trend_back'); }
 
     public function trend(Request $request)
-    {   
-        header("Access-Control-Allow-Origin: *");  //CORS
-        header("Access-Control-Allow-Headers: Origin, X-Requested-With");
-
+    {
         $q = $request->keyword;
         //パラメータがないなら1hourの状態で表示させる
         if (empty($q)){ $q = "1hour"; }
@@ -67,6 +67,18 @@ class IndexController extends Controller
         return view('index.account')->with('accountdata' , $accountdata);
     }
 
+    public function follows(Request $request)
+    {
+        Log::debug("== point1 ===================");
+        $userid = $request->$id;
+        Log::debug("== point2 ===================");
+        $followed = Account::autoFollow($userid);
+        Log::debug($followed);
+        $data = response()->json($followed[0]);
+        Log::debug($data);
+        return $data;
+
+    }
 
     public function news()
     {   

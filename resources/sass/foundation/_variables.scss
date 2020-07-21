@@ -3,7 +3,7 @@ $body-bg: #f8fafc;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
-$font-family-base-TimesNewRoman: 'Times New Roman', Times, serif;
+$font-family-base-TimesNewRoman: '游ゴシック体';
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
@@ -88,5 +88,5 @@ $breakpoints: (
   'xl': 'screen and (max-width: 1200px)',
 ) !default;
 
-$font-family-base: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif, "Crimson Text"; // TODO:リファクタ必要（変数にする）
+//$font-family-base: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif, "Crimson Text";
 

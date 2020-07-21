@@ -1,0 +1,20 @@
+// ============================
+// 共通メッセージ
+// ============================
+
+.flash_message{
+    padding: 15px;
+    background-color: rgba(56, 108, 250, 0.61);
+    color: $color-white;
+    text-align: center;
+    display: block;
+}
+
+.error_message{
+    padding: 15px;
+    background-color: rgba(250, 56, 56, 0.61);
+    color: $color-black;
+    text-align: center;
+    display: block;
+    font-size: $font-size_min;
+}
