@@ -19,7 +19,7 @@
     padding: 0;
     margin: 0;
     color: $color_black;
-    background-color: #f9f9ff;
+    background-color: #eff1f3;
     font-family: $font-family-base-TimesNewRoman;
     @include mq(){
         width: 100%;
@@ -59,13 +59,14 @@
         }
     }
     &__function-head{
-        border-bottom: solid 1px $color_placeholder;
-        width: 70%;
-        margin: 0px auto;
+        //border-bottom: solid 1px $color_placeholder;
+        width: 85%;
+        margin: 10px auto;
         //margin: 10px 0px 20px 0px;
         //padding: $space_xl;
         @include mq(){
-            padding: 5px;
+            padding: 15px;
+            width: 100%;
         }
     }
 }

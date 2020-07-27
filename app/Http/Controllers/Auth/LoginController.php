@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Auth; 
-use Illuminate\Support\Facades\Log;
-use Exception;
 use App\User;
-
+use Exception;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -22,7 +21,7 @@ class LoginController extends Controller
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
-    */
+     */
 
     use AuthenticatesUsers;
 
@@ -33,14 +32,14 @@ class LoginController extends Controller
      * @var string
      */
     //protected $redirectTo = '/trend';
-    
-    protected function redirectTo(){
-        
+
+    protected function redirectTo()
+    {
+
         session()->flash('flash_message', __('Login!'));
         return '/trend';
 
     }
-    
 
     /**
      * Create a new controller instance.
@@ -75,24 +74,31 @@ class LoginController extends Controller
         //twitterからユーザー情報を取得する
         try {
             $providerUser = \Socialite::with($provider)->user();
+            //追記　アクセストークン取得
+            $token = $providerUser->token;
+            $tokenSecret = $providerUser->tokenSecret;
 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return redirect('/login')->with('error_message', '予期せぬエラーが発生しました');
         }
 
         // ユーザー情報の中からEmailと名前を取得
         if ($email = $providerUser->getEmail()) {
-
-            // ユーザーがDBに存在すればリダイレクト、存在しなければ新規登録
-            Auth::login(User::firstOrCreate([
-                'email' => $email
-            ],
-            [
-                'name' => $providerUser->getName()
-            ]
+            Auth::login(User::firstOrCreate(
+                [
+                    'email' => $email,
+                ],
+                [
+                    'twitter_id' => $providerUser->id,
+                    'name' => $providerUser->getName(),
+                    'twitter_name' => $providerUser->getName(),
+                    'twitter_avatar_original' => $providerUser->avatar_original,
+                    'twitter_oauth_token' => $token,
+                    'twitter_oauth_token_secret' => $tokenSecret,
+                    'email' => $email,
+                ]
             ));
-            //return redirect($this->redirectTo);
-            return redirect('/trend')->with('flash_message', __(('Login!')));
+            return redirect('/trend')->with('flash_message', 'ログインしました');
         } else {
             // 存在しない場合は通常のログイン画面へ遷移する
             // Log::Debug($providerUser);

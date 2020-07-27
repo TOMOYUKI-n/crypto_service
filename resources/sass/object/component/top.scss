@@ -26,12 +26,20 @@
         display: block;
         border-radius: 6px;
     }
-    &__introduction1, &__introduction2{
+    &__introduction{
         color: $color_black;
-        font-size: $font-size_m;
-        margin: 0;//リセット用
-        position: relative;
-        top: -470px;
+        font-size: 2.4vw;
+        // position: relative;
+        // top: -470px;
+        // &__1{
+        //     box-sizing: border-box;
+        // }
+        &__2{
+            box-sizing: border-box;
+            position: absolute;
+            top: 60px;
+            left: calc(50%/1.7);
+        }
     }
     &__login{
         padding: 10px;
@@ -50,7 +58,7 @@
         box-sizing: border-box;
         padding: 20px 0;
         width: 310px;
-        margin: 0px auto 0px auto;
+        margin: 60px auto 0px auto;
     }
     &__register, &__login{
         padding: 10px;
@@ -74,7 +82,7 @@
     &__section-title{
         color: $color_black;
         font-size: $font-size_s;
-        margin: 55px auto 10px auto;
+        margin: 60px auto 30px auto;
     }
     &__section-wrap{
         margin: 10px auto 30px auto;
@@ -85,13 +93,11 @@
     }
     &__section1, &__section2, &__section3{
         margin: 0px 10px 60px 10px;
-        border: 2px solid $blue;
+        border: 1.2px solid $blue;
         border-radius: 5px;
         padding: 5px;
-        @include mq(){
-            margin: 0px;
-        }
-
+        background-color: #fff;
+        box-shadow: 0 2px 4px 0 #b2b5be;
     }
     &__section__text{
         font-size: $font-size_min;
@@ -109,14 +115,20 @@
         width: 50%;
         height: auto;
 
+        &__main{
+            margin: 0;
+        }
         &__trend{
             margin:0;
+            border-radius: 6px;
         }
         &__follow{
             margin:0;
+            border-radius: 6px;
         }
         &__news{
             margin:0;
+            border-radius: 6px;
         }
     }
 

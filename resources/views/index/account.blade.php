@@ -3,9 +3,6 @@
 @section('content')
 
 <div id="app">
-    <account-component
-    :accountdata="{{ $accountdata }}"
-    >
-    </account-component>
+    <account-component />
 </div>
 @endsection

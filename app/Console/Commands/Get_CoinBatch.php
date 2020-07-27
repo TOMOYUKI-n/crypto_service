@@ -3,15 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\ServiceProvider;
-use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use GuzzleHttp\Client;
-use App\Tweet;
-use App\Account;
 use App\Temp;
-
 
 class Get_CoinBatch extends Command
 {
@@ -47,17 +40,20 @@ class Get_CoinBatch extends Command
     public function handle()
     {
 
-
-        try {
-            $twitter_api = \Twitter::get("users/search", [
-                'q' => 'unTKa8x7qJBwhjw',
-                'count' => 3,
-            ]);
-            var_dump($twitter_api);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            Log::Debug("== error ==");
-        }
+        $tempIdstr = Temp::select('id_str')->orderBy('id_str', 'desc')->get();
+        // ログインしているユーザーのアカウントが、取得したid_strをフォローしているかチェックする
+        Log::debug(count($tempIdstr));
+        Log::debug($tempIdstr[0]["id_str"]);
+        // $account = new Account;
+        // try{
+        //     // フォロー結果を格納
+        //     $account['following'] = $twitter_api_post->following;
+        //     $account->save();
+        // }
+        // catch(\Exception $e){
+        //     Log::error($e->getMessage());
+        //     Log::Debug("== account wirte error ==");
+        // }
 
     }
 }

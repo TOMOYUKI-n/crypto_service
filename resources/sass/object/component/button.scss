@@ -12,11 +12,14 @@
     // ============================
     // アカウント一覧画面ボタン
     // ============================
-    &__autobtn{
-        margin-left: 36px;
-    }
     &__follow{
-        margin:0;
+        border-radius: 6px;
+        box-sizing: border-box;
+        padding: 5px 30px;
+        border: none;
+        background-color: #FFC107;
+        box-shadow: 0 2px 4px 0 #b2b5be;
+        font-size: 14px;
     }
     &__new{
         color: $color_black;

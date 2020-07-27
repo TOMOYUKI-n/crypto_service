@@ -24,8 +24,10 @@ Route::get('/misslogin', 'IndexController@misslogin')->name('misslogin');
 // 認証必要
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/trend', 'IndexController@trend')->name('index.trend');
-    Route::get('/account', 'IndexController@account')->name('index.account');
-    Route::post('/account', 'IndexController@follows');
+    //Route::get('/account', 'IndexController@account')->name('index.account');
+    Route::get('/account', function(){ return view('index.account'); });
+    Route::post('/account/follows', 'IndexController@follows');
+    Route::post('/account/autofollows', 'IndexController@followsCheckApi');
     Route::get('/news', 'IndexController@news')->name('index.news');
 });
 

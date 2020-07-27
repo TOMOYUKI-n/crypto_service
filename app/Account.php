@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use App\Tweet;
 
 class Account extends Model
 {
@@ -17,14 +20,5 @@ class Account extends Model
         //$targetId = '1252388152221655049';//accountD
         //$userid = '1284754391442968578';//もんぶらん
 
-        try {
-            $twitter_api = \Twitter::post("friendships/create", [
-                'user_id' => $userid,
-            ]);
-            var_dump($twitter_api);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            Log::Debug("== error ==");
-        }
     }
 }

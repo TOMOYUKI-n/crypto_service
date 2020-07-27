@@ -15,7 +15,7 @@ class ChangeColumnPassNullUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //passwordをnullableに
-            $table->string('password')->nullable()->change();
+            //$table->string('password')->nullable()->change();
         });
     }
 
@@ -28,7 +28,7 @@ class ChangeColumnPassNullUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //passwordをnull拒否に戻す
-            $table->string('password')->nullable(false)->change();
+            //$table->string('password')->nullable(false)->change();
         });
     }
 }

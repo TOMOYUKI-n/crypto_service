@@ -26,8 +26,8 @@ class TwitterServiceProvider extends ServiceProvider
     public function register()
     {
         //TwitterOAuthクラスのインスタンスを'twitter'という名前で登録
-        $this->app->singleton('twitter', function () {
-
+        //$this->app->singleton('twitter', function () {
+        $this->app->bind('twitter', function () {
             //config/twitter.phpの中身を参照し、インスタンスを作成
             $config = config('twitter');
             return new TwitterOAuth($config['api_key'], $config['secret_key'], $config['access_token'], $config['access_token_secret']);

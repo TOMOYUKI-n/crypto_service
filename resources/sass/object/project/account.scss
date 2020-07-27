@@ -6,9 +6,8 @@
     // ============================
     // functionエリア
     // ============================
-    &__text{
+    &__text-top{
         padding: 10px;
-        margin: 0px auto;
         text-align: left;
         color: $black;
         font-size: $font-size_min;
@@ -16,7 +15,27 @@
         display: block;
         &__attend{
             text-align: center;
-            margin-bottom: 5px;
+        }
+    }
+    &__text-sub{
+        color: $black;
+        font-size: $font-size_min;
+        box-sizing: border-box;
+        display: block;
+        &__attend{
+            text-align: center;
+        }
+    }
+    &__text{
+        padding: 10px;
+        text-align: left;
+        color: $black;
+        font-size: $font-size_min;
+        box-sizing: border-box;
+        display: block;
+        &__attend{
+            text-align: center;
+            padding-left: 10px;
         }
     }
     &__intro{
@@ -24,8 +43,13 @@
     }
 
     &__flex{
-        display: inline-block;
-        //margin-bottom: 20px;
+        display: flex;
+        margin: 20px auto;
+        line-height: 1.5;
+        align-items: center;
+        @include mq(){
+            display: block;
+        }
     }
     // ============================
     // アカウントリスト表示エリア
@@ -38,9 +62,11 @@
         display: block;
         border-radius: 6px;
         box-shadow: 0 2px 4px 0 #b2b5be;
-        background-color: #fff;
+        background-color: #f4f5f6;
         box-sizing: border-box;
-        padding: 20px 0;
+        padding: 10px 20px;
+        width: 90%;
+        margin: 0px auto;
     }
 
     // ============================
@@ -48,7 +74,7 @@
     // ============================
        &__section-top{
         display: flex;
-        padding: 10px 15px;
+        padding: 10px 20px;
     }
     &__inner2{
         text-align: left;
@@ -75,7 +101,7 @@
     // プロフィール表示エリア
     // ============================
     &__section-middle{
-        padding: 10px 15px;
+        padding: 10px 30px;
         text-align: left;
     }
     //&__prof{}
@@ -84,19 +110,25 @@
     // Twitter表示エリア
     // ============================
     &__section-bottom{
-        margin: 5px;
+        margin: 10px 30px;
         display: block;
-        border-radius: 6px;
-        padding: 10px;
+        padding: 20px;
         box-sizing: border-box;
-        box-shadow: 0 2px 4px 0 $color_border-line;
-
+        text-align: start;
+        box-shadow: 0 1px 4px 0 #b2b5be;
+        background-color: #b2b5be4f;
     }
-    //&__tweet{}
+    &__followbtn{
+        text-align: end;
+        padding-right: 30px;
+    }
 
     &__connected{
         font-weight: bold;
         color: $color_orange;
         margin: 20px auto;
     }
+}
+.text-color{
+    color: #e3342f;
 }

@@ -13,11 +13,11 @@ class CreateMunitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('munites', function (Blueprint $table) {
-            // 作成ミス ========================
-            //$table->bigIncrements('id');
-            //$table->timestamps();
-        });
+        // Schema::create('munites', function (Blueprint $table) {
+        //     // 作成ミス ========================
+        //     //$table->bigIncrements('id');
+        //     //$table->timestamps();
+        // });
     }
 
     /**
@@ -27,6 +27,6 @@ class CreateMunitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('munites');
+        // Schema::dropIfExists('munites');
     }
 }
