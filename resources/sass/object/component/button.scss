@@ -20,6 +20,9 @@
         background-color: #FFC107;
         box-shadow: 0 2px 4px 0 #b2b5be;
         font-size: 14px;
+        &:focus {
+            outline:0;
+        }
     }
     &__new{
         color: $color_black;

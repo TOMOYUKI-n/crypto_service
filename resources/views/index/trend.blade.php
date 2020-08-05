@@ -4,9 +4,8 @@
 
 <div id="app">
 
-    <trend-component
-    :trends="{{ $trends }}"
-    >
+    <trend-component 
+    :trends="{{ $trends }}" >
     </trend-component>
 </div>
 @endsection

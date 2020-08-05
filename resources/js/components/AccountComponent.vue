@@ -9,7 +9,7 @@
       </div>
 
       <div>
-        <div class="p-account__flex" v-if="isFollowedColor">
+        <div class="p-account__flex" v-if="isFollowedFlg">
           <i class="fas fa-toggle-on fa-lg fa-fw" @click="autoFollow()"></i>
           <span class="text-color">自動フォロー中です</span>
           <div class="p-account__text-sub p-account__text__attend">※解除するにはoffにしてください</div>
@@ -93,14 +93,15 @@
         <div class="p-account__section-bottom">
           <div class="p-account__tweet">{{ info.text }}</div>
         </div>
-        <div class="p-account__followbtn" >
+        <div class="p-account__followbtn">
           <button
             class="p-btn__follow"
-            v-on:click="manualFollow(info)"
-            :class="{ isFollowedColor: isFollowedColor }"
-            v-bind:disabled="isFollowedColor"
+            v-on:click="follow(info)"
+            :class="{ isFollowedColor: isFollowedFlg }"
+            v-bind:disabled="isFollowedFlg"
+            ref="follow"
           >
-            <a v-if="isFollowedColor">
+            <a v-if="isFollowedFlg">
               <i class="fab fa-twitter"></i>フォロー中
             </a>
             <a v-else>
@@ -125,10 +126,60 @@ export default {
       total: 1,
       from: 0,
       to: 0,
-      isFollowedColor: false,
+      isFollowedFlg: false,
+      loginUserId: "",
+      loginUserName: "",
+      followCheck: false,
+      isFollowing: false,
     };
   },
   methods: {
+    follow(key){
+
+    },
+    autoSaveLocalStrage(isFollowedFlg, loginUserId, loginUserName) {
+      // データを格納する
+      const isFollowedFlgs = JSON.stringify(isFollowedFlg);
+      const loginUserIds = JSON.stringify(loginUserId);
+      const loginUserNames = JSON.stringify(loginUserName);
+
+      localStorage.setItem("isFollowedFlg", isFollowedFlgs);
+      localStorage.setItem("loginUserId", loginUserIds);
+      localStorage.setItem("loginUserName", loginUserNames);
+
+      console.log("write");
+    },
+    autoCatchLocalStrage() {
+      // データを呼び出し、一致するか確認　-> 一致すればフラグを更新
+      const isFollowedFlgData = localStorage.getItem("isFollowedFlg");
+      const loginUserIdData = localStorage.getItem("loginUserId");
+      const loginUserNameData = localStorage.getItem("loginUserName");
+
+      const updateFlg = JSON.parse(isFollowedFlgData);
+      const updateId = JSON.parse(loginUserIdData);
+      const updateName = JSON.parse(loginUserNameData);
+
+      const updateTarget = {
+        updateFlg: updateFlg,
+        updateId: updateId,
+        updateName: updateName
+      };
+      console.log(updateTarget);
+      return updateTarget;
+    },
+    userCheckSessions() {
+      const updateTarget = this.autoCatchLocalStrage();
+      if (
+        updateTarget.updateFlg == true &&
+        this.loginUserId == updateTarget.updateId &&
+        this.loginUserName == updateTarget.updateName
+      ) {
+        this.isFollowedFlg = updateTarget.updateFlg;
+        console.log("read");
+      } else {
+        console.log("idが違います");
+      }
+    },
     manualFollow(key) {
       console.log("axios!");
       let params = {
@@ -150,16 +201,19 @@ export default {
         });
     },
     autoFollow() {
-      if (this.isFollowedColor === false) {
+      if (this.isFollowedFlg === false) {
         // on
         if (confirm("フォローを自動で実行しますか？（中断も可能です）")) {
-          this.isFollowedColor = !this.isFollowedColor;
+          // 実行したユーザー情報を登録
+          this.isFollowedFlg = !this.isFollowedFlg;
           let params = { user_id: 1 };
+          let Flgs = this.isFollowedFlg;
           axios
             .post("/account/autofollows", params)
             .then(res => {
               if (res.status == 200) {
                 console.log(res.data);
+                this.autoSaveLocalStrage(Flgs,);
               }
             })
             .catch(error => {
@@ -170,13 +224,15 @@ export default {
       } else {
         // off
         if (confirm("フォローを中断しますか？")) {
-          this.isFollowedColor = !this.isFollowedColor;
+          this.isFollowedFlg = !this.isFollowedFlg;
           let params = { user_id: 0 };
+          let Flgs = this.isFollowedFlg;
           axios
             .post("/account/autofollows", params)
             .then(res => {
               if (res.status == 200) {
                 console.log(res.data);
+                this.autoSaveLocalStrage(Flgs);
               }
             })
             .catch(error => {
@@ -185,6 +241,30 @@ export default {
             });
         }
       }
+    },
+    async followingCheckApi() {
+      console.log("check!!");
+      axios
+        .get("/account/user/followcheck")
+        .then(res => {
+          const isFollow = res.data;
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(response.error.data);
+        });
+    },
+    getUserAccount() {
+      axios
+        .get("/account/user")
+        .then(res => {
+          this.loginUserId = res.data.id;
+          this.loginUserName = res.data.name;
+          console.log("user check end!");
+        })
+        .catch(error => {
+          console.log("user get axios is error");
+        });
     },
     load(page) {
       axios.get("/api/account?page=" + page).then(({ data }) => {
@@ -198,6 +278,7 @@ export default {
     },
     change(page) {
       if (page >= 1 && page <= this.last_page) this.load(page);
+      console.log("async action");
     },
     countAddPage1(page) {
       if (this.current_page >= 6) {
@@ -243,6 +324,13 @@ export default {
   },
   mounted() {
     this.load(1);
+
+    // this.followingCheckApi();// ここで呼ぶ
+  },
+  created() {
+    //
+    this.userCheckSessions();
+    this.getUserAccount();
   }
 };
 </script>

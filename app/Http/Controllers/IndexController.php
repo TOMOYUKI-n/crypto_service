@@ -7,12 +7,13 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
 use App\Account;
 use App\Intercoin;
 use App\Temp;
 use App\Tweet;
 use App\User;
+use App\Auto;
+use App\Follows;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -34,110 +35,166 @@ class IndexController extends Controller
     {
         return view('policy');
     }
-    //public function trendback(){ return view('index.trend_back'); }
 
-    public function trend(Request $request)
+    /**
+     * trend画面遷移時、最初に実行される
+     */
+    public function trend(Request $request) 
     {
         $q = $request->keyword;
+
         //パラメータがないなら1hourの状態で表示させる
         if (empty($q)) {$q = "1hour";}
         // 日付変換処理
         $q_time = Intercoin::TransformDate($q);
         // トレンド用データ集計関数 ここでIntercoinDBが生成される
-        Intercoin::HourRanking($q_time);
+        $hourRankingStatus = Intercoin::HourRanking($q_time);
+        
+        if($hourRankingStatus == "Error"){
+            $trends = "Error";
+            Log::Debug($hourRankingStatus);
+            Log::debug($trends);
 
-        $trends = DB::table('Intercoin')->orderBy('tweet', 'desc')->get();
-        return view('index.trend', ['trends' => $trends]);
-    }
-
-    public function followsCheckApi(Request $request)
-    {
-        //autoが返却される
-        if($request->user_id){
-
-            $userToken = Auth::user()->twitter_oauth_token;
-            $userTokenSecret = Auth::user()->twitter_oauth_token_secret;
-            $config = config('twitter');
-            $Twitter = new TwitterOAuth($config['api_key'], $config['secret_key'], $userToken, $userTokenSecret);
-
-            // 現在のtempDB(一意のアカウントデータ)のid_strを全て取得
-            $tempIdstr = Temp::select('id_str')->orderBy('id_str', 'desc')->get();
-            // ログインしているユーザーのアカウントが、取得したid_strをフォローしているかチェックする
-
-            //$loop = count($tempIdstr);
-            $loop = 10;
-
-            // 渡ってきた$user_idで中断かどうかを判断する;
-            //
-            // 処理...
-            //
-            // そもそもここでなにする？
-
-            for($i = 0; $i < $loop; $i++){
-
-                try {
-                    // フォローしているか確認->結果を返す（ボタン表示切り替え用のフラグ取得のため）
-                    $twitter_api = $Twitter->get("users/show", 
-                            ['user_id' => $tempIdstr[$i]["id_str"] ]);
-
-                    $followRequestSent = $twitter_api->follow_request_sent;
-                    $following = $twitter_api->following;
-                    Log::Debug($tempIdstr[$i]["id_str"]);
-
-                    $ArrayApiBeforeFollowCheck = array("countNum"=> $i,"following"=> $following, "followRequestSent"=> $followRequestSent);
-                    return $ArrayApiBeforeFollowCheck;
-                } catch (\Exception $e) {
-                    Log::error($e->getMessage());
-                    Log::Debug("== error ==");
-                }
-                Log::Debug("== 実行されませんよね？？ ==");
-            }
+            // return $trends;
+            return view('index.trend', ['trends' => $trends]);
         }else{
-            Log::debug("auto can not sent Request!");
-            return;
+            $trends = DB::table('Intercoin')->orderBy('tweet', 'desc')->get();
+            Log::Debug($hourRankingStatus);
+            Log::debug($trends);
+            return view('index.trend', ['trends' => $trends]);
         }
     }
 
-    public function follows(Request $request)
+    /**
+     * フォローをしているかチェックする関数
+     */
+    public function followCheck(Request $request)
     {
         $userid = $request->user_id;
         $userToken = Auth::user()->twitter_oauth_token;
         $userTokenSecret = Auth::user()->twitter_oauth_token_secret;
         $config = config('twitter');
-
         $Twitter = new TwitterOAuth($config['api_key'], $config['secret_key'], $userToken, $userTokenSecret);
-        try {
-            // フォロー前に確認
-            $twitter_api = $Twitter->get("users/show", 
-                    ['user_id' => $userid]);
-            $followRequestSent = $twitter_api->follow_request_sent;
-            $following = $twitter_api->following;
+        Log::debug("followCheck 実行");
 
-            if($following){
-                //フォローしていた場合
-                    Log::Debug($responceCommentFollowIsOk);
-                    $responceCommentFollowIsOk = "フォロー済みです";
-                    return $responceCommentFollowIsOk;
-            }else{
-                if($followRequestSent){
-                    //リクエストは送っているがフォロー承認されていない場合
-                    Log::Debug($responceCommentFollowRequestWaited);
-                    $responceCommentFollowRequestWaited = "フォローリクエストの承認まちです";
-                    return $responceCommentFollowRequestWaited;
-                }else{
-                    //リクエストもフォローもしていない場合 -> フォロー処理実行
-                    $twitter_api_post = $Twitter->post("friendships/create", ["user_id" => $userid]);
-                    $apiFollowed = true;
-                    Log::Debug("フォローしました");
-                }
-            }
+        try {
+            $twitter_api = $Twitter->get("friendships/lookup",['user_id' => $userid]);
+            $apiRes = $twitter_api[0]->connections;
+            // $followRequestSent = $twitter_api->follow_request_sent;
+            // $following = $twitter_api->following;
+            //$res = array( "following" => $following, "followRequestSent" => $followRequestSent);
+            $res = array( "apiRes" => $apiRes);
+            Log::debug("followCheck 完了");
+            return $res;
+
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             Log::Debug("== error ==");
         }
-        $ResponceArrayApiFollowChecked = array("following"=> $following, "followRequestSent"=> $followRequestSent, "apiFollowed"=> $apiFollowed);
+    }
 
-        return $ResponceArrayApiFollowChecked;
+    /**
+     * フォローをする処理
+     */
+    public function follows(Request $request)
+    {
+        $userId = $request->user_id;
+        $loginId = Auth::user()->id;
+        $userToken = Auth::user()->twitter_oauth_token;
+        $userTokenSecret = Auth::user()->twitter_oauth_token_secret;
+        $config = config('twitter');
+        $Twitter = new TwitterOAuth($config['api_key'], $config['secret_key'], $userToken, $userTokenSecret);
+
+        try {
+            Log::debug("IndexController follows 実行");
+            $twitter_api_post = $Twitter->post("friendships/create", ["user_id" => $userId]);
+            $following = $twitter_api_post->following;
+            
+            // フォローを保存
+            Follows::GeneratefollowsList($userId,$loginId);
+            //$res = array("following" => "following");
+            $res = array("following" => $following);
+            Log::debug("IndexController follows 実行完了　フォローしました");
+            return $res;
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            Log::Debug("IndexController follows 失敗しました");
+        }
+    }
+
+    // /**
+    //  * 自動フォローを実行しているユーザーの状態を保存 flg=1
+    //  */
+    // public function autoFlgSaved($loginId)
+    // {
+    //     try{
+    //         $auto = new Auto;
+    //         $auto["userId"] = $loginId;
+    //         $auto["autoFlg"] = "1";
+    //         $auto->save();
+    //     }catch(\Exception $e){
+    //         Log::error($e->getMessage());
+    //         Log::Debug("error: Autoのsaveに失敗しました");
+    //     }
+    // }
+
+    // /**
+    //  * 自動フォローを実行しているユーザーの状態を保存 flg=0へ
+    //  */
+    // public function autoFlgDelete($loginId){
+    //     try{
+    //         $auto = new Auto;
+    //         $auto["userId"] = $loginId;
+    //         $auto["autoFlg"] = "0";
+    //         $auto->save();
+    //         return;
+    //     }catch(\Exception $e){
+    //         Log::error($e->getMessage());
+    //         Log::Debug("error: Autoのsaveに失敗しました");
+    //     }
+    // }
+    
+    /**
+     * 自動フォローをする処理
+     * バッチ実行リストに登録する処理
+     */
+    public function autoFollows(Request $request)
+    {
+        $loginId = $request->loginId;
+        // responce定義
+        $autoResOk = array("status" => 200);
+        $autoResErr = array("status" => "Error");
+        
+        // ログインユーザーがautoフラグ1であるか確認する
+        $loginUser = Auto::select("autoFlg")->where("userId", "=", $loginId)->first();
+        var_dump($loginUser);
+
+        Log::debug("== 処理実行 ==");
+        if($loginUser == null){ $loginUser["autoFlg"] = 0; };
+        Log::debug($loginUser);
+
+        if($loginUser["autoFlg"] == 0){
+            // 0なら1に変更し,実行対象にする
+            try {
+                Auto::autoFlgSaved($loginId);
+                return $autoResOk;
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                Log::Debug("== error ==");
+                return $autoResErr;
+            }
+        }else{
+            // 1なら0に変更し,実行対象外にする
+            try {
+                Auto::autoFlgDelete($loginId);
+                return $autoResOk;
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                Log::Debug("== error ==");
+                return $autoResErr;
+            }
+        }
     }
 
     public function news()

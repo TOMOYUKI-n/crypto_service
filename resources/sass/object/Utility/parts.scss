@@ -6,6 +6,9 @@
     background-color: #386cfa9c;
     color: $color-white;
     border: none;
+    &:focus {
+        outline:0;
+    }
 }
 .pAccountActive{
     background-color: #386cfa9c;

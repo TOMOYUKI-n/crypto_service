@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\ServiceProvider;
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Tweet;
@@ -82,7 +83,7 @@ class GetTweetCommand extends Command
         
                     // 2 TwitterAPIを呼び出してデータを取得する
                     $twitter_api = Tweet::getTweetCountApi($word, $max_id);
-        
+
                     //ステータス情報の取得
                     $statuses = $twitter_api->statuses;
                     //TwitterAPIからデータが返ってきているか確認

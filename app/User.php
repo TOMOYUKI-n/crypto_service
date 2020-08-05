@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Tweet;
 use App\Coin;
@@ -89,9 +90,6 @@ class User extends Authenticatable
         }
         return $list;
     }
-
-
-
 
 
 }

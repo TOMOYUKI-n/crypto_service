@@ -12,29 +12,40 @@
 */
 Auth::routes();
 
-// 認証不要　TOPページ
-Route::get('/', 'IndexController@top')->name('top');//ドメイントップ
-Route::get('/term', 'IndexController@term')->name('term');// 利用規約への遷移
-Route::get('/policy', 'IndexController@policy')->name('policy');// ポリシーへの遷移
+/**
+ * 認証不要
+ */
+// トップ
+Route::get('/', 'IndexController@top')->name('top');
+// 利用規約への遷移
+Route::get('/term', 'IndexController@term')->name('term');
+// ポリシーへの遷移
+Route::get('/policy', 'IndexController@policy')->name('policy');
+// home
 Route::get('/home', 'HomeController@index')->name('home');
+// ログイン失敗時
 Route::get('/misslogin', 'IndexController@misslogin')->name('misslogin');
-//Route::get('/test', 'indexController@test')->name('test');
+//ソーシャルログイン
+Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider');
+//ソーシャルログインのcallback
+Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
-
-// 認証必要
+/**
+ * 認証必要
+ */
 Route::group(['middleware' => 'auth'], function() {
+    // トレンド一覧用
     Route::get('/trend', 'IndexController@trend')->name('index.trend');
-    //Route::get('/account', 'IndexController@account')->name('index.account');
+    // 画面表示用
     Route::get('/account', function(){ return view('index.account'); });
+    // フォローチェック
+    Route::post('/account/followcheck', 'IndexController@followCheck');
+    // フォロー用
     Route::post('/account/follows', 'IndexController@follows');
-    Route::post('/account/autofollows', 'IndexController@followsCheckApi');
+    // ユーザー情報取得用
+    Route::get('/auth/users', 'AuthController@getUsers');
+    // 自動フォロー用
+    Route::post('/account/autofollows', 'IndexController@autoFollows');
+    // news一覧用
     Route::get('/news', 'IndexController@news')->name('index.news');
 });
-
-Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider'); //ソーシャルログイン
-Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback'); //ソーシャルログインのcallback
-
-
-
-
-

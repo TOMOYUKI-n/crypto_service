@@ -3,6 +3,7 @@
 @section('content')
 
 <div id="app">
-    <account-component />
+    {{-- <account-component /> --}}
+    <connect-component />
 </div>
 @endsection

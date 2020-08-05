@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Tweet;
 use App\Coin;
@@ -14,6 +15,7 @@ use App\Week;
 use App\Day;
 use App\Hour;
 use App\Minute;
+use App\Follows;
 use GuzzleHttp\Client;
 
 class Tweet extends Model
@@ -23,6 +25,51 @@ class Tweet extends Model
     protected $fillable = [
         'tweet_id'
     ];
+
+
+    /**
+     * 
+     */
+    public static function autoFollowBatch($loginId,$TargetAccounts)
+    {
+
+        Log::Debug("LoginId");
+        Log::Debug($loginId);
+
+        $userToken = DB::table("users")->select("twitter_oauth_token")->where("id","=",$loginId)->first();
+        $userTokenSecret = DB::table("users")->select("twitter_oauth_token_secret")->where("id",$loginId)->first();
+        $config = config('twitter');
+        $Twitter = new TwitterOAuth($config['api_key'], $config['secret_key'], $userToken, $userTokenSecret);
+        
+        // フォローする(15分に4回まで),秒数
+        $limitNum = 4;
+        $limitTime = 300;
+        try{
+            if($TargetAccounts){
+                // リストのアカウントをフォローしていく
+                for($i = 0; $i < $limitNum; $i++){
+                    Log::debug("follows 実行");
+                    $twitter_api_post = $Twitter->post("friendships/create", ["user_id" => $TargetAccounts[$i]]);
+                    $following = $twitter_api_post->following;
+                    $res = array("following" => $following);
+                    Log::debug("follows 実行完了　フォローしました");
+                    
+                    // フォローを保存
+                    Follows::GeneratefollowsList($userId,$loginId);
+                    Log::Debug("FollowDBに保存しました. 10秒間 sleepします");
+                    // 5分間隔で実行
+                    sleep($limitTime);
+                    Log::Debug("再開します");
+                }
+                return $res = array("auto" => "OK");
+            }
+        }catch(\Exception $e){
+            Log::Debug($e->getMessage());
+            Log::Debug("=== autoFollowBatch Error ===");
+            return $res = array("auto" => "Error");
+        }
+    }
+
     // Daysに取得時間をインサート ==============================
     public static function DaysInsert()
     {
@@ -60,6 +107,7 @@ class Tweet extends Model
             ]);
             return $twitter_api;
     }
+
     // 3 ツイート保存する処理 ==============================
     public static function TweetCountSave(object $twitter_api)
     {

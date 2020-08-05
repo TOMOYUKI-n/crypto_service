@@ -37,14 +37,14 @@
             </ul>
             @endguest
         </nav>
-        <div class="sp__icon__container js_push"><!--toggleRightMenu ここ押下する-->
+        <div class="sp__icon__container js_push">
             <i class="fas fa-bars p-navbar__icon "></i>
         </div>
 
         <!--SP-->
-        <div class="p-header__sp p-header__sp--right js_toggle"><!--activeのつけ外しをおこなう-->
+        <div class="p-header__sp p-header__sp--right js_toggle">
 
-            <div class="p-header__sp__icon__container js_push"><!--toggleRightMenu ここ押下する-->
+            <div class="p-header__sp__icon__container js_push">
                 <i class="fas fa-times p-header__sp__icon"></i>
             </div>
 

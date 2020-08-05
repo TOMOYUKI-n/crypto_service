@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Temp;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     Route::post('/account', 'IndexController@follows');
 // });
 
-// Route::middleware(['cors'])->group(function () {
-//     Route::options('accounts', function () {
-//         return response()->json();
-//     });
-//     //Route::post('accounts', 'AccountController@create');
-//     Route::post('/account', 'IndexController@account');
-// });
 Route::middleware('api')->get('/account', function(Request $request) {
     return Temp::orderBy('id_str', 'desc')->paginate(50);
 });
