@@ -1939,18 +1939,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["value"],
+  props: ["value", "info"],
   data: function data() {
     return {
       isFollowedFlg: false
     };
   },
   methods: {
-    followEvent: function followEvent() {
+    delay: function delay(timeout) {
+      return new Promise(function (resolve) {
+        setTimeout(resolve, timeout);
+      });
+    },
+    followEvent: function followEvent(id) {
       this.$emit("followEvent");
       this.isFollowedFlg = !this.isFollowedFlg;
+      console.log("btn押下");
     }
   }
 });
@@ -2063,22 +2089,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2094,13 +2104,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       loginUserName: "",
       followCheck: false,
       isFollowing: false,
-      autoFlg: false
+      disableFollowBtn: false,
+      autoFlg: false,
+      isLoading: false
     };
   },
   methods: {
-    follow: function follow(id) {
-      console.log(id);
-      this.manualFollow(id);
+    follow: function follow(key, info, current_page) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // フォロー処理を呼ぶ
+                _this.manualFollow(info.id_str);
+
+                _context.next = 3;
+                return _this.accountdata.splice(key, 1);
+
+              case 3:
+                _context.next = 5;
+                return _this.delay(4000);
+
+              case 5:
+                _context.next = 7;
+                return _this.load(current_page);
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
     autoSaveLocalStrage: function autoSaveLocalStrage(isFollowedFlg, loginUserId, loginUserName) {
       // データを格納する
@@ -2129,62 +2167,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return updateTarget;
     },
     userCheckSessions: function userCheckSessions() {
-      var _this = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var updateTarget;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _this.autoCatchLocalStrage();
-
-              case 2:
-                updateTarget = _context.sent;
-
-                //console.log(updateTarget.updateFlg);
-                if (updateTarget.updateFlg == true && _this.loginUserId == updateTarget.updateId && _this.loginUserName == updateTarget.updateName) {
-                  _this.isFollowedFlg = updateTarget.updateFlg;
-                  console.log("read");
-                } else {
-                  console.log(updateTarget);
-                  console.log("idが違います");
-                }
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    getUserAccount: function getUserAccount() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var usersRes;
+        var updateTarget;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log("ユーザー情報を取得します!");
-                _context2.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/auth/users");
+                _context2.next = 2;
+                return _this2.autoCatchLocalStrage();
 
-              case 3:
-                usersRes = _context2.sent;
+              case 2:
+                updateTarget = _context2.sent;
 
-                if (usersRes.status == "200") {
-                  _this2.loginUserId = usersRes.data.id;
-                  _this2.loginUserName = usersRes.data.twitter_name;
-                  console.log(usersRes.data);
+                //console.log(updateTarget.updateFlg);
+                if (updateTarget.updateFlg == true && _this2.loginUserId == updateTarget.updateId && _this2.loginUserName == updateTarget.updateName) {
+                  _this2.isFollowedFlg = updateTarget.updateFlg;
+                  console.log("read");
                 } else {
-                  console.log("user get axios is error");
+                  console.log(updateTarget);
+                  console.log("idが違うか自動フォローがoffになっています");
                 }
 
-              case 5:
+              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -2192,51 +2198,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    manualFollow: function manualFollow(key) {
+    getUserAccount: function getUserAccount() {
+      var _this3 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        var params, checkRes, following, followRes, status;
+        var usersRes;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log("manualFollow 実行します!");
-                params = {
-                  user_id: key
-                };
-                _context3.next = 4;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/followcheck", params);
+                console.log("ユーザー情報を取得します!");
+                _context3.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/auth/users");
 
-              case 4:
-                checkRes = _context3.sent;
-                // const followRequestSent = checkRes.data.followRequestSent;
-                // const following = checkRes.data.following;
-                following = checkRes.data.apiRes[0]; //console.log(following);
+              case 3:
+                usersRes = _context3.sent;
 
-                if (!(following == "following")) {
-                  _context3.next = 10;
-                  break;
-                }
-
-                console.log("フォローしません");
-                _context3.next = 16;
-                break;
-
-              case 10:
-                console.log("フォローします");
-                _context3.next = 13;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/follows", params);
-
-              case 13:
-                followRes = _context3.sent;
-                status = followRes.status;
-
-                if (status == "200") {
-                  console.log("フォローしました");
+                if (usersRes.status == "200") {
+                  _this3.loginUserId = usersRes.data.id;
+                  _this3.loginUserName = usersRes.data.twitter_name;
+                  console.log(usersRes.data);
                 } else {
-                  alert("フォローに失敗しました。15分以上時間を置いて、再度実行してください。");
+                  console.log("user get axios is error");
                 }
 
-              case 16:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -2244,64 +2230,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    autoFollow: function autoFollow() {
-      var _this3 = this;
-
+    manualFollow: function manualFollow(key) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var params, checkRes, following, followRes, status;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                if (!(_this3.isFollowedFlg === false)) {
-                  _context4.next = 9;
+                console.log("manualFollow 実行します!");
+                params = {
+                  user_id: key
+                };
+                _context4.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/followcheck", params);
+
+              case 4:
+                checkRes = _context4.sent;
+                following = checkRes.data.apiRes[0];
+                console.log(following);
+
+                if (!(following == 1)) {
+                  _context4.next = 11;
                   break;
                 }
 
-                if (!confirm("フォローを自動で実行しますか？（中断も可能です）")) {
-                  _context4.next = 7;
-                  break;
-                }
-
-                _this3.isFollowedFlg = !_this3.isFollowedFlg; // ログインユーザーのidを渡す
-                //const params = { loginId: this.loginUserId };
-                // API実行
-                //const autoFollow = await axios.post("/account/autofollows", params);
-                // データ受け取り
-                //const autoFollowRes = autoFollow.data;
-                //console.log(autoFollowRes);
-                //if(autoFollowRes == "following"){
-                //  this.autoFlg = true;
-                //};
-
-                _this3.loginUserName = _this3.loginUserName;
-                _this3.loginUserId = _this3.loginUserId;
-                _context4.next = 7;
-                return _this3.autoSaveLocalStrage(_this3.isFollowedFlg, _this3.loginUserId, _this3.loginUserName);
-
-              case 7:
-                _context4.next = 15;
+                alert("フォローに失敗しました。15分以上時間を置いて、再度実行してください。");
+                _context4.next = 21;
                 break;
 
-              case 9:
-                if (!confirm("フォローを中断しますか？")) {
+              case 11:
+                if (!(following == "following")) {
                   _context4.next = 15;
                   break;
                 }
 
-                _this3.isFollowedFlg = !_this3.isFollowedFlg; //const params = { user_id: this.loginUserId };
-                //const autoFollow = await axios.post("/account/autofollows", params);
-                //const autoFollowRes = autoFollow.data.following;
-                //console.log(autoFollowRes);
-                //if(autoFollowRes == "following"){
-                //  this.autoFlg = false;
-                //};
-
-                _this3.loginUserName = _this3.loginUserName;
-                _this3.loginUserId = _this3.loginUserId;
-                _context4.next = 15;
-                return _this3.autoSaveLocalStrage(_this3.isFollowedFlg, _this3.loginUserId, _this3.loginUserName);
+                console.log("フォローしません");
+                _context4.next = 21;
+                break;
 
               case 15:
+                console.log("フォローします");
+                _context4.next = 18;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/follows", params);
+
+              case 18:
+                followRes = _context4.sent;
+                status = followRes.status;
+
+                if (status == "200") {
+                  alert("フォローしました");
+                } else {
+                  alert("フォローに失敗しました。15分以上時間を置いて、再度実行してください。");
+                }
+
+              case 21:
               case "end":
                 return _context4.stop();
             }
@@ -2309,11 +2291,100 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    followingCheckApi: function followingCheckApi() {
+    autoFollow: function autoFollow() {
+      var _this4 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var params, autoFollow, autoFollowRes, _params, _autoFollow, _autoFollowRes;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!(_this4.isFollowedFlg === false)) {
+                  _context5.next = 16;
+                  break;
+                }
+
+                if (!confirm("フォローを自動で実行しますか？（中断も可能です）")) {
+                  _context5.next = 14;
+                  break;
+                }
+
+                _this4.isFollowedFlg = !_this4.isFollowedFlg;
+                _this4.disableFollowBtn = !_this4.disableFollowBtn; // ログインユーザーのidを渡す
+
+                params = {
+                  loginId: _this4.loginUserId
+                }; // API実行
+
+                _context5.next = 7;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/autofollows", params);
+
+              case 7:
+                autoFollow = _context5.sent;
+                // データ受け取り
+                autoFollowRes = autoFollow.data; // レスポンス結果が following　であれば autoDBに　1　を登録
+
+                if (autoFollowRes == "following") {
+                  _this4.autoFlg = true;
+                } // フラグを更新
+
+
+                _this4.loginUserName = _this4.loginUserName;
+                _this4.loginUserId = _this4.loginUserId; // ローカルストレージに保存
+
+                _context5.next = 14;
+                return _this4.autoSaveLocalStrage(_this4.isFollowedFlg, _this4.loginUserId, _this4.loginUserName);
+
+              case 14:
+                _context5.next = 30;
+                break;
+
+              case 16:
+                if (!confirm("フォローを中断しますか？")) {
+                  _context5.next = 30;
+                  break;
+                }
+
+                _this4.isFollowedFlg = !_this4.isFollowedFlg;
+                _this4.disableFollowBtn = !_this4.disableFollowBtn;
+                _params = {
+                  user_id: _this4.loginUserId
+                }; // 自動フォロー対象から外すために、フラグを更新する処理を行う
+
+                _context5.next = 22;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/autofollows", _params);
+
+              case 22:
+                _autoFollow = _context5.sent;
+                _autoFollowRes = _autoFollow.data.following;
+                console.log(_autoFollowRes); //　処理が正常に完了したらフラグを変更する
+
+                if (_autoFollowRes == "following") {
+                  _this4.autoFlg = false;
+                } // 各種フラグ更新
+
+
+                _this4.loginUserName = _this4.loginUserName;
+                _this4.loginUserId = _this4.loginUserId; // ローカルストレージに保存
+
+                _context5.next = 30;
+                return _this4.autoSaveLocalStrage(_this4.isFollowedFlg, _this4.loginUserId, _this4.loginUserName);
+
+              case 30:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    followingCheckApi: function followingCheckApi() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 console.log("check!!");
                 axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/account/user/followcheck").then(function (res) {
@@ -2325,23 +2396,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5);
+        }, _callee6);
       }))();
     },
     load: function load(page) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/account?page=" + page).then(function (_ref) {
         var data = _ref.data;
-        _this4.accountdata = data.data;
-        _this4.current_page = data.current_page;
-        _this4.last_page = data.last_page;
-        _this4.total = data.total;
-        _this4.from = data.from;
-        _this4.to = data.to;
+        _this5.accountdata = data.data;
+        _this5.current_page = data.current_page;
+        _this5.last_page = data.last_page;
+        _this5.total = data.total;
+        _this5.from = data.from;
+        _this5.to = data.to;
       });
     },
     change: function change(page) {
@@ -2392,6 +2463,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return new Promise(function (resolve) {
         setTimeout(resolve, timeout);
       });
+    },
+    fixData: function fixData() {
+      var _this6 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+        var res, lists;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/auth/following");
+
+              case 2:
+                res = _context7.sent;
+                lists = res.data;
+                console.log(lists);
+                _this6.accountdata = lists;
+
+              case 6:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }))();
     }
   },
   computed: {
@@ -2401,29 +2498,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    this.load(1); // this.followingCheckApi();// ここで呼ぶ
+    this.load(1);
   },
   created: function created() {
-    var _this5 = this;
+    var _this7 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
         while (1) {
-          switch (_context6.prev = _context6.next) {
+          switch (_context8.prev = _context8.next) {
             case 0:
-              _context6.next = 2;
-              return _this5.getUserAccount();
+              _this7.isLoading = true;
+              _context8.next = 3;
+              return _this7.getUserAccount();
 
-            case 2:
-              _context6.next = 4;
-              return _this5.userCheckSessions();
+            case 3:
+              _context8.next = 5;
+              return _this7.userCheckSessions();
 
-            case 4:
+            case 5:
+              _this7.isLoading = false;
+
+            case 6:
             case "end":
-              return _context6.stop();
+              return _context8.stop();
           }
         }
-      }, _callee6);
+      }, _callee8);
     }))();
   }
 });
@@ -2464,15 +2565,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    newsline: {
-      type: Object
-    }
-  },
-  name: 'newsline',
-  data: function data() {
-    return {};
-  },
-  methods: {}
+    newsline: {}
+  }
 });
 
 /***/ }),
@@ -2565,7 +2659,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       trendData: this.trends,
-      //propsを直接操作するのはNGなので、データとして保持
       keyword: "1hour",
       errored: false,
       selected: [],
@@ -2622,6 +2715,25 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";\n.list-leave-active {\n  transition: all 0.6s;\n}\n.list-leave-to {\n  transform: translateX(100px);\n  opacity: 0;\n}\n.list-move {\n  transition: transform 1s;\n}\n\n/* 基本設定（背景やレイアウト） */\n.container {\n  display: flex;\n  height: 50vh;\n  justify-content: space-around;\n  align-items: center;\n}", ""]);
+
+// exports
+
 
 /***/ }),
 
@@ -3864,6 +3976,36 @@ try {
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./ConnectComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -4463,24 +4605,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "p-account__followbtn" }, [
-    _c(
-      "button",
-      {
-        staticClass: "p-btn__follow",
-        class: { isFollowedColor: _vm.isFollowedFlg },
-        on: {
-          click: function($event) {
-            return _vm.followEvent()
-          }
-        }
-      },
-      [
-        _vm.isFollowedFlg
-          ? _c("a", [_vm._v("\n      フォロー中\n    ")])
-          : _c("a", [_vm._v("\n      フォローする\n    ")])
-      ]
-    )
+  return _c("div", { staticClass: "p-account__panel-wrap" }, [
+    _c("div", { staticClass: "p-account__inner" }, [
+      _c("div", { staticClass: "p-account__section-top" }, [
+        _c("div", { staticClass: "p-account__inner2" }, [
+          _c("div", { staticClass: "p-account__name" }, [
+            _vm._v(_vm._s(_vm.info.name))
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "p-account__username" }, [
+            _vm._v(_vm._s(_vm.info.screen_name))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-account__inner3" }, [
+          _c("div", { staticClass: "p-account__title" }, [_vm._v("フォロー")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "p-account__follow" }, [
+            _vm._v(_vm._s(_vm.info.friends_count))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-account__inner4" }, [
+          _c("div", { staticClass: "p-account__title" }, [
+            _vm._v("フォロワー")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "p-account__follow" }, [
+            _vm._v(_vm._s(_vm.info.followers_count))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-account__section-middle" }, [
+        _c("div", { staticClass: "p-account__prof" }, [
+          _vm._v(_vm._s(_vm.info.description))
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-account__section-bottom" }, [
+        _c("div", { staticClass: "p-account__tweet" }, [
+          _vm._v(_vm._s(_vm.info.text))
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-account__followbtn" }, [
+        _c(
+          "button",
+          {
+            staticClass: "p-btn__follow",
+            class: { isFollowedColor: _vm.isFollowedFlg },
+            on: {
+              click: function($event) {
+                return _vm.followEvent(_vm.info.id_str)
+              }
+            }
+          },
+          [
+            _vm.isFollowedFlg
+              ? _c("a", [_vm._v("フォロー中")])
+              : _c("a", [_vm._v("フォローする")])
+          ]
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -4505,376 +4693,324 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "l-main-container" },
-    [
-      _c("div", { staticClass: "c-main__title" }, [_vm._v("アカウント一覧")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "c-main__function-head" }, [
-        _c("div", { staticClass: "p-account__text-top" }, [
-          _vm._v(
-            "\n      twitterで「仮想通貨」というキーワードを\n      ユーザ名またはプロフィールに記載しているユーザを一覧で表示します。(1日1回更新)\n    "
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _vm.isFollowedFlg
-            ? _c("div", { staticClass: "p-account__flex" }, [
-                _c("i", {
-                  staticClass: "fas fa-toggle-on fa-lg fa-fw",
-                  on: {
-                    click: function($event) {
-                      return _vm.autoFollow()
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "text-color" }, [
-                  _vm._v("自動フォロー中です")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "p-account__text-sub p-account__text__attend"
-                  },
-                  [_vm._v("※解除するにはoffにしてください")]
-                )
-              ])
-            : _c("div", { staticClass: "p-account__flex" }, [
-                _c("i", {
-                  staticClass: "fas fa-toggle-off fa-lg fa-fw",
-                  on: {
-                    click: function($event) {
-                      return _vm.autoFollow()
-                    }
-                  }
-                }),
-                _vm._v("自動フォローを行います\n        "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "p-account__text-sub p-account__text__attend"
-                  },
-                  [
-                    _vm._v(
-                      "※一覧に表示されているアカウントを全て自動でフォローしていきます"
-                    )
-                  ]
-                )
-              ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "p-paginate__wrap" }, [
-          _c("ul", { staticClass: "p-paginate__list" }, [
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__left-end",
-                class: { disabled: _vm.current_page <= 1 }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.change(1)
-                      }
-                    }
-                  },
-                  [_vm._v("«")]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__left",
-                class: { disabled: _vm.current_page <= 1 }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.change(_vm.current_page - 1)
-                      }
-                    }
-                  },
-                  [_vm._v("<")]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__page",
-                class: {
-                  pAccountActive:
-                    _vm.countAddPage1(_vm.pages - 4) === _vm.current_page
-                }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.change(_vm.countAddPage1(_vm.pages - 4))
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.countAddPage1(_vm.pages - 4)))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__page",
-                class: {
-                  pAccountActive:
-                    _vm.countAddPage2(_vm.pages - 3) === _vm.current_page
-                }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.change(_vm.countAddPage2(_vm.pages - 3))
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.countAddPage2(_vm.pages - 3)))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__page",
-                class: {
-                  pAccountActive:
-                    _vm.countAddPage3(_vm.pages - 2) === _vm.current_page
-                }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.change(_vm.countAddPage3(_vm.pages - 2))
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.countAddPage3(_vm.pages - 2)))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__page",
-                class: {
-                  pAccountActive:
-                    _vm.countAddPage4(_vm.pages - 1) === _vm.current_page
-                }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.change(_vm.countAddPage4(_vm.pages - 1))
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.countAddPage4(_vm.pages - 1)))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__page",
-                class: {
-                  pAccountActive:
-                    _vm.countAddPage5(_vm.pages - 0) === _vm.current_page
-                }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.change(_vm.countAddPage5(_vm.pages - 0))
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.countAddPage5(_vm.pages - 0)))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__right",
-                class: { disabled: _vm.current_page >= _vm.last_page }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.change(_vm.current_page + 1)
-                      }
-                    }
-                  },
-                  [_vm._v(">")]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "p-paginate__right-end",
-                class: { disabled: _vm.current_page >= _vm.last_page }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        return _vm.change(_vm.last_page)
-                      }
-                    }
-                  },
-                  [_vm._v("»")]
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "p-paginate__navigation" }, [
-          _vm._v(
-            "全 " +
-              _vm._s(_vm.total) +
-              " 件中 " +
-              _vm._s(_vm.from) +
-              " 〜 " +
-              _vm._s(_vm.to) +
-              " 件表示"
-          )
-        ])
+  return _c("div", { staticClass: "l-main-container" }, [
+    _c("div", { staticClass: "c-main__title" }, [_vm._v("アカウント一覧")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "c-main__function-head" }, [
+      _c("div", { staticClass: "p-account__text-top" }, [
+        _vm._v(
+          "\n      twitterで「仮想通貨」というキーワードを\n      ユーザ名またはプロフィールに記載しているユーザを一覧で表示します。(1日1回更新)\n    "
+        )
       ]),
       _vm._v(" "),
-      _vm._l(_vm.accountdata, function(info) {
-        return _c(
-          "div",
-          { key: info.index, staticClass: "p-account__panel-wrap" },
-          [
-            _c("div", { staticClass: "p-account__inner" }, [
-              _c("div", { staticClass: "p-account__section-top" }, [
-                _c("div", { staticClass: "p-account__inner2" }, [
-                  _c("div", { staticClass: "p-account__name" }, [
-                    _vm._v(_vm._s(info.name))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "p-account__username" }, [
-                    _vm._v(_vm._s(info.screen_name))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "p-account__inner3" }, [
-                  _c("div", { staticClass: "p-account__title" }, [
-                    _vm._v("フォロー")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "p-account__follow" }, [
-                    _vm._v(_vm._s(info.friends_count))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "p-account__inner4" }, [
-                  _c("div", { staticClass: "p-account__title" }, [
-                    _vm._v("フォロワー")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "p-account__follow" }, [
-                    _vm._v(_vm._s(info.followers_count))
-                  ])
-                ])
-              ]),
+      _c("div", [
+        _vm.isFollowedFlg
+          ? _c("div", { staticClass: "p-account__flex" }, [
+              _c("i", {
+                staticClass: "fas fa-toggle-on fa-lg fa-fw",
+                on: {
+                  click: function($event) {
+                    return _vm.autoFollow()
+                  }
+                }
+              }),
               _vm._v(" "),
-              _c("div", { staticClass: "p-account__section-middle" }, [
-                _c("div", { staticClass: "p-account__prof" }, [
-                  _vm._v(_vm._s(info.description))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "p-account__section-bottom" }, [
-                _c("div", { staticClass: "p-account__tweet" }, [
-                  _vm._v(_vm._s(info.text))
-                ])
+              _c("span", { staticClass: "text-color" }, [
+                _vm._v("自動フォロー中です")
               ]),
               _vm._v(" "),
               _c(
                 "div",
-                { attrs: { id: "app" } },
-                [
-                  _c(
-                    "button-component",
-                    _vm._b(
-                      {
-                        on: {
-                          followEvent: function($event) {
-                            return _vm.follow(info.id_str)
-                          }
-                        }
-                      },
-                      "button-component",
-                      info,
-                      false
-                    )
-                  )
-                ],
-                1
+                { staticClass: "p-account__text-sub p-account__text__attend" },
+                [_vm._v("※解除するにはoffにしてください")]
               )
             ])
-          ]
+          : _c("div", { staticClass: "p-account__flex" }, [
+              _c("i", {
+                staticClass: "fas fa-toggle-off fa-lg fa-fw",
+                on: {
+                  click: function($event) {
+                    return _vm.autoFollow()
+                  }
+                }
+              }),
+              _vm._v("自動フォローを行います\n        "),
+              _c(
+                "div",
+                { staticClass: "p-account__text-sub p-account__text__attend" },
+                [
+                  _vm._v(
+                    "※一覧に表示されているアカウントを全て自動でフォローしていきます"
+                  )
+                ]
+              )
+            ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-paginate__wrap" }, [
+        _c("ul", { staticClass: "p-paginate__list" }, [
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__left-end",
+              class: { disabled: _vm.current_page <= 1 }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.change(1)
+                    }
+                  }
+                },
+                [_vm._v("«")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__left",
+              class: { disabled: _vm.current_page <= 1 }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.change(_vm.current_page - 1)
+                    }
+                  }
+                },
+                [_vm._v("<")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__page",
+              class: {
+                pAccountActive:
+                  _vm.countAddPage1(_vm.pages - 4) === _vm.current_page
+              }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.change(_vm.countAddPage1(_vm.pages - 4))
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.countAddPage1(_vm.pages - 4)))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__page",
+              class: {
+                pAccountActive:
+                  _vm.countAddPage2(_vm.pages - 3) === _vm.current_page
+              }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.change(_vm.countAddPage2(_vm.pages - 3))
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.countAddPage2(_vm.pages - 3)))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__page",
+              class: {
+                pAccountActive:
+                  _vm.countAddPage3(_vm.pages - 2) === _vm.current_page
+              }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.change(_vm.countAddPage3(_vm.pages - 2))
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.countAddPage3(_vm.pages - 2)))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__page",
+              class: {
+                pAccountActive:
+                  _vm.countAddPage4(_vm.pages - 1) === _vm.current_page
+              }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.change(_vm.countAddPage4(_vm.pages - 1))
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.countAddPage4(_vm.pages - 1)))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__page",
+              class: {
+                pAccountActive:
+                  _vm.countAddPage5(_vm.pages - 0) === _vm.current_page
+              }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      _vm.change(_vm.countAddPage5(_vm.pages - 0))
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.countAddPage5(_vm.pages - 0)))]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__right",
+              class: { disabled: _vm.current_page >= _vm.last_page }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.change(_vm.current_page + 1)
+                    }
+                  }
+                },
+                [_vm._v(">")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "p-paginate__right-end",
+              class: { disabled: _vm.current_page >= _vm.last_page }
+            },
+            [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.change(_vm.last_page)
+                    }
+                  }
+                },
+                [_vm._v("»")]
+              )
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-paginate__navigation" }, [
+        _vm._v(
+          "全 " +
+            _vm._s(_vm.total) +
+            " 件中 " +
+            _vm._s(_vm.from) +
+            " 〜 " +
+            _vm._s(_vm.to) +
+            " 件表示"
         )
-      })
-    ],
-    2
-  )
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.isLoading
+      ? _c("div", { staticClass: "container" }, [
+          _c("div", [_vm._v("Loading...")])
+        ])
+      : _c(
+          "div",
+          { attrs: { id: "app" } },
+          [
+            _c(
+              "transition-group",
+              { attrs: { name: "list", tag: "div" } },
+              _vm._l(_vm.accountdata, function(info, key) {
+                return _c(
+                  "div",
+                  { key: info.id_str },
+                  [
+                    _c("button-component", {
+                      attrs: { info: info },
+                      on: {
+                        followEvent: function($event) {
+                          return _vm.follow(key, info, _vm.current_page)
+                        }
+                      }
+                    })
+                  ],
+                  1
+                )
+              }),
+              0
+            )
+          ],
+          1
+        )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -17505,7 +17641,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ConnectComponent_vue_vue_type_template_id_651a27c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ConnectComponent.vue?vue&type=template&id=651a27c4& */ "./resources/js/components/ConnectComponent.vue?vue&type=template&id=651a27c4&");
 /* harmony import */ var _ConnectComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ConnectComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ConnectComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ConnectComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -17513,7 +17651,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _ConnectComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _ConnectComponent_vue_vue_type_template_id_651a27c4___WEBPACK_IMPORTED_MODULE_0__["render"],
   _ConnectComponent_vue_vue_type_template_id_651a27c4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -17542,6 +17680,22 @@ component.options.__file = "resources/js/components/ConnectComponent.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ConnectComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ConnectComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--7-2!../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../node_modules/vue-loader/lib??vue-loader-options!./ConnectComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ConnectComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ConnectComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

@@ -28,7 +28,7 @@ class Intercoin extends Model
                 $dt_new = new Carbon(strval($dt));
                 $dt_new->subHour();
                 $date = substr($dt_new, 0, 13);
-                $date = "2020-07-28 02";
+                //$date = "2020-07-28 02";
 
             } elseif ($q === "1day") {
                 //==現在からの1日前のy-m-d hの値が出る=======
@@ -36,7 +36,7 @@ class Intercoin extends Model
                 $dt_new = new Carbon(strval($dt));
                 $dt_new->subDay();
                 $date = substr($dt_new, 0, 10);
-                $date = "2020-07-24 22";
+                //$date = "2020-07-24 22";
 
             } elseif ($q === "1week") {
                 //==現在からの1週間前のy-m-d hの値が出る=======
@@ -44,7 +44,7 @@ class Intercoin extends Model
                 $dt_new = new Carbon(strval($dt));
                 $dt_new->subWeek();
                 $date = substr($dt_new, 0, 10);
-                $date = "2020-07-24 14";
+                //$date = "2020-07-24 14";
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());

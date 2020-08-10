@@ -57,7 +57,7 @@
             </ul>
             @else
             <ul class="p-header__sp__menu">
-                <li class="p-navbar__list p-navbar__text"><p>{{ $user->name }}</p></a></li>
+                <li class="p-navbar__list p-navbar__text"><p>{{ Auth::user()->name }}</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/trend"><p>トレンド一覧</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/account"><p>アカウント一覧</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/news"><p>NEWS一覧</p></a></li>

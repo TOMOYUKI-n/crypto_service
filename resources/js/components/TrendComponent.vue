@@ -70,7 +70,7 @@ export default {
   name: "trends",
   data: function() {
     return {
-      trendData: this.trends, //propsを直接操作するのはNGなので、データとして保持
+      trendData: this.trends,
       keyword: "1hour",
       errored: false,
       selected: [],

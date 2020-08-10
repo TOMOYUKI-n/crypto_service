@@ -17,11 +17,6 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
 
-    public function getUsers()
-    {
-        $users = Auth::user()->first();
-        Log::Debug($users);
-        return $users;
-    }
+
 
 }

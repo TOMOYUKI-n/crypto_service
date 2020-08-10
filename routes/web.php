@@ -43,7 +43,11 @@ Route::group(['middleware' => 'auth'], function() {
     // フォロー用
     Route::post('/account/follows', 'IndexController@follows');
     // ユーザー情報取得用
-    Route::get('/auth/users', 'AuthController@getUsers');
+    Route::get('/auth/users', 'IndexController@getUsers');
+    // ユーザーフォロー情報取得用
+    Route::get('/auth/following', 'IndexController@getAuthFollowData');
+    // Route::get('/auth/following/list', 'IndexController@list');
+
     // 自動フォロー用
     Route::post('/account/autofollows', 'IndexController@autoFollows');
     // news一覧用

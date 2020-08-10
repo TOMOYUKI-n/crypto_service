@@ -99,7 +99,7 @@ class GetAccountCommand extends Command
         Log::Debug('TempDB保存 ==開始==');
 
         //一意データのみ、別テーブルにうつす
-        $account_scorp = Account::distinct()->where('name' , 'like' , '%'.$word.'%')
+        $account_scorp = Account::select("id_str","name","screen_name","description","friends_count","followers_count","text")->distinct()->where('name' , 'like' , '%'.$word.'%')
                             ->orWhere('description' , 'like' , '%'.$word.'%')->get();
         for( $n =0; $n < count($account_scorp); $n++ )
         {

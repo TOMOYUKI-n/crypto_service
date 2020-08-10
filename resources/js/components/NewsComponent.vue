@@ -24,17 +24,7 @@
 <script>
 export default {
     props: {
-        newsline: {
-            type: Object
-        },
-    },
-    name:'newsline',
-    data: function() {
-        return {
-        }
-    },
-    methods: {
-
+        newsline: {}
     }
 }
 </script>

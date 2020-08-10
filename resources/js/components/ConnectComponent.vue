@@ -71,32 +71,16 @@
       <div class="p-paginate__navigation">全 {{total}} 件中 {{from}} 〜 {{to}} 件表示</div>
     </div>
 
-    <div class="p-account__panel-wrap" v-for="info in accountdata" v-bind:key="info.index">
-      <div class="p-account__inner">
-        <div class="p-account__section-top">
-          <div class="p-account__inner2">
-            <div class="p-account__name">{{ info.name }}</div>
-            <div class="p-account__username">{{ info.screen_name }}</div>
-          </div>
-          <div class="p-account__inner3">
-            <div class="p-account__title">フォロー</div>
-            <div class="p-account__follow">{{ info.friends_count }}</div>
-          </div>
-          <div class="p-account__inner4">
-            <div class="p-account__title">フォロワー</div>
-            <div class="p-account__follow">{{ info.followers_count }}</div>
-          </div>
+    <!--一覧表示エリア-->
+    <div class="container" v-if="isLoading">
+      <div>Loading...</div>
+    </div>
+    <div id="app" v-else>
+      <transition-group name="list" tag="div">
+        <div v-for="(info,key) in accountdata" :key="info.id_str">
+          <button-component :info="info" @followEvent="follow(key, info, current_page)" />
         </div>
-        <div class="p-account__section-middle">
-          <div class="p-account__prof">{{ info.description }}</div>
-        </div>
-        <div class="p-account__section-bottom">
-          <div class="p-account__tweet">{{ info.text }}</div>
-        </div>
-        <div id="app">
-          <button-component v-bind="info" @followEvent="follow(info.id_str)" />
-        </div>
-      </div>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -118,13 +102,18 @@ export default {
       loginUserName: "",
       followCheck: false,
       isFollowing: false,
+      disableFollowBtn: false,
       autoFlg: false,
+      isLoading: false,
     };
   },
   methods: {
-    follow(id) {
-      console.log(id);
-      this.manualFollow(id);
+    async follow(key, info, current_page) {
+      // フォロー処理を呼ぶ
+      this.manualFollow(info.id_str);
+      await this.accountdata.splice(key, 1);
+      await this.delay(4000);
+      await this.load(current_page);
     },
     autoSaveLocalStrage(isFollowedFlg, loginUserId, loginUserName) {
       // データを格納する
@@ -135,7 +124,6 @@ export default {
       localStorage.setItem("isFollowedFlg", isFollowedFlgs);
       localStorage.setItem("loginUserId", loginUserIds);
       localStorage.setItem("loginUserName", loginUserNames);
-
       console.log("write");
     },
     autoCatchLocalStrage() {
@@ -168,7 +156,7 @@ export default {
         console.log("read");
       } else {
         console.log(updateTarget);
-        console.log("idが違います");
+        console.log("idが違うか自動フォローがoffになっています");
       }
     },
     async getUserAccount() {
@@ -189,23 +177,27 @@ export default {
         user_id: key,
       };
       const checkRes = await axios.post("/account/followcheck", params);
-      // const followRequestSent = checkRes.data.followRequestSent;
-      // const following = checkRes.data.following;
       const following = checkRes.data.apiRes[0];
-      //console.log(following);
+      console.log(following);
 
-      if (following == "following") {
-        console.log("フォローしません");
+      if (following == 1) {
+        alert(
+          "フォローに失敗しました。15分以上時間を置いて、再度実行してください。"
+        );
       } else {
-        console.log("フォローします");
-        const followRes = await axios.post("/account/follows", params);
-        const status = followRes.status;
-        if (status == "200") {
-          console.log("フォローしました");
+        if (following == "following") {
+          console.log("フォローしません");
         } else {
-          alert(
-            "フォローに失敗しました。15分以上時間を置いて、再度実行してください。"
-          );
+          console.log("フォローします");
+          const followRes = await axios.post("/account/follows", params);
+          const status = followRes.status;
+          if (status == "200") {
+            alert("フォローしました");
+          } else {
+            alert(
+              "フォローに失敗しました。15分以上時間を置いて、再度実行してください。"
+            );
+          }
         }
       }
     },
@@ -214,18 +206,21 @@ export default {
         // on
         if (confirm("フォローを自動で実行しますか？（中断も可能です）")) {
           this.isFollowedFlg = !this.isFollowedFlg;
+          this.disableFollowBtn = !this.disableFollowBtn;
           // ログインユーザーのidを渡す
-          //const params = { loginId: this.loginUserId };
+          const params = { loginId: this.loginUserId };
           // API実行
-          //const autoFollow = await axios.post("/account/autofollows", params);
+          const autoFollow = await axios.post("/account/autofollows", params);
           // データ受け取り
-          //const autoFollowRes = autoFollow.data;
-          //console.log(autoFollowRes);
-          //if(autoFollowRes == "following"){
-          //  this.autoFlg = true;
-          //};
+          const autoFollowRes = autoFollow.data;
+          // レスポンス結果が following　であれば autoDBに　1　を登録
+          if (autoFollowRes == "following") {
+            this.autoFlg = true;
+          }
+          // フラグを更新
           this.loginUserName = this.loginUserName;
           this.loginUserId = this.loginUserId;
+          // ローカルストレージに保存
           await this.autoSaveLocalStrage(
             this.isFollowedFlg,
             this.loginUserId,
@@ -236,15 +231,20 @@ export default {
         // off
         if (confirm("フォローを中断しますか？")) {
           this.isFollowedFlg = !this.isFollowedFlg;
-          //const params = { user_id: this.loginUserId };
-          //const autoFollow = await axios.post("/account/autofollows", params);
-          //const autoFollowRes = autoFollow.data.following;
-          //console.log(autoFollowRes);
-          //if(autoFollowRes == "following"){
-          //  this.autoFlg = false;
-          //};
+          this.disableFollowBtn = !this.disableFollowBtn;
+          const params = { user_id: this.loginUserId };
+          // 自動フォロー対象から外すために、フラグを更新する処理を行う
+          const autoFollow = await axios.post("/account/autofollows", params);
+          const autoFollowRes = autoFollow.data.following;
+          console.log(autoFollowRes);
+          //　処理が正常に完了したらフラグを変更する
+          if (autoFollowRes == "following") {
+            this.autoFlg = false;
+          }
+          // 各種フラグ更新
           this.loginUserName = this.loginUserName;
           this.loginUserId = this.loginUserId;
+          // ローカルストレージに保存
           await this.autoSaveLocalStrage(
             this.isFollowedFlg,
             this.loginUserId,
@@ -319,6 +319,12 @@ export default {
         setTimeout(resolve, timeout);
       });
     },
+    async fixData() {
+      const res = await axios.get("/auth/following");
+      const lists = res.data;
+      console.log(lists);
+      this.accountdata = lists;
+    },
   },
   computed: {
     pages() {
@@ -328,13 +334,33 @@ export default {
   },
   mounted() {
     this.load(1);
-    // this.followingCheckApi();// ここで呼ぶ
   },
   async created() {
+    this.isLoading = true;
     await this.getUserAccount();
-    //this.delay(1000);
     await this.userCheckSessions();
+    this.isLoading = false;
   },
 };
 </script>
+<style lang="scss">
+.list-leave-active {
+  transition: all 0.6s;
+}
+.list-leave-to {
+  transform: translateX(100px);
+  opacity: 0;
+}
+.list-move {
+  transition: transform 1s;
+}
+/* 基本設定（背景やレイアウト） */
+.container {
+  display: flex;
+  height: 50vh;
+  justify-content: space-around;
+  align-items: center;
+}
+
+</style>
 
