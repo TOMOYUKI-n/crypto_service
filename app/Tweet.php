@@ -170,7 +170,7 @@ class Tweet extends Model
         return $Body;
     }
     // 更新対象の日付を特定、集計 ==============================
-    public static function SumRecord_MinutesToHours(int $new_times_id, $names)
+    public static function SumRecord_MinutesToHours($new_times_id, $names)
     { // 一時間分のデータを特定するための、時刻を文字列にて作成
         $time = Time::select('get_dates')->where('id', '=', $new_times_id)->get();
         $q_time = substr(strval($time[0]['get_dates']), 0, 13);
@@ -195,7 +195,7 @@ class Tweet extends Model
         return $last_insert_id;
     }
     // hoursDBの24時間分のレコードを集計 ==============================
-    public static function SumRecord_HoursToDays(string $date, $names)
+    public static function SumRecord_HoursToDays($date, $names)
     {
         $q_time = strval($date);
         $named = array($names);
@@ -207,6 +207,25 @@ class Tweet extends Model
             ->where('get_dates', 'like', $q_time . '%')
             ->get();
 
+        return $data;
+    }
+    // 1週間分のレコードを集計 ==============================
+    public static function SumRecord_weeks($doneId, $minusId)
+    {
+        // mysql> select sum(BTC), sum(ETH)  from weeks where days_id between 2 and 7;
+        // +----------+----------+
+        // | sum(BTC) | sum(ETH) |
+        // +----------+----------+
+        // |    23038 |    16031 |
+        // +----------+----------+
+        //timesDBで日付に一致するデータを取得
+        $data = DB::table('weeks')
+            ->select(DB::raw(" sum(BTC) as BTC, sum(ETH) as ETH, sum(ETC) as ETC, sum(LSK) as LSK
+            , sum(FCT) as FCT, sum(XRP) as XRP, sum(XEM) as XEM, sum(LTC) as LTC, sum(BCH) as BCH
+            , sum(MONA) as MONA, sum(XLM) as XLM, sum(QTUM) as QTUM, sum(DASH) as DASH
+            , sum(ZEC) as ZEC, sum(XMR) as XMR, sum(REP) as REP "))
+            ->whereBetween('days_id', [$minusId, $doneId])
+            ->get();
         return $data;
     }
 

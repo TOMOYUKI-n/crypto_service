@@ -29,16 +29,11 @@
     &__introduction{
         color: $color_black;
         font-size: 2.4vw;
-        // position: relative;
-        // top: -470px;
-        // &__1{
-        //     box-sizing: border-box;
-        // }
         &__2{
             box-sizing: border-box;
             position: absolute;
             top: 60px;
-            left: calc(50%/1.7);
+            left: calc(50%/1.9);
         }
     }
     &__login{
@@ -93,11 +88,11 @@
     }
     &__section1, &__section2, &__section3{
         margin: 0px 10px 60px 10px;
-        border: 1.2px solid $blue;
+        //border: 1.2px solid $blue;
         border-radius: 5px;
         padding: 5px;
         background-color: #fff;
-        box-shadow: 0 2px 4px 0 #b2b5be;
+        box-shadow: 0 2px 4px 2px #b2b5be;
     }
     &__section__text{
         font-size: $font-size_min;

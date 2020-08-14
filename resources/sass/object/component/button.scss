@@ -17,11 +17,26 @@
         box-sizing: border-box;
         padding: 5px 30px;
         border: none;
-        background-color: #FFC107;
+        //background-color: #8BC34A;
+        background-color: #C5CAE9;
         box-shadow: 0 2px 4px 0 #b2b5be;
         font-size: 14px;
         &:focus {
             outline:0;
+        }
+    }
+    &__autofollow{
+        border-radius: 6px;
+        box-sizing: border-box;
+        border: none;
+        font-size: 13px;
+        margin: 10px 0px 10px;
+        box-sizing: border-box;
+        &:focus {
+            outline:0;
+        }
+        @include mq(){
+            margin: 0px;
         }
     }
     &__new{
@@ -35,13 +50,16 @@
         margin-left: auto;
         margin-right: auto;
         border: none;
+        &:hover{
+            cursor: pointer;
+        }
     }
     // ============================
     // TOPページボタン
     // ============================
     &__tw-new{
         color: $color_black;
-        background-color: $blue;
+        background-color: #C5CAE9;
         box-shadow: 0 2px 4px 0 #5a5b5e;
         box-sizing: border-box;
         padding: 10px 0;//5→10
@@ -53,7 +71,7 @@
     }
     &__login{
         color: $color_black;
-        background-color: $blue;
+        background-color: #C5CAE9;
         box-shadow: 0 2px 4px 0 #5a5b5e;
         box-sizing: border-box;
         padding: 10px 0;//5→10
@@ -62,9 +80,12 @@
         margin-left: auto;
         margin-right: auto;
         border: none;
+        &:hover{
+            cursor: pointer;
+        }
     }
     &__newregister{
-        background-color: $color_orange;
+        background-color: #C5CAE9;
         color: $color_black;
         box-shadow: 0 2px 4px 0 #5a5b5e;
         box-sizing: border-box;

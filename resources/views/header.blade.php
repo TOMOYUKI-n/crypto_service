@@ -1,6 +1,6 @@
 @section('header')
 
-    <header class="p-navbar__main-wrap">
+    <header class="p-navbar__main-wrap" style="z-index: 1000;">
 
         <div class="logo">
             <h1 class="logo__pad">
@@ -22,7 +22,7 @@
                 <li class="p-navbar__list p-navbar__text"><a href="/trend"><p>トレンド一覧</p></a></li>
                 <li class="p-navbar__list p-navbar__text"><a href="/account"><p>アカウント一覧</p></a></li>
                 <li class="p-navbar__list p-navbar__text"><a href="/news"><p>NEWS一覧</p></a></li>
-                <li class="p-navbar__list p-navbar__text"><p>{{ $user->name }}</p></a></li>
+                <li class="p-navbar__list p-navbar__text"><p>{{ Auth::user()->name }}</p></li>
                 <li class="p-navbar__list p-navbar__text">
                     <a href="{{ route('logout') }}"
                         onclick ="event.preventDefault();
@@ -42,7 +42,7 @@
         </div>
 
         <!--SP-->
-        <div class="p-header__sp p-header__sp--right js_toggle">
+        <div class="p-header__sp p-header__sp--right js_toggle" style="z-index: 1000;">
 
             <div class="p-header__sp__icon__container js_push">
                 <i class="fas fa-times p-header__sp__icon"></i>
@@ -57,7 +57,7 @@
             </ul>
             @else
             <ul class="p-header__sp__menu">
-                <li class="p-navbar__list p-navbar__text"><p>{{ Auth::user()->name }}</p></a></li>
+                <li class="p-navbar__list p-navbar__text"><p>{{ Auth::user()->name }}</p></li>
                 <li class="p-header__sp__menu__list "><a href="/trend"><p>トレンド一覧</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/account"><p>アカウント一覧</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/news"><p>NEWS一覧</p></a></li>

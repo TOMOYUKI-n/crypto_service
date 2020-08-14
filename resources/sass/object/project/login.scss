@@ -3,19 +3,33 @@
 // ============================
 
 .p-login{
+    &__error{
+        color: red;
+        font-size: 13px;
+    }
+    &__inputError{
+        color: red;
+        font-size: 13px;
+        margin: 0px auto;
+        display: block;
+        text-align: center;
+    }
     // ============================
     // カバーパーツ
     // ============================
     &__container{
-        width: 500px;
+        max-width: 500px;
+        min-width: 350px;
         margin: 60px auto;
         padding: 30px;
         box-sizing: border-box;
-        background: #f4f5f6;
+        box-shadow: 0px 4px 8px 2px #b2b5be;
         font-size: $font-size_xxs;
+        border-radius: 6px;
         @include mq(){
             width: 100%;
-            margin: 0px auto;
+            margin: 20px auto;
+            box-shadow: 0px 0px 0px 0px #b2b5be;
         }
     }
     // ============================
@@ -23,6 +37,8 @@
     // ============================
     &__inner{
         margin-bottom: 10px;
+        display: flex;
+        align-items: baseline;
     }
     &__form{
         display: block;
@@ -66,8 +82,6 @@
 
     &__text{
         color: $color-black;
-        //margin: 40px auto -20px auto;
-        font-size: $space_l;
         text-align: center;
         @include mq(){
             width: 100%;
@@ -75,21 +89,21 @@
     }
     &__forgot{
         padding: 10px;
-        color: $color-black;
-    }
-    &__alarttext{
+        margin: 10px;
+        margin-top: 30px;
         font-weight: bold;
-        
+        color: #386cfa9c !important;
+        font-size: 13px;
+        &:hover{
+            cursor: pointer;
+        }
     }
 }
 // ============================
 // css調整用
 // ============================
 .p-login-add-margin{
-    &__1{
-        margin: 10px;
-    }
     &__3{
-        margin-top: 30px;
+        margin-top: 40px;
     }
 }

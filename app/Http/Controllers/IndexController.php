@@ -33,10 +33,7 @@ class IndexController extends Controller
         return view('policy');
     }
 
-    /**
-     * trend画面遷移時、最初に実行される
-     */
-    public function trend(Request $request)
+    public function trends(Request $request)
     {
         $q = $request->keyword;
 
@@ -48,17 +45,16 @@ class IndexController extends Controller
         $hourRankingStatus = Intercoin::HourRanking($q_time);
 
         if ($hourRankingStatus == "Error") {
-            $trends = "Error";
+            $trends = array("data" => "Error");
             Log::Debug($hourRankingStatus);
             Log::debug($trends);
 
-            // return $trends;
-            return view('index.trend', ['trends' => $trends]);
+            return $trends;
         } else {
             $trends = DB::table('Intercoin')->orderBy('tweet', 'desc')->get();
             Log::Debug($hourRankingStatus);
             Log::debug($trends);
-            return view('index.trend', ['trends' => $trends]);
+            return $trends;
         }
     }
 

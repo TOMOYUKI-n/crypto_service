@@ -29,5 +29,6 @@
     "Send Password Reset Link": "新しいパスワードを送信",
     "------------------------":"------------------",
     "A fresh verification link has been sent to your email address.":"再設定用のリンクを送信しました。",
-    "Verify Your Email Address":"送信完了ページ"
+    "Verify Your Email Address":"送信完了ページ",
+    "validation.required" : "メールアドレスを入力してください"
 }

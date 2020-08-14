@@ -1,84 +1,119 @@
 <template>
   <div class="l-main-container">
     <div class="c-main__title">アカウント一覧</div>
-
     <div class="c-main__function-head">
-      <div class="p-account__text-top">
-        twitterで「仮想通貨」というキーワードを
-        ユーザ名またはプロフィールに記載しているユーザを一覧で表示します。(1日1回更新)
+      <div class="p-account__text-top-icon">
+        <i class="fas fa-address-book"></i>
+        <p class="p-account__text-top">
+          twitter上で「仮想通貨」というキーワードに関連する
+          アカウントをフォローできます。(1日1回更新)
+        </p>
       </div>
 
-      <div>
-        <div class="p-account__flex" v-if="isFollowedFlg">
-          <i class="fas fa-toggle-on fa-lg fa-fw" @click="autoFollow()"></i>
-          <span class="text-color">自動フォロー中です</span>
-          <div class="p-account__text-sub p-account__text__attend">※解除するにはoffにしてください</div>
-        </div>
-        <div class="p-account__flex" v-else>
-          <i class="fas fa-toggle-off fa-lg fa-fw" @click="autoFollow()"></i>自動フォローを行います
-          <div class="p-account__text-sub p-account__text__attend">※一覧に表示されているアカウントを全て自動でフォローしていきます</div>
-        </div>
-      </div>
-
-      <div class="p-paginate__wrap">
-        <ul class="p-paginate__list">
-          <li :class="{disabled: current_page <= 1}" class="p-paginate__left-end">
-            <a href="#" @click="change(1)">&laquo;</a>
-          </li>
-          <li :class="{disabled: current_page <= 1}" class="p-paginate__left">
-            <a href="#" @click="change(current_page - 1)">&lt;</a>
-          </li>
-          <!-- paginate処理 -->
-          <li
-            :class="{pAccountActive: countAddPage1(pages -4) === current_page}"
-            class="p-paginate__page"
-          >
-            <a href="#" @click="change( countAddPage1(pages -4) )">{{ countAddPage1(pages -4) }}</a>
-          </li>
-          <li
-            :class="{pAccountActive: countAddPage2(pages -3) === current_page}"
-            class="p-paginate__page"
-          >
-            <a href="#" @click="change( countAddPage2(pages -3) )">{{ countAddPage2(pages -3) }}</a>
-          </li>
-          <li
-            :class="{pAccountActive: countAddPage3(pages -2) === current_page}"
-            class="p-paginate__page"
-          >
-            <a href="#" @click="change( countAddPage3(pages -2) )">{{ countAddPage3(pages -2) }}</a>
-          </li>
-          <li
-            :class="{pAccountActive: countAddPage4(pages -1) === current_page}"
-            class="p-paginate__page"
-          >
-            <a href="#" @click="change( countAddPage4(pages -1) )">{{ countAddPage4(pages -1) }}</a>
-          </li>
-          <li
-            :class="{pAccountActive: countAddPage5(pages -0) === current_page}"
-            class="p-paginate__page"
-          >
-            <a href="#" @click="change( countAddPage5(pages -0) )">{{ countAddPage5(pages -0) }}</a>
-          </li>
-          <!-- paginate処理 ここまで -->
-          <li :class="{disabled: current_page >= last_page}" class="p-paginate__right">
-            <a href="#" @click="change(current_page + 1)">&gt;</a>
-          </li>
-          <li :class="{disabled: current_page >= last_page}" class="p-paginate__right-end">
-            <a href="#" @click="change(last_page)">&raquo;</a>
-          </li>
-        </ul>
-      </div>
-      <div class="p-paginate__navigation">全 {{total}} 件中 {{from}} 〜 {{to}} 件表示</div>
+      <table class="table">
+        <!-- 見出し -->
+        <thead>
+          <tr class="p-account__tr">
+            <th class="p-account__th">
+              <div class="p-account__flex" v-if="isFollowedFlg">
+                <div class="p-btn__autofollow">
+                  <i class="fas fa-toggle-on fa-lg fa-fw" @click="autoFollow()"></i>
+                </div>
+                <div class="p-account__autobtn text-color">自動フォロー中</div>
+              </div>
+              <div class="p-account__flex" v-else>
+                <div class="p-btn__autofollow">
+                  <i class="fas fa-toggle-off fa-lg fa-fw" @click="autoFollow()"></i>
+                </div>
+                <div
+                  class="p-account__autobtn"
+                >自動フォロー</div>
+              </div>
+            </th>
+            <th class="p-account__th">
+              <div class="p-paginate__navigation">全 {{total}} 件中 {{from}} 〜 {{to}} 件表示</div>
+            </th>
+            <th class="p-account__th">
+              <div class="p-paginate__wrap">
+                <ul class="p-paginate__list">
+                  <li :class="{disabled: current_page <= 1}" class="p-paginate__left-end">
+                    <a href="#" @click="change(1)">&laquo;</a>
+                  </li>
+                  <li :class="{disabled: current_page <= 1}" class="p-paginate__left">
+                    <a href="#" @click="change(current_page - 1)">&lt;</a>
+                  </li>
+                  <!-- paginate処理 -->
+                  <li
+                    :class="{pAccountActive: countAddPage1(pages -4) === current_page}"
+                    class="p-paginate__page"
+                  >
+                    <a
+                      href="#"
+                      @click="change( countAddPage1(pages -4) )"
+                    >{{ countAddPage1(pages -4) }}</a>
+                  </li>
+                  <li
+                    :class="{pAccountActive: countAddPage2(pages -3) === current_page}"
+                    class="p-paginate__page"
+                  >
+                    <a
+                      href="#"
+                      @click="change( countAddPage2(pages -3) )"
+                    >{{ countAddPage2(pages -3) }}</a>
+                  </li>
+                  <li
+                    :class="{pAccountActive: countAddPage3(pages -2) === current_page}"
+                    class="p-paginate__page"
+                  >
+                    <a
+                      href="#"
+                      @click="change( countAddPage3(pages -2) )"
+                    >{{ countAddPage3(pages -2) }}</a>
+                  </li>
+                  <li
+                    :class="{pAccountActive: countAddPage4(pages -1) === current_page}"
+                    class="p-paginate__page"
+                  >
+                    <a
+                      href="#"
+                      @click="change( countAddPage4(pages -1) )"
+                    >{{ countAddPage4(pages -1) }}</a>
+                  </li>
+                  <li
+                    :class="{pAccountActive: countAddPage5(pages -0) === current_page}"
+                    class="p-paginate__page"
+                  >
+                    <a
+                      href="#"
+                      @click="change( countAddPage5(pages -0) )"
+                    >{{ countAddPage5(pages -0) }}</a>
+                  </li>
+                  <!-- paginate処理 ここまで -->
+                  <li :class="{disabled: current_page >= last_page}" class="p-paginate__right">
+                    <a href="#" @click="change(current_page + 1)">&gt;</a>
+                  </li>
+                  <li :class="{disabled: current_page >= last_page}" class="p-paginate__right-end">
+                    <a href="#" @click="change(last_page)">&raquo;</a>
+                  </li>
+                </ul>
+              </div>
+            </th>
+          </tr>
+        </thead>
+      </table>
     </div>
 
     <!--一覧表示エリア-->
     <div class="container" v-if="isLoading">
       <div>Loading...</div>
     </div>
+    <div class="container"  v-if="authLoginError">
+      <div>twitterアカウントでログインすることでご利用頂けます</div>
+    </div>
     <div id="app" v-else>
       <transition-group name="list" tag="div">
         <div v-for="(info,key) in accountdata" :key="info.id_str">
-          <button-component :info="info" @followEvent="follow(key, info, current_page)" />
+          <button-component :info="info" @followEvent="follow(key, info, current_page)" :disableFollowBtn="disableFollowBtn" />
         </div>
       </transition-group>
     </div>
@@ -105,6 +140,7 @@ export default {
       disableFollowBtn: false,
       autoFlg: false,
       isLoading: false,
+      authLoginError: false,
     };
   },
   methods: {
@@ -114,6 +150,7 @@ export default {
       await this.accountdata.splice(key, 1);
       await this.delay(4000);
       await this.load(current_page);
+      console.log("follow");
     },
     autoSaveLocalStrage(isFollowedFlg, loginUserId, loginUserName) {
       // データを格納する
@@ -201,6 +238,11 @@ export default {
         }
       }
     },
+    // autoFollows() {
+    //   this.isFollowedFlg = !this.isFollowedFlg;
+    //   this.disableFollowBtn = !this.disableFollowBtn;
+    //   console.log(this.disableFollowBtn);
+    // },
     async autoFollow() {
       if (this.isFollowedFlg === false) {
         // on
@@ -266,14 +308,19 @@ export default {
         });
     },
     load(page) {
-      axios.get("/api/account?page=" + page).then(({ data }) => {
-        this.accountdata = data.data;
-        this.current_page = data.current_page;
-        this.last_page = data.last_page;
-        this.total = data.total;
-        this.from = data.from;
-        this.to = data.to;
-      });
+        axios.get("/api/account?page=" + page).then(({ data }) => {
+          this.accountdata = data.data;
+          this.current_page = data.current_page;
+          this.last_page = data.last_page;
+          this.total = data.total;
+          this.from = data.from;
+          this.to = data.to;
+          this.authLoginError = false;
+        })
+        .catch( () => {
+          this.authLoginError = true;
+          console.log("認証エラー");
+        });
     },
     change(page) {
       if (page >= 1 && page <= this.last_page) this.load(page);
@@ -348,7 +395,7 @@ export default {
   transition: all 0.6s;
 }
 .list-leave-to {
-  transform: translateX(100px);
+  transform: translateX(-100px);
   opacity: 0;
 }
 .list-move {
@@ -361,6 +408,5 @@ export default {
   justify-content: space-around;
   align-items: center;
 }
-
 </style>
 

@@ -4,8 +4,8 @@
 
     <div class="l-main-container">
         <div class="c-main__title">
-            <span class="c-main__title__text">{{ __('Google News Index') }}</span>
-            <span class="c-main__title__text">{{ __('About Crypto') }}</span>
+            <span class="c-main__title__text">仮想通貨関連</span>
+            <span class="c-main__title__text">ニュース一覧</span>
         </div>
     </div>
   

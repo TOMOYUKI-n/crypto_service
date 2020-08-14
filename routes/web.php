@@ -21,6 +21,11 @@ Route::get('/', 'IndexController@top')->name('top');
 Route::get('/term', 'IndexController@term')->name('term');
 // ポリシーへの遷移
 Route::get('/policy', 'IndexController@policy')->name('policy');
+// お問い合わせへの遷移
+Route::get('/contact', 'ContactController@index')->name('contact.index');
+Route::post('/contact/confirm', 'ContactController@confirm')->name('contact.confirm');
+Route::post('/contact/complete', 'ContactController@send')->name('contact.send');
+
 // home
 Route::get('/home', 'HomeController@index')->name('home');
 // ログイン失敗時
@@ -35,7 +40,9 @@ Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCall
  */
 Route::group(['middleware' => 'auth'], function() {
     // トレンド一覧用
-    Route::get('/trend', 'IndexController@trend')->name('index.trend');
+    // Route::get('/trend', 'IndexController@trend')->name('index.trend');
+    Route::get('/trend', function(){ return view('index.trend'); });
+    // Route::get('/trend/search', 'IndexController@trends');
     // 画面表示用
     Route::get('/account', function(){ return view('index.account'); });
     // フォローチェック

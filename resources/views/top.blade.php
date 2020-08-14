@@ -18,13 +18,13 @@
         <!--ログインエリア-->
         <div class="p-top__account">
             <div class="p-top__register">
-                <a class="p-top__text p-btn__new p-btn__margin"
-                    href="{{ route('register') }}">
-                        {{ __('Register Free') }}
-                </a>
-                <a class="p-top__text p-btn__tw-new"
+                <a class="p-top__text p-btn__tw-new p-btn__margin"
                     href="{{ url('login/twitter') }}">
                     {{ __('Twitter Login') }}
+                </a>
+                <a class="p-top__text p-btn__new"
+                    href="{{ route('register') }}">
+                    {{ __('Register Free') }}
                 </a>
             </div>
             <div class="p-top__login">
@@ -56,16 +56,18 @@
             <img class="p-top__img__follow" src="{{ asset('/images/smartphone.jpg') }}" alt="follow">
             <div class="p-top__section__subtitle">アカウントを自動フォロー</div>
             <p class="p-top__section__text">
-                仮想通貨のユーザーをフォローしきれない。
-                自動で仮想通貨に関するアカウントをフォローします。
-                あなたの時間はより分析へ充てれます。
+                通常、仮想通貨のユーザーをフォローしきれません。
+                しかしここでは自動で仮想通貨に関するアカウントを全てフォローできます。
+                あなたの時間はより分析へ充てることができます。
             </p>
         </div>
         <div class="p-top__section3">
             <img class="p-top__img__news" src="{{ asset('/images/newsletter-crop.png') }}" alt="news">
             <div class="p-top__section__subtitle">最新の情報をお届けします</div>
             <p class="p-top__section__text">
-                仮想通貨に関連する記事やニュースが、あなたの手の中で。
+                もう忙しい合間を縫ってニュースサイトを読み漁る必要はありません。
+                最新の仮想通貨に関連するニュースを揃えております。これひとつで
+                情報収集が可能になります。
             </p>
         </div>
     </div>

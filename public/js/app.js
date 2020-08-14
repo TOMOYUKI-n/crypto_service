@@ -1959,9 +1959,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["value", "info"],
+  props: ["value", "info", "disableFollowBtn"],
   data: function data() {
     return {
       isFollowedFlg: false
@@ -2089,6 +2090,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2106,7 +2142,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isFollowing: false,
       disableFollowBtn: false,
       autoFlg: false,
-      isLoading: false
+      isLoading: false,
+      authLoginError: false
     };
   },
   methods: {
@@ -2133,6 +2170,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.load(current_page);
 
               case 7:
+                console.log("follow");
+
+              case 8:
               case "end":
                 return _context.stop();
             }
@@ -2291,6 +2331,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
+    // autoFollows() {
+    //   this.isFollowedFlg = !this.isFollowedFlg;
+    //   this.disableFollowBtn = !this.disableFollowBtn;
+    //   console.log(this.disableFollowBtn);
+    // },
     autoFollow: function autoFollow() {
       var _this4 = this;
 
@@ -2413,6 +2458,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this5.total = data.total;
         _this5.from = data.from;
         _this5.to = data.to;
+        _this5.authLoginError = false;
+      })["catch"](function () {
+        _this5.authLoginError = true;
+        console.log("認証エラー");
       });
     },
     change: function change(page) {
@@ -2531,6 +2580,140 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LoginComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LoginComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      email: "",
+      password: "",
+      errors: {},
+      message: ""
+    };
+  },
+  methods: {
+    login: function login() {
+      var _this = this;
+
+      // データの保存
+      this.saveLoginData(); // 送信
+
+      var url = "/login";
+      var params = {
+        email: this.email,
+        password: this.password
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, params).then(function (response) {
+        console.log("OK");
+        location.href = "/trend";
+      })["catch"](function (error) {
+        console.log("NG");
+        var responseErrors = error.response.data.errors;
+        var errorMessage = error.response.data;
+
+        _this.exchange(errorMessage.message);
+
+        var errorsData = {};
+
+        for (var key in responseErrors) {
+          errorsData[key] = responseErrors[key][0];
+        }
+
+        console.log(errorsData);
+        _this.errors = errorsData;
+      });
+    },
+    register: function register() {
+      location.href = "/register";
+    },
+    twitterLogin: function twitterLogin() {
+      location.href = "/login/twitter";
+    },
+    passlost: function passlost() {
+      location.href = "/password/request";
+    },
+    saveLoginData: function saveLoginData() {
+      // データの保存
+      var loginArray = {
+        email: this.email,
+        password: this.password
+      };
+      var loginData = JSON.stringify(loginArray);
+      localStorage.setItem("loginData", loginData);
+      console.log("save storage");
+    },
+    getLoginData: function getLoginData() {
+      var loginData = localStorage.getItem("loginData");
+      var loginArray = JSON.parse(loginData);
+      this.email = loginArray.email;
+      this.password = loginArray.password;
+      console.log("get data");
+    },
+    exchange: function exchange(message) {
+      if (message == "The given data was invalid.") {
+        this.message = "メールアドレスまたはパスワードを正しく入力してください";
+      } else if (message == "validation.required") {
+        this.message = "入力してください"; // }else{
+        //     this.message = "メールアドレスまたはパスワードが正しくありません.";
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.getLoginData();
+    console.log("mouted");
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewsComponent.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewsComponent.vue?vue&type=script&lang=js& ***!
@@ -2563,9 +2746,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     newsline: {}
+  },
+  data: function data() {
+    return {
+      getTimes: ""
+    };
+  },
+  computed: {
+    dateExchange: function dateExchange() {
+      // 日付変換
+      var getDates = this.newsline[0].lastBuildDate;
+      console.log(getDates);
+      var year = getDates.substr(0, 4);
+      var month = getDates.substr(5, 2);
+      var days = getDates.substr(8, 2);
+      var hours = getDates.substr(11, 2);
+      var times = getDates.substr(14, 2);
+      console.log(year);
+      console.log(month);
+      console.log(days);
+      console.log(hours);
+      console.log(times);
+      var Dates = year + "年" + month + "月" + days + "日" + " " + hours + "月" + times + "時" + " 更新";
+      this.getTimes = Dates;
+    }
   }
 });
 
@@ -2580,12 +2794,37 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
-/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_3__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2652,67 +2891,166 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_0___default.a
+    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_1___default.a
   },
-  props: ["trends"],
-  name: "trends",
   data: function data() {
     return {
-      trendData: this.trends,
-      keyword: "1hour",
+      trends: [],
+      url: "https://twitter.com/search?q=",
+      getTimes: "",
+      apiUrl: "",
+      keyword: "",
+      selected: "",
+      options: [{
+        times: "過去1時間",
+        id: "1hour"
+      }, {
+        times: "過去1日間",
+        id: "1day"
+      }, {
+        times: "過去1週間",
+        id: "1week"
+      }],
       errored: false,
-      selected: [],
-      options: ["BTC", "ETH", "ETC", "LSK", "FCT", "XRP", "XEM", "LTC", "BCH", "MONA", "XLM", "QTUM", "DASH", "ZEC", "XMR", "REP"]
+      selected2: [],
+      options2: ["BTC", "ETH", "ETC", "LSK", "FCT", "XRP", "XEM", "LTC", "BCH", "MONA", "XLM", "QTUM", "DASH", "ZEC", "XMR", "REP"]
     };
   },
   methods: {
+    dateExchange: function dateExchange() {
+      // 日付変換
+      var getDates = this.trends[0].get_dates;
+      console.log(getDates);
+      var year = getDates.substr(0, 4);
+      var month = getDates.substr(5, 2);
+      var days = getDates.substr(8, 2);
+      var hours = getDates.substr(11, 2);
+      var times = getDates.substr(14, 2);
+      var Dates = year + "年" + month + "月" + days + "日" + " " + hours + "時" + times + "分" + " 更新";
+      this.getTimes = Dates;
+    },
     getSearch: function getSearch() {
       var _this = this;
 
-      if (this.keyword !== "" || this.keyword !== null) {
-        // 選択したvalue値をkeywordとして送信
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/trend/search?q=".concat(keyword)).then(function (res) {
-          // if (res.status == 404) {
-          //   console.log(res);
-          //   this.trendData = "";
-          //   this.errored = true;
-          // }
-          _this.trendData = _this.res.data;
-          _this.keyword = _this.res.keyword;
-          console.log(res.data);
-        })["catch"](function (error) {
-          _this.errored = true;
-        });
-      }
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var apiUrl, responce, data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // トレンドのデータを取得
+                // 初期遷移時は　選択項目がnullのため指定
+                if (_this.selected === "") {
+                  _this.keyword = "1hour";
+                } else {
+                  _this.keyword = _this.selected;
+                } // URL定義
+
+
+                apiUrl = "";
+
+                if (_this.keyword === "1hour") {
+                  apiUrl = "/api/trend";
+                } else if (_this.keyword === "1day") {
+                  apiUrl = "/api/trend/day";
+                } else if (_this.keyword === "1week") {
+                  apiUrl = "/api/trend/week";
+                } // apiにてデータ取得
+
+
+                console.log(_this.keyword);
+                console.log(apiUrl);
+                _context.prev = 5;
+                _context.next = 8;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(apiUrl, {
+                  params: {
+                    q: _this.keyword
+                  }
+                });
+
+              case 8:
+                responce = _context.sent;
+                data = responce.data;
+                _this.trends = data;
+                _this.errored = false; // 日付変換処理を呼び出す
+
+                _this.dateExchange();
+
+                _this.saveLocalStorage();
+
+                _context.next = 22;
+                break;
+
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](5);
+                console.log("error", _context.t0);
+                _this.errored = true; // localstorageから取得
+
+                _this.getLocalStorage();
+
+                _this.dateExchange();
+
+              case 22:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[5, 16]]);
+      }))();
+    },
+    saveLocalStorage: function saveLocalStorage() {
+      var trendList = JSON.stringify(this.trends);
+      localStorage.setItem("trendList", trendList);
+      console.log("save");
+    },
+    getLocalStorage: function getLocalStorage() {
+      // データを呼び出し、一致するか確認　-> 一致すればフラグを更新
+      var trendList = localStorage.getItem("trendList");
+      this.trends = JSON.parse(trendList);
+      console.log("get");
     },
     filtered: function filtered() {
       var _this2 = this;
 
-      var result = []; // 選択された銘柄が、データの中にあるか否かを、照らし合わせる（選択銘柄分リピート）
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var result, i, resultData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this2.getSearch();
 
-      for (var i = 0; i < this.selected.length; i++) {
-        result[i] = this.trends.filter(function (word) {
-          return word["coin_name"] == _this2.selected[i];
-        });
-      } // ネストされた配列のフラット化
+              case 2:
+                result = []; // 選択された銘柄が、データの中にあるか否かを、照らし合わせる（選択銘柄分リピート）
+
+                for (i = 0; i < _this2.selected2.length; i++) {
+                  result[i] = _this2.trends.filter(function (x) {
+                    return x["coin_name"] == _this2.selected2[i];
+                  });
+                } // ネストされた配列のフラット化
 
 
-      var resultData = result.flat();
-      this.trendData = resultData; // sortして降順でランキング状態にしてから表示させる
+                resultData = result.flat();
+                _this2.trends = resultData; // console.log(this.trends);
+                // sortして降順でランキング状態にしてから表示させる
 
-      return this.trendData.sort(function (a, b) {
-        return a.tweet > b.tweet ? -1 : 0;
-      });
+                return _context2.abrupt("return", _this2.trends.sort(function (a, b) {
+                  return a.tweet > b.tweet ? -1 : 0;
+                }));
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     }
   },
-  created: function created() {
-    //localstrageに格納
-    if (this.trends == "" || this.trends == null || this.trends == undefined) {
-      this.trendData = [];
-      this.errored = true; // localstrageからの呼び出し処理
-    } else {
-      console.log("there is trends"); // localstrageへの登録処理
-    }
+  mounted: function mounted() {
+    this.getSearch();
   }
 });
 
@@ -2730,7 +3068,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.list-leave-active {\n  transition: all 0.6s;\n}\n.list-leave-to {\n  transform: translateX(100px);\n  opacity: 0;\n}\n.list-move {\n  transition: transform 1s;\n}\n\n/* 基本設定（背景やレイアウト） */\n.container {\n  display: flex;\n  height: 50vh;\n  justify-content: space-around;\n  align-items: center;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.list-leave-active {\n  transition: all 0.6s;\n}\n.list-leave-to {\n  transform: translateX(-100px);\n  opacity: 0;\n}\n.list-move {\n  transition: transform 1s;\n}\n\n/* 基本設定（背景やレイアウト） */\n.container {\n  display: flex;\n  height: 50vh;\n  justify-content: space-around;\n  align-items: center;\n}", ""]);
 
 // exports
 
@@ -4655,6 +4993,7 @@ var render = function() {
           {
             staticClass: "p-btn__follow",
             class: { isFollowedColor: _vm.isFollowedFlg },
+            attrs: { disabled: _vm.disableFollowBtn },
             on: {
               click: function($event) {
                 return _vm.followEvent(_vm.info.id_str)
@@ -4697,289 +5036,297 @@ var render = function() {
     _c("div", { staticClass: "c-main__title" }, [_vm._v("アカウント一覧")]),
     _vm._v(" "),
     _c("div", { staticClass: "c-main__function-head" }, [
-      _c("div", { staticClass: "p-account__text-top" }, [
-        _vm._v(
-          "\n      twitterで「仮想通貨」というキーワードを\n      ユーザ名またはプロフィールに記載しているユーザを一覧で表示します。(1日1回更新)\n    "
-        )
-      ]),
+      _vm._m(0),
       _vm._v(" "),
-      _c("div", [
-        _vm.isFollowedFlg
-          ? _c("div", { staticClass: "p-account__flex" }, [
-              _c("i", {
-                staticClass: "fas fa-toggle-on fa-lg fa-fw",
-                on: {
-                  click: function($event) {
-                    return _vm.autoFollow()
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "text-color" }, [
-                _vm._v("自動フォロー中です")
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "p-account__text-sub p-account__text__attend" },
-                [_vm._v("※解除するにはoffにしてください")]
-              )
-            ])
-          : _c("div", { staticClass: "p-account__flex" }, [
-              _c("i", {
-                staticClass: "fas fa-toggle-off fa-lg fa-fw",
-                on: {
-                  click: function($event) {
-                    return _vm.autoFollow()
-                  }
-                }
-              }),
-              _vm._v("自動フォローを行います\n        "),
-              _c(
-                "div",
-                { staticClass: "p-account__text-sub p-account__text__attend" },
-                [
-                  _vm._v(
-                    "※一覧に表示されているアカウントを全て自動でフォローしていきます"
+      _c("table", { staticClass: "table" }, [
+        _c("thead", [
+          _c("tr", { staticClass: "p-account__tr" }, [
+            _c("th", { staticClass: "p-account__th" }, [
+              _vm.isFollowedFlg
+                ? _c("div", { staticClass: "p-account__flex" }, [
+                    _c("div", { staticClass: "p-btn__autofollow" }, [
+                      _c("i", {
+                        staticClass: "fas fa-toggle-on fa-lg fa-fw",
+                        on: {
+                          click: function($event) {
+                            return _vm.autoFollow()
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "p-account__autobtn text-color" },
+                      [_vm._v("自動フォロー中")]
+                    )
+                  ])
+                : _c("div", { staticClass: "p-account__flex" }, [
+                    _c("div", { staticClass: "p-btn__autofollow" }, [
+                      _c("i", {
+                        staticClass: "fas fa-toggle-off fa-lg fa-fw",
+                        on: {
+                          click: function($event) {
+                            return _vm.autoFollow()
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-account__autobtn" }, [
+                      _vm._v("自動フォロー")
+                    ])
+                  ])
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "p-account__th" }, [
+              _c("div", { staticClass: "p-paginate__navigation" }, [
+                _vm._v(
+                  "全 " +
+                    _vm._s(_vm.total) +
+                    " 件中 " +
+                    _vm._s(_vm.from) +
+                    " 〜 " +
+                    _vm._s(_vm.to) +
+                    " 件表示"
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "p-account__th" }, [
+              _c("div", { staticClass: "p-paginate__wrap" }, [
+                _c("ul", { staticClass: "p-paginate__list" }, [
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__left-end",
+                      class: { disabled: _vm.current_page <= 1 }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.change(1)
+                            }
+                          }
+                        },
+                        [_vm._v("«")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__left",
+                      class: { disabled: _vm.current_page <= 1 }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.change(_vm.current_page - 1)
+                            }
+                          }
+                        },
+                        [_vm._v("<")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__page",
+                      class: {
+                        pAccountActive:
+                          _vm.countAddPage1(_vm.pages - 4) === _vm.current_page
+                      }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.change(_vm.countAddPage1(_vm.pages - 4))
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.countAddPage1(_vm.pages - 4)))]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__page",
+                      class: {
+                        pAccountActive:
+                          _vm.countAddPage2(_vm.pages - 3) === _vm.current_page
+                      }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.change(_vm.countAddPage2(_vm.pages - 3))
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.countAddPage2(_vm.pages - 3)))]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__page",
+                      class: {
+                        pAccountActive:
+                          _vm.countAddPage3(_vm.pages - 2) === _vm.current_page
+                      }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.change(_vm.countAddPage3(_vm.pages - 2))
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.countAddPage3(_vm.pages - 2)))]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__page",
+                      class: {
+                        pAccountActive:
+                          _vm.countAddPage4(_vm.pages - 1) === _vm.current_page
+                      }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.change(_vm.countAddPage4(_vm.pages - 1))
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.countAddPage4(_vm.pages - 1)))]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__page",
+                      class: {
+                        pAccountActive:
+                          _vm.countAddPage5(_vm.pages - 0) === _vm.current_page
+                      }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.change(_vm.countAddPage5(_vm.pages - 0))
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.countAddPage5(_vm.pages - 0)))]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__right",
+                      class: { disabled: _vm.current_page >= _vm.last_page }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.change(_vm.current_page + 1)
+                            }
+                          }
+                        },
+                        [_vm._v(">")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      staticClass: "p-paginate__right-end",
+                      class: { disabled: _vm.current_page >= _vm.last_page }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.change(_vm.last_page)
+                            }
+                          }
+                        },
+                        [_vm._v("»")]
+                      )
+                    ]
                   )
-                ]
-              )
+                ])
+              ])
             ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-paginate__wrap" }, [
-        _c("ul", { staticClass: "p-paginate__list" }, [
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__left-end",
-              class: { disabled: _vm.current_page <= 1 }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.change(1)
-                    }
-                  }
-                },
-                [_vm._v("«")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__left",
-              class: { disabled: _vm.current_page <= 1 }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.change(_vm.current_page - 1)
-                    }
-                  }
-                },
-                [_vm._v("<")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__page",
-              class: {
-                pAccountActive:
-                  _vm.countAddPage1(_vm.pages - 4) === _vm.current_page
-              }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      _vm.change(_vm.countAddPage1(_vm.pages - 4))
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.countAddPage1(_vm.pages - 4)))]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__page",
-              class: {
-                pAccountActive:
-                  _vm.countAddPage2(_vm.pages - 3) === _vm.current_page
-              }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      _vm.change(_vm.countAddPage2(_vm.pages - 3))
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.countAddPage2(_vm.pages - 3)))]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__page",
-              class: {
-                pAccountActive:
-                  _vm.countAddPage3(_vm.pages - 2) === _vm.current_page
-              }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      _vm.change(_vm.countAddPage3(_vm.pages - 2))
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.countAddPage3(_vm.pages - 2)))]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__page",
-              class: {
-                pAccountActive:
-                  _vm.countAddPage4(_vm.pages - 1) === _vm.current_page
-              }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      _vm.change(_vm.countAddPage4(_vm.pages - 1))
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.countAddPage4(_vm.pages - 1)))]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__page",
-              class: {
-                pAccountActive:
-                  _vm.countAddPage5(_vm.pages - 0) === _vm.current_page
-              }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      _vm.change(_vm.countAddPage5(_vm.pages - 0))
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(_vm.countAddPage5(_vm.pages - 0)))]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__right",
-              class: { disabled: _vm.current_page >= _vm.last_page }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.change(_vm.current_page + 1)
-                    }
-                  }
-                },
-                [_vm._v(">")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "p-paginate__right-end",
-              class: { disabled: _vm.current_page >= _vm.last_page }
-            },
-            [
-              _c(
-                "a",
-                {
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.change(_vm.last_page)
-                    }
-                  }
-                },
-                [_vm._v("»")]
-              )
-            ]
-          )
+          ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-paginate__navigation" }, [
-        _vm._v(
-          "全 " +
-            _vm._s(_vm.total) +
-            " 件中 " +
-            _vm._s(_vm.from) +
-            " 〜 " +
-            _vm._s(_vm.to) +
-            " 件表示"
-        )
       ])
     ]),
     _vm._v(" "),
     _vm.isLoading
       ? _c("div", { staticClass: "container" }, [
           _c("div", [_vm._v("Loading...")])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.authLoginError
+      ? _c("div", { staticClass: "container" }, [
+          _c("div", [
+            _vm._v("twitterアカウントでログインすることでご利用頂けます")
+          ])
         ])
       : _c(
           "div",
@@ -4994,7 +5341,10 @@ var render = function() {
                   { key: info.id_str },
                   [
                     _c("button-component", {
-                      attrs: { info: info },
+                      attrs: {
+                        info: info,
+                        disableFollowBtn: _vm.disableFollowBtn
+                      },
                       on: {
                         followEvent: function($event) {
                           return _vm.follow(key, info, _vm.current_page)
@@ -5012,7 +5362,22 @@ var render = function() {
         )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "p-account__text-top-icon" }, [
+      _c("i", { staticClass: "fas fa-address-book" }),
+      _vm._v(" "),
+      _c("p", { staticClass: "p-account__text-top" }, [
+        _vm._v(
+          "\n        twitter上で「仮想通貨」というキーワードに関連する\n        アカウントをフォローできます。(1日1回更新)\n      "
+        )
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -5070,6 +5435,148 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LoginComponent.vue?vue&type=template&id=4d2414bf&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/LoginComponent.vue?vue&type=template&id=4d2414bf& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "l-main__container" }, [
+    _c("div", { staticClass: "p-login__container", attrs: { id: "login" } }, [
+      _c("div", [
+        _vm.errors.email
+          ? _c("div", { staticClass: "p-login__inputError" }, [
+              _vm._v(_vm._s(_vm.message))
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.errors.password
+          ? _c("div", { staticClass: "p-login__inputError" }, [
+              _vm._v(_vm._s(_vm.message))
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-login__inner" }, [
+          _c("i", { staticClass: "fas fa-user" }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.email,
+                expression: "email"
+              }
+            ],
+            staticClass: "p-login__form",
+            attrs: { type: "text", placeholder: "メールアドレス" },
+            domProps: { value: _vm.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.email = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-login__inner" }, [
+          _c("i", { staticClass: "fas fa-unlock-alt" }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password,
+                expression: "password"
+              }
+            ],
+            staticClass: "p-login__form",
+            attrs: { type: "password", placeholder: "パスワード" },
+            domProps: { value: _vm.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.password = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-top__login" }, [
+          _c(
+            "button",
+            {
+              staticClass: "p-login__text p-btn__login",
+              attrs: { type: "submit" },
+              on: { click: _vm.login }
+            },
+            [_vm._v("ログイン")]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "p",
+          {
+            staticClass: "p-login__text p-login-add-margin__3",
+            staticStyle: { "font-size": "13px" }
+          },
+          [_vm._v("アカウントをお持ちで無い方はこちらから")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-top__login" }, [
+          _c(
+            "a",
+            {
+              staticClass: "p-login__text p-btn__login",
+              on: { click: _vm.twitterLogin }
+            },
+            [_vm._v("Twitterでログイン")]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "p-top__login", on: { click: _vm.register } },
+          [
+            _c("a", { staticClass: "p-login__text p-btn__new" }, [
+              _vm._v("新規登録")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-top__login" }, [
+          _c(
+            "a",
+            { staticClass: "p-login__forgot", on: { click: _vm.passlost } },
+            [_vm._v("パスワードを忘れた方はこちら")]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/NewsComponent.vue?vue&type=template&id=6929860f&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/NewsComponent.vue?vue&type=template&id=6929860f& ***!
@@ -5085,20 +5592,33 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "p-news__section" },
-    [
-      _c("div", { staticClass: "c-main__function-head" }, [
-        _c("div", { staticClass: "p-trend__time" }, [
-          _vm._v(
-            "\n           更新日時 " +
-              _vm._s(_vm.newsline[0].lastBuildDate) +
-              "\n        "
-          )
-        ])
-      ]),
-      _vm._v(" "),
+  return _c("div", { staticClass: "p-news__section" }, [
+    _c("table", { staticClass: "table" }, [
+      _c("thead", [
+        _c(
+          "tr",
+          {
+            staticClass: "p-news__tr",
+            staticStyle: { "background-color": "#C5CAE9", "font-size": "13px" }
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _c("th", { staticClass: "p-news__th-data" }, [
+              _vm._v(
+                _vm._s(_vm.newsline[0].lastBuildDate.substr(0, 16)) + "取得"
+              )
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "p-news__body" },
       _vm._l(_vm.newsline, function(news) {
         return _c(
           "div",
@@ -5115,7 +5635,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "p-news__news-inner2" }, [
-                _c("p", { staticClass: "p-news__newssource " }, [
+                _c("p", { staticClass: "p-news__newssource" }, [
                   _vm._v(_vm._s(news.source))
                 ]),
                 _vm._v(" "),
@@ -5126,12 +5646,29 @@ var render = function() {
             ])
           ]
         )
-      })
-    ],
-    2
-  )
+      }),
+      0
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "p-news__th-icon" }, [
+      _c("i", { staticClass: "far fa-clock" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "p-news__th-label" }, [
+      _c("div", [_vm._v("更新日時")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -5159,7 +5696,13 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "c-main__function-head" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "p-trend__time" }, [
+        _c(
+          "div",
+          { staticClass: "no-padding", staticStyle: { display: "flex" } },
+          [_vm._m(0), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.getTimes))])]
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "p-trend__search" }, [
         _c("div", { staticClass: "p-trend__search-time" }, [
@@ -5167,160 +5710,166 @@ var render = function() {
             _vm._v(_vm._s("日時で絞込む"))
           ]),
           _vm._v(" "),
-          _c("form", {}, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.keyword,
-                    expression: "keyword"
-                  }
-                ],
-                staticClass: "p-trend__search-time__select",
+          _c(
+            "div",
+            [
+              _c("v-select", {
+                staticClass: "p-trend__search-time__select p-trend__select",
                 attrs: {
-                  "aria-label": "Search",
-                  name: "keyword",
-                  value: "keyword"
+                  options: _vm.options,
+                  label: "times",
+                  reduce: function(options) {
+                    return options.id
+                  }
                 },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.keyword = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
+                model: {
+                  value: _vm.selected,
+                  callback: function($$v) {
+                    _vm.selected = $$v
+                  },
+                  expression: "selected"
                 }
-              },
-              [
-                _c("option", { attrs: { value: "1hour", selected: "" } }, [
-                  _vm._v("過去1時間でのランキング")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "1day" } }, [
-                  _vm._v("過去1日間でのランキング")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "1week" } }, [
-                  _vm._v("過去1週間でのランキング")
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                attrs: { type: "submit" },
-                on: {
-                  click: function($event) {
-                    return _vm.getSearch()
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "filterBtn2",
+                  on: {
+                    click: function($event) {
+                      return _vm.getSearch()
+                    }
                   }
-                }
-              },
-              [_vm._v("Search")]
-            )
-          ])
+                },
+                [_c("i", { staticClass: "fas fa-filter" })]
+              )
+            ],
+            1
+          )
         ]),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "p-trend__search-name" },
+          {
+            staticClass: "p-trend__search-coin",
+            staticStyle: { height: "90px" }
+          },
           [
             _c("p", { staticClass: "p-trend__search-inner" }, [
               _vm._v(_vm._s("銘柄で絞込む"))
             ]),
             _vm._v(" "),
-            _c("v-select", {
-              attrs: { multiple: "", options: _vm.options },
-              model: {
-                value: _vm.selected,
-                callback: function($$v) {
-                  _vm.selected = $$v
-                },
-                expression: "selected"
-              }
-            }),
-            _vm._v(" "),
             _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    return _vm.filtered()
+              "div",
+              [
+                _c("v-select", {
+                  staticClass: "p-trend__search-coin__select p-trend__select",
+                  attrs: { multiple: "", options: _vm.options2 },
+                  model: {
+                    value: _vm.selected2,
+                    callback: function($$v) {
+                      _vm.selected2 = $$v
+                    },
+                    expression: "selected2"
                   }
-                }
-              },
-              [_vm._v("絞り込む")]
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "filterBtn2",
+                    on: {
+                      click: function($event) {
+                        return _vm.filtered()
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-funnel-dollar" })]
+                )
+              ],
+              1
             )
-          ],
-          1
+          ]
         )
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "p-trend__list-wrap" }, [
-      _c("div", { staticClass: "p-trend__list-title" }, [
-        _c("div", { staticClass: "p-trend__list__item p-trend-map" }, [
-          _vm._v(_vm._s("銘柄"))
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "p-trend__list__tweet p-trend-map" }, [
-          _vm._v(_vm._s("Tweet数"))
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "p-trend__list__high p-trend-map" }, [
-          _vm._v(_vm._s("最高取引レート(円)"))
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "p-trend__list__low p-trend-map" }, [
-          _vm._v(_vm._s("最低取引レート(円)"))
-        ])
-      ]),
-      _vm._v(" "),
-      _vm.errored
-        ? _c("section", { staticClass: "p-trend__errorArea" }, [
-            _c("div", { staticClass: "p-trend" }, [
-              _vm._v(
-                "情報が取得できませんでした。再度時間を置いて更新してください。"
-              )
-            ])
+    _vm.errored
+      ? _c("section", { staticClass: "p-trend__errorArea" }, [
+          _c("div", [
+            _vm._v(
+              "情報が取得できませんでした。再度時間を置いて更新してください。"
+            )
           ])
-        : _c(
-            "section",
-            _vm._l(_vm.trendData, function(trend) {
-              return _c(
-                "div",
-                { key: trend.index, staticClass: "p-trend__list-title" },
-                [
-                  _c("div", { staticClass: "p-trend__list__item" }, [
-                    _vm._v(_vm._s(trend.coin_name))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "p-trend__list__tweet" }, [
-                    _vm._v(_vm._s(trend.tweet))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "p-trend__list__high" }, [
-                    _vm._v(_vm._s(trend.high))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "p-trend__list__low" }, [
-                    _vm._v(_vm._s(trend.low))
-                  ])
-                ]
-              )
-            }),
-            0
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "p-trend__list-wrap" }, [
+      _c("table", { staticClass: "table" }, [
+        _c("thead", [
+          _c(
+            "tr",
+            {
+              staticClass: "p-trend__list-header",
+              staticStyle: { "background-color": "#C5CAE9" }
+            },
+            [
+              _c("th", { staticClass: "p-trend__list__item p-trend-map" }, [
+                _vm._v(_vm._s("銘柄"))
+              ]),
+              _vm._v(" "),
+              _c("th", { staticClass: "p-trend__list__tweet p-trend-map" }, [
+                _vm._v(_vm._s("Tweet数"))
+              ]),
+              _vm._v(" "),
+              _c("th", { staticClass: "p-trend__list__high p-trend-map" }, [
+                _vm._v(_vm._s("最高取引レート(円)"))
+              ]),
+              _vm._v(" "),
+              _c("th", { staticClass: "p-trend__list__low p-trend-map" }, [
+                _vm._v(_vm._s("最低取引レート(円)"))
+              ])
+            ]
           )
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.trends, function(trend) {
+            return _c(
+              "tr",
+              { key: trend.index, staticClass: "p-trend__list-title" },
+              [
+                _c("td", { staticClass: "p-trend__list__item p-trend__link" }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: _vm.url + trend.coin_name,
+                        target: "”_blank”"
+                      }
+                    },
+                    [_vm._v(_vm._s(trend.coin_name))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "p-trend__list__tweet" }, [
+                  _vm._v(_vm._s(trend.tweet))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "p-trend__list__high" }, [
+                  _vm._v(_vm._s(trend.high))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "p-trend__list__low" }, [
+                  _vm._v(_vm._s(trend.low))
+                ])
+              ]
+            )
+          }),
+          0
+        )
+      ])
     ])
   ])
 }
@@ -5329,8 +5878,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "p-trend__time" }, [
-      _c("p", { staticClass: "no-padding" }, [_vm._v("情報取得日時：")])
+    return _c("p", { staticStyle: { "margin-right": "5px" } }, [
+      _c("i", { staticClass: "far fa-clock" })
     ])
   }
 ]
@@ -17543,8 +18092,8 @@ Vue.component('multiselect', window.VueMultiselect["default"]);
 
 Vue.component('footer-component', __webpack_require__(/*! ./components/FooterComponent.vue */ "./resources/js/components/FooterComponent.vue")["default"]);
 Vue.component('trend-component', __webpack_require__(/*! ./components/TrendComponent.vue */ "./resources/js/components/TrendComponent.vue")["default"]);
-Vue.component('news-component', __webpack_require__(/*! ./components/NewsComponent.vue */ "./resources/js/components/NewsComponent.vue")["default"]); // Vue.component('account-component', require('./components/AccountComponent.vue').default);
-
+Vue.component('news-component', __webpack_require__(/*! ./components/NewsComponent.vue */ "./resources/js/components/NewsComponent.vue")["default"]);
+Vue.component('login-component', __webpack_require__(/*! ./components/LoginComponent.vue */ "./resources/js/components/LoginComponent.vue")["default"]);
 Vue.component('connect-component', __webpack_require__(/*! ./components/ConnectComponent.vue */ "./resources/js/components/ConnectComponent.vue")["default"]);
 Vue.component('button-component', __webpack_require__(/*! ./components/ButtonComponent.vue */ "./resources/js/components/ButtonComponent.vue")["default"]);
 /**
@@ -17765,6 +18314,76 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterComponent_vue_vue_type_template_id_abfbddf2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FooterComponent_vue_vue_type_template_id_abfbddf2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/LoginComponent.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/LoginComponent.vue ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LoginComponent_vue_vue_type_template_id_4d2414bf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LoginComponent.vue?vue&type=template&id=4d2414bf& */ "./resources/js/components/LoginComponent.vue?vue&type=template&id=4d2414bf&");
+/* harmony import */ var _LoginComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LoginComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/LoginComponent.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _LoginComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _LoginComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LoginComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LoginComponent_vue_vue_type_template_id_4d2414bf___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LoginComponent_vue_vue_type_template_id_4d2414bf___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/LoginComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/LoginComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/LoginComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./LoginComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LoginComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/LoginComponent.vue?vue&type=template&id=4d2414bf&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/LoginComponent.vue?vue&type=template&id=4d2414bf& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_template_id_4d2414bf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./LoginComponent.vue?vue&type=template&id=4d2414bf& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/LoginComponent.vue?vue&type=template&id=4d2414bf&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_template_id_4d2414bf___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoginComponent_vue_vue_type_template_id_4d2414bf___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

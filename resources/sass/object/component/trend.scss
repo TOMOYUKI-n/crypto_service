@@ -2,7 +2,11 @@
 // trend画面
 // ============================
 .p-trend{
-
+    &__link {
+        &:hover{
+          cursor: pointer;  
+        }
+    }
     &__time{
         text-align: left;
         color: $color_black;
@@ -16,6 +20,7 @@
         text-align: left;
         @include mq(){
             margin: 0px;
+            text-align: center;
         }
     }
     &__search-time{
@@ -27,10 +32,27 @@
             display: inline-block;
             padding: 5px;
             border-radius: 6px;
-            width: 50%;
+            width: 80%;
+            z-index: 999;
         }
         @include mq(){
-            text-align: center;
+            // text-align: center;
+        }
+    }
+    &__search-coin{
+        padding: 5px;
+        font-size: $font-size_min;
+        &__select{
+            height: 30px;
+            box-sizing: border-box;
+            display: inline-block;
+            padding: 5px;
+            border-radius: 6px;
+            width: 80%;
+            z-index: 888;
+        }
+        @include mq(){
+            // text-align: center;
         }
     }
     &__search-inner{
@@ -39,7 +61,7 @@
         box-sizing: border-box;
         margin: 0px;
         @include mq(){
-            margin: 5px;
+            margin: 1px;
         }
     }
     &__search-name{
@@ -57,20 +79,36 @@
     &__list-wrap{
         display: block;
         padding: 0px 3px 30px 0px;
+        margin-top: 8px;
+        @include mq(){
+            margin-top: 65px;
+        }
     }
-
-    &__list-title{
+    &__list-header{
         width: 90%;
-        margin: 0px auto 2px auto;
+        margin: 0px auto 0px auto;
         display: flex;
         box-sizing: border-box;
         justify-content: space-between;
         padding: 10px 15px;
-        border-bottom: solid 1px $border_color;
-        background-color: $color_1;
-        border-radius: 5px;
+        border-bottom: solid 1px #BDBDBD;
         font-size: $font-size_min;
-        //box-shadow: 0 2px 4px 0 #b2b5be;
+        @include mq(){
+            width: 100%;
+        }
+    }
+    &__list-title{
+        width: 90%;
+        margin: 0px auto 0px auto;
+        display: flex;
+        box-sizing: border-box;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-bottom: solid 1px #BDBDBD;
+        font-size: $font-size_min;
+        &:hover{
+            background-color: #BDBDBD75;
+        }
         @include mq(){
             width: 100%;
         }
@@ -85,10 +123,13 @@
     &__list{
         &__item{
             position: absolute;
+            text-align: left;
         }
         &__tweet{
             position: relative;
-            left: 165px;
+            left: calc(100%/4);
+            width: calc(100%/4);
+            text-align: left;
             @include mq(){
                 position: relative;
                 left: 65px;
@@ -96,7 +137,9 @@
         }
         &__high{
             position: relative;
-            left: 100px;
+            left: calc(100%/8);
+            width: calc(100%/4);
+            text-align: left;
             @include mq(){
                 position: relative;
                 left: 30px;
@@ -105,7 +148,8 @@
         }
         &__low{
             position: relative;
-            left: 0px;
+            width: calc(100%/4);
+            text-align: left;
             @include mq(){
                 position: relative;
                 left: 0px;
@@ -113,20 +157,65 @@
         }
     }
     &__errorArea{
-        margin: 30px auto;
-        width: 80%;
+        margin: 10px auto;
+        width: 100%;
+        box-sizing: border-box;
+        display: block;
+        padding: 0px 10px;
+        color: red;
+        font-size: 13px;
         @include mq(){
             margin: 10px auto;
             width: 100%;
+            box-sizing: border-box;
+            display: block;
+            padding: 0px 10px;
+            color: red;
+            font-size: 13px;
+            position: absolute;
         }
+    }
+    // マルチ選択
+    &__select{
+        margin: 2px;
     }
     
 }
 .p-trend-map{
-    display: block;
-    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: -5px;
 }
 .no-padding{
     padding: 5px;
     margin: 0px;
+}
+.table, th, .table, td{
+    padding: 0px !important;
+    vertical-align: none !important;
+    border-top: none !important;
+}
+.table thead th{
+    vertical-align: none !important;
+    border-bottom: none !important;
+}
+
+.vs__dropdown-toggle{
+    background-color: #fff !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+}
+.filterBtn2{
+    background-color: $color_orange;
+    min-width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 1px 4px 0 #1f1f1f;
+    color: #3a3939;
+    line-height: 1;
+    font-size: 10px;
+}
+.vs__dropdown-menu{
+    left: 10px !important;
+    max-width: 90% !important;
 }

@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Follows;
-use App\Temp;
-
+use App\Intercoin;
+use App\Tweet;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class Get_CoinBatch extends Command
@@ -41,7 +42,6 @@ class Get_CoinBatch extends Command
      */
     public function handle()
     {
-
 
     }
 }

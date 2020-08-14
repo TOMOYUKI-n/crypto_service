@@ -24,7 +24,7 @@ Vue.component('multiselect', window.VueMultiselect.default);
 Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('trend-component', require('./components/TrendComponent.vue').default);
 Vue.component('news-component', require('./components/NewsComponent.vue').default);
-// Vue.component('account-component', require('./components/AccountComponent.vue').default);
+Vue.component('login-component', require('./components/LoginComponent.vue').default);
 Vue.component('connect-component', require('./components/ConnectComponent.vue').default);
 Vue.component('button-component', require('./components/ButtonComponent.vue').default);
 /**

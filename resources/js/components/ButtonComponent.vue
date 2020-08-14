@@ -26,6 +26,7 @@
           class="p-btn__follow"
           @click="followEvent(info.id_str)"
           :class="{ isFollowedColor: isFollowedFlg }"
+          v-bind:disabled="disableFollowBtn"
         >
           <a v-if="isFollowedFlg">フォロー中</a>
           <a v-else>フォローする</a>
@@ -39,7 +40,7 @@
 import axios from "axios";
 
 export default {
-  props: ["value", "info"],
+  props: ["value", "info", "disableFollowBtn"],
   data: () => {
     return {
       isFollowedFlg: false,

@@ -35,9 +35,9 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         //日付をDaysDBへ　1日ごとに実行
-        $schedule->command('DaysCatchCommand')->dailyAt('00:10')->withoutOverlapping();
+        $schedule->command('DaysCatchCommand')->dailyAt('00:00')->withoutOverlapping();
         //1日ごとに実行
-        $schedule->command('CountWeeksCommand')->dailyAt('00:12')->withoutOverlapping();
+        $schedule->command('CountWeeksCommand')->dailyAt('00:00')->withoutOverlapping();
         //1時間ごとに実行
         $schedule->command('timesInsert')->hourly()->withoutOverlapping();
 
