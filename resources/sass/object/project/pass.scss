@@ -8,14 +8,18 @@
     // カバーパーツ
     // ============================
     &__container{
-        width: 480px;
+        max-width: 500px;
+        min-width: 350px;
         margin: 60px auto;
         padding: 30px;
         box-sizing: border-box;
-        background: #f4f5f6;
+        box-shadow: 0px 4px 8px 2px #b2b5be;
+        font-size: $font-size_xxs;
+        border-radius: 6px;
         @include mq(){
             width: 100%;
-            margin: 0px auto;
+            margin: 20px auto;
+            box-shadow: 0px 0px 0px 0px #b2b5be;
         }
     }
     // ============================

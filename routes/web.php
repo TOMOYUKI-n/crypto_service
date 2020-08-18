@@ -26,8 +26,6 @@ Route::get('/contact', 'ContactController@index')->name('contact.index');
 Route::post('/contact/confirm', 'ContactController@confirm')->name('contact.confirm');
 Route::post('/contact/complete', 'ContactController@send')->name('contact.send');
 
-// home
-Route::get('/home', 'HomeController@index')->name('home');
 // ログイン失敗時
 Route::get('/misslogin', 'IndexController@misslogin')->name('misslogin');
 //ソーシャルログイン
@@ -35,12 +33,14 @@ Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider');
 //ソーシャルログインのcallback
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
+Route::get('/home', 'HomeController@index')->name('home');
 /**
  * 認証必要
  */
 Route::group(['middleware' => 'auth'], function() {
     // トレンド一覧用
     // Route::get('/trend', 'IndexController@trend')->name('index.trend');
+    
     Route::get('/trend', function(){ return view('index.trend'); });
     // Route::get('/trend/search', 'IndexController@trends');
     // 画面表示用

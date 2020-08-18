@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ForgotPasswordController extends Controller
 {
@@ -16,7 +18,7 @@ class ForgotPasswordController extends Controller
     | includes a trait which assists in sending these notifications from
     | your application to your users. Feel free to explore this trait.
     |
-    */
+     */
 
     use SendsPasswordResetEmails;
 
@@ -29,4 +31,16 @@ class ForgotPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    //オーバーライド
+    public function sendResetLinkEmail(Request $request)
+    {
+        $this->validateEmail($request);
+        $response = $this->broker()->sendResetLink(
+            $request->only('email')
+        );
+        //Log::Debug("url 送信");
+        return back()->with('status', 'パスワード再設定用のURLをメールで送りました。');
+    }
+    
 }

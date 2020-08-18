@@ -4,41 +4,38 @@
 
 
 <div class="l-main__container">
-    <div class="p-pass__container">
+    <div >
         <!-- タイトル -->
-        <div class="c-main__title">
+            <div class="c-main__title">
             {{ __('Reset Password') }}
-        </div>
-        <!-- 内容 -->
-        <div class="card-body">
+            </div>
+            <div class="p-pass__container">
                 @if (session('status'))
-                    <div class="alert alert-success" role="alert">
+                    <div class="c-alert__success">
                         {{ session('status') }}
                     </div>
                 @endif
                 <form method="POST" action="{{ route('password.email') }}">
                     @csrf
-                    <div class="p-login__inner">
+                    <div class="p-login__inner" style="display: block;">
                         <label for="email" class="p-pass__title">{{ __('E-Mail Address') }}</label>
                         <div>
                             <input id="email" type="email" class="p-pass__form @error('email') is-invalid @enderror"
                                     name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             @error('email')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="error_message">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                         </div>
                     </div>
-                    <div class="p-login__inner">
-                        <div class="p-pass__btn">
+                    <div class="p-top__login">
                             <button type="submit" class="p-login__text p-btn__login">
                                 {{ __('Send Password Reset Link') }}
                             </button>
-                        </div>
                     </div>
                 </form>
-        </div>
+            </div>
     </div>
 </div>
 @endsection

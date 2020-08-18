@@ -85,7 +85,7 @@ export default {
       location.href = "/login/twitter";
     },
     passlost() {
-      location.href = "/password/request";
+      location.href = "/password/reset";
     },
     saveLoginData() {
       // データの保存

@@ -4,7 +4,7 @@
 
 
     // ============================
-    // misslogin 注意テキスト
+    // misslogin, passreset 注意テキスト
     // ============================
 .c-alert{
     &__caution1{
@@ -19,5 +19,10 @@
     &__caution3{
         line-height: 1.2;
         margin-top: 80px;
+    }
+    &__success{
+        color: #386cfa9c;
+        line-height: 1.2;
+        margin-bottom: 20px;
     }
 }

@@ -16893,6 +16893,11 @@ footer {
   line-height: 1.2;
   margin-top: 80px;
 }
+.c-alert__success {
+  color: #386cfa9c;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
 
 .p-account__tr {
   box-shadow: 0px 6px 4px -5px #b2b5be;
@@ -17264,16 +17269,20 @@ footer {
 }
 
 .p-pass__container {
-  width: 480px;
+  max-width: 500px;
+  min-width: 350px;
   margin: 60px auto;
   padding: 30px;
   box-sizing: border-box;
-  background: #f4f5f6;
+  box-shadow: 0px 4px 8px 2px #b2b5be;
+  font-size: 0.9rem;
+  border-radius: 6px;
 }
 @media screen and (max-width: 768px) {
   .p-pass__container {
     width: 100%;
-    margin: 0px auto;
+    margin: 20px auto;
+    box-shadow: 0px 0px 0px 0px #b2b5be;
   }
 }
 .p-pass__inner {
