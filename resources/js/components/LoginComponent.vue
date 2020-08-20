@@ -82,7 +82,7 @@ export default {
       location.href = "/register";
     },
     twitterLogin() {
-      location.href = "/login/twitter";
+      location.href = "/auth/login/twitter";
     },
     passlost() {
       location.href = "/password/reset";

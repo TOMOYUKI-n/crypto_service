@@ -29,9 +29,9 @@ Route::post('/contact/complete', 'ContactController@send')->name('contact.send')
 // ログイン失敗時
 Route::get('/misslogin', 'IndexController@misslogin')->name('misslogin');
 //ソーシャルログイン
-Route::get('auth/login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('/auth/login/{provider}', 'Auth\LoginController@redirectToProvider');
 //ソーシャルログインのcallback
-Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('/auth/login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
