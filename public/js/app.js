@@ -1960,9 +1960,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["value", "info", "disableFollowBtn"],
+  props: ["value", "info", "disableFollowBtn", "loginFromTwitter"],
   data: function data() {
     return {
       isFollowedFlg: false
@@ -2125,6 +2126,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2143,7 +2146,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       disableFollowBtn: false,
       autoFlg: false,
       isLoading: false,
-      authLoginError: false
+      getStatus: false,
+      loginFromTwitter: true
     };
   },
   methods: {
@@ -2224,7 +2228,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 //console.log(updateTarget.updateFlg);
                 if (updateTarget.updateFlg == true && _this2.loginUserId == updateTarget.updateId && _this2.loginUserName == updateTarget.updateName) {
                   _this2.isFollowedFlg = updateTarget.updateFlg;
-                  console.log("read");
                 } else {
                   console.log(updateTarget);
                   console.log("idが違うか自動フォローがoffになっています");
@@ -2257,7 +2260,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 if (usersRes.status == "200") {
                   _this3.loginUserId = usersRes.data.id;
                   _this3.loginUserName = usersRes.data.twitter_name;
-                  console.log(usersRes.data);
+                  console.log(usersRes.data.twitter_Id); // もしtwitterIdがない（twitterでのログインでなければ）フォローボタンを表示しない
+
+                  if (usersRes.data.twitter_Id === undefined) {
+                    _this3.loginFromTwitter = false;
+                  } else {
+                    _this3.loginFromTwitter = true;
+                  }
+
+                  console.log(_this3.loginFromTwitter);
                 } else {
                   console.log("user get axios is error");
                 }
@@ -2458,9 +2469,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this5.total = data.total;
         _this5.from = data.from;
         _this5.to = data.to;
-        _this5.authLoginError = false;
+        _this5.getStatus = false;
       })["catch"](function () {
-        _this5.authLoginError = true;
+        _this5.getStatus = true;
         console.log("認証エラー");
       });
     },
@@ -4988,24 +4999,26 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "p-account__followbtn" }, [
-        _c(
-          "button",
-          {
-            staticClass: "p-btn__follow",
-            class: { isFollowedColor: _vm.isFollowedFlg },
-            attrs: { disabled: _vm.disableFollowBtn },
-            on: {
-              click: function($event) {
-                return _vm.followEvent(_vm.info.id_str)
-              }
-            }
-          },
-          [
-            _vm.isFollowedFlg
-              ? _c("a", [_vm._v("フォロー中")])
-              : _c("a", [_vm._v("フォローする")])
-          ]
-        )
+        _vm.loginFromTwitter
+          ? _c(
+              "button",
+              {
+                staticClass: "p-btn__follow",
+                class: { isFollowedColor: _vm.isFollowedFlg },
+                attrs: { disabled: _vm.disableFollowBtn },
+                on: {
+                  click: function($event) {
+                    return _vm.followEvent(_vm.info.id_str)
+                  }
+                }
+              },
+              [
+                _vm.isFollowedFlg
+                  ? _c("a", [_vm._v("フォロー中")])
+                  : _c("a", [_vm._v("フォローする")])
+              ]
+            )
+          : _vm._e()
       ])
     ])
   ])
@@ -5038,46 +5051,65 @@ var render = function() {
     _c("div", { staticClass: "c-main__function-head" }, [
       _vm._m(0),
       _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "c-alert__caution1",
+          staticStyle: { "font-size": "13px" }
+        },
+        [
+          _vm.loginFromTwitter == false
+            ? _c("p", [
+                _vm._v(
+                  "フォロー機能をご利用の際は、twitterアカウントでログインしてください"
+                )
+              ])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
       _c("table", { staticClass: "table" }, [
         _c("thead", [
           _c("tr", { staticClass: "p-account__tr" }, [
-            _c("th", { staticClass: "p-account__th" }, [
-              _vm.isFollowedFlg
-                ? _c("div", { staticClass: "p-account__flex" }, [
-                    _c("div", { staticClass: "p-btn__autofollow" }, [
-                      _c("i", {
-                        staticClass: "fas fa-toggle-on fa-lg fa-fw",
-                        on: {
-                          click: function($event) {
-                            return _vm.autoFollow()
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "p-account__autobtn text-color" },
-                      [_vm._v("自動フォロー中")]
-                    )
-                  ])
-                : _c("div", { staticClass: "p-account__flex" }, [
-                    _c("div", { staticClass: "p-btn__autofollow" }, [
-                      _c("i", {
-                        staticClass: "fas fa-toggle-off fa-lg fa-fw",
-                        on: {
-                          click: function($event) {
-                            return _vm.autoFollow()
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "p-account__autobtn" }, [
-                      _vm._v("自動フォロー")
-                    ])
-                  ])
-            ]),
+            _vm.loginFromTwitter
+              ? _c("th", { staticClass: "p-account__th" }, [
+                  _vm.isFollowedFlg
+                    ? _c("div", { staticClass: "p-account__flex" }, [
+                        _c("div", { staticClass: "p-btn__autofollow" }, [
+                          _c("i", {
+                            staticClass: "fas fa-toggle-on fa-lg fa-fw",
+                            on: {
+                              click: function($event) {
+                                return _vm.autoFollow()
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "p-account__autobtn text-color" },
+                          [_vm._v("自動フォロー中")]
+                        )
+                      ])
+                    : _c("div", { staticClass: "p-account__flex" }, [
+                        _c("div", { staticClass: "p-btn__autofollow" }, [
+                          _c("i", {
+                            staticClass: "fas fa-toggle-off fa-lg fa-fw",
+                            on: {
+                              click: function($event) {
+                                return _vm.autoFollow()
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "p-account__autobtn" }, [
+                          _vm._v("自動フォロー")
+                        ])
+                      ])
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("th", { staticClass: "p-account__th" }, [
               _c("div", { staticClass: "p-paginate__navigation" }, [
@@ -5322,10 +5354,12 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm.authLoginError
+    _vm.getStatus
       ? _c("div", { staticClass: "container" }, [
           _c("div", [
-            _vm._v("twitterアカウントでログインすることでご利用頂けます")
+            _vm._v(
+              "アカウント情報を取得できませんでした。時間をおいて更新をしてください。"
+            )
           ])
         ])
       : _c(
@@ -5343,7 +5377,8 @@ var render = function() {
                     _c("button-component", {
                       attrs: {
                         info: info,
-                        disableFollowBtn: _vm.disableFollowBtn
+                        disableFollowBtn: _vm.disableFollowBtn,
+                        loginFromTwitter: _vm.loginFromTwitter
                       },
                       on: {
                         followEvent: function($event) {
@@ -5372,7 +5407,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("p", { staticClass: "p-account__text-top" }, [
         _vm._v(
-          "\n        twitter上で「仮想通貨」というキーワードに関連する\n        アカウントをフォローできます。(1日1回更新)\n      "
+          "\n        仮想通貨に関連するアカウントをフォローできます。(1日1回更新)\n      "
         )
       ])
     ])

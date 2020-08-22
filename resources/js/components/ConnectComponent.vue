@@ -5,16 +5,18 @@
       <div class="p-account__text-top-icon">
         <i class="fas fa-address-book"></i>
         <p class="p-account__text-top">
-          twitter上で「仮想通貨」というキーワードに関連する
-          アカウントをフォローできます。(1日1回更新)
+          仮想通貨に関連するアカウントをフォローできます。(1日1回更新)
         </p>
+      </div>
+      <div class="c-alert__caution1" style="font-size: 13px;">
+        <p v-if="loginFromTwitter == false">フォロー機能をご利用の際は、twitterアカウントでログインしてください</p>
       </div>
 
       <table class="table">
         <!-- 見出し -->
         <thead>
           <tr class="p-account__tr">
-            <th class="p-account__th">
+            <th class="p-account__th" v-if="loginFromTwitter">
               <div class="p-account__flex" v-if="isFollowedFlg">
                 <div class="p-btn__autofollow">
                   <i class="fas fa-toggle-on fa-lg fa-fw" @click="autoFollow()"></i>
@@ -107,13 +109,13 @@
     <div class="container" v-if="isLoading">
       <div>Loading...</div>
     </div>
-    <div class="container"  v-if="authLoginError">
-      <div>twitterアカウントでログインすることでご利用頂けます</div>
+    <div class="container"  v-if="getStatus">
+      <div>アカウント情報を取得できませんでした。時間をおいて更新をしてください。</div>
     </div>
     <div id="app" v-else>
       <transition-group name="list" tag="div">
         <div v-for="(info,key) in accountdata" :key="info.id_str">
-          <button-component :info="info" @followEvent="follow(key, info, current_page)" :disableFollowBtn="disableFollowBtn" />
+          <button-component :info="info" @followEvent="follow(key, info, current_page)" :disableFollowBtn="disableFollowBtn" :loginFromTwitter="loginFromTwitter" />
         </div>
       </transition-group>
     </div>
@@ -140,7 +142,8 @@ export default {
       disableFollowBtn: false,
       autoFlg: false,
       isLoading: false,
-      authLoginError: false,
+      getStatus: false,
+      loginFromTwitter: true,
     };
   },
   methods: {
@@ -190,7 +193,6 @@ export default {
         this.loginUserName == updateTarget.updateName
       ) {
         this.isFollowedFlg = updateTarget.updateFlg;
-        console.log("read");
       } else {
         console.log(updateTarget);
         console.log("idが違うか自動フォローがoffになっています");
@@ -203,7 +205,14 @@ export default {
       if (usersRes.status == "200") {
         this.loginUserId = usersRes.data.id;
         this.loginUserName = usersRes.data.twitter_name;
-        console.log(usersRes.data);
+        console.log(usersRes.data.twitter_Id);
+        // もしtwitterIdがない（twitterでのログインでなければ）フォローボタンを表示しない
+        if(usersRes.data.twitter_Id === undefined ){
+          this.loginFromTwitter = false;
+        }else{
+          this.loginFromTwitter = true;
+        }
+        console.log(this.loginFromTwitter);
       } else {
         console.log("user get axios is error");
       }
@@ -315,10 +324,10 @@ export default {
           this.total = data.total;
           this.from = data.from;
           this.to = data.to;
-          this.authLoginError = false;
+          this.getStatus = false;
         })
         .catch( () => {
-          this.authLoginError = true;
+          this.getStatus = true;
           console.log("認証エラー");
         });
     },

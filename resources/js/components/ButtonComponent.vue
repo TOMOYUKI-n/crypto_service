@@ -23,6 +23,7 @@
       </div>
       <div class="p-account__followbtn">
         <button
+          v-if="loginFromTwitter"
           class="p-btn__follow"
           @click="followEvent(info.id_str)"
           :class="{ isFollowedColor: isFollowedFlg }"
@@ -40,7 +41,7 @@
 import axios from "axios";
 
 export default {
-  props: ["value", "info", "disableFollowBtn"],
+  props: ["value", "info", "disableFollowBtn", "loginFromTwitter"],
   data: () => {
     return {
       isFollowedFlg: false,

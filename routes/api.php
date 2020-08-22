@@ -31,12 +31,20 @@ Route::middleware('api')->get('/account', function (Request $request) {
     // ログインユーザーのフォロー済みアカウントIDを取得
     $Follows = Follows::select("accountId")->where("userId", "=", $loginUserId)->get();
     
-    // 配列形式にする
-    for ($i = 0; $i < count($Follows); $i++) {
-        $array[$i] = $Follows[$i]["accountId"];
+    // フォロー済みがいるかどうか
+    if(count($Follows) == 0){
+        // 条件なし抽出する
+        Log::Debug("条件なし抽出する");
+        return Temp::select("id_str", "name", "screen_name", "description", "friends_count", "followers_count", "text")->paginate(50);
+    }else{
+        Log::Debug("条件あり抽出する");
+        // 配列形式にする
+        for ($i = 0; $i < count($Follows); $i++) {
+            $array[$i] = $Follows[$i]["accountId"];
+        }
+        // フォローしていないアカウントのみ抽出する
+        return Temp::select("id_str", "name", "screen_name", "description", "friends_count", "followers_count", "text")->whereNotIn("id_str", $array)->paginate(50);
     }
-    // フォローしていないアカウントのみ抽出する
-    return Temp::select("id_str", "name", "screen_name", "description", "friends_count", "followers_count", "text")->whereNotIn("id_str", $array)->paginate(50);
 });
 
 Route::middleware('api')->get('/trend', function (Request $request) {

@@ -145,27 +145,6 @@ class IndexController extends Controller
         }
     }
 
-    // public function list()
-    // {
-    //     try {
-    //         // フォローしているアカウントリスト
-    //         $loginUserId = Auth::user()->id;
-    //         $Follows = Follows::select("accountId")->where("userId", "=", $loginUserId)->get();
-    //         // 配列形式にする
-    //         for ($i = 0; $i < count($Follows); $i++) {
-    //             $array[$i] = $Follows[$i]["accountId"];
-    //         }
-    //         // フォローしていないアカウントのみ抽出する
-    //         for ($i = 0; $i < count($Follows); $i++) {
-    //             $TargetAccounts = Temp::select("id_str","name","screen_name","description","friends_count","followers_count","text")->whereNotIn("id_str", [$array[$i]])->get();
-    //         }
-    //         return $TargetAccounts;
-    //     } catch (\Exception $e) {
-    //         Log::error($e->getMessage());
-    //         Log::Debug("error");
-    //     }
-    // }
-
     /**
      * 自動フォローをする処理
      * バッチ実行リストに登録する処理
