@@ -11,7 +11,7 @@ class Time extends Model
 {
     //
     protected $fillable = [
-        'get_dates',
+        'get_dates','days_id'
     ];
     /*
     public function coins()

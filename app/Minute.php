@@ -9,6 +9,7 @@ class Minute extends Model
 {
     //
     protected $fillable = [
+        'datetime',
         'BTC',
         'ETH',
         'ETC',

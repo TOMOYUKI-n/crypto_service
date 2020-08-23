@@ -53,7 +53,6 @@ Route::middleware('api')->get('/trend', function (Request $request) {
     $dt_new = new Carbon(strval($dt));
     $dt_new->subHour();
     $date = substr($dt_new, 0, 13);
-    $date = "2020-08-14 13";
     Log::Debug($date);
     $q_time = $date;
 
@@ -79,7 +78,6 @@ Route::middleware('api')->get('/trend/day', function (Request $request) {
     $dt_new = new Carbon(strval($dt));
     $dt_new->subDay();
     $date = substr($dt_new, 0, 10);
-    $date = "2020-08-13";
     Log::Debug($date);
     $q_time = $date;
 
@@ -105,7 +103,6 @@ Route::middleware('api')->get('/trend/week', function (Request $request) {
     $dt_new = new Carbon(strval($dt));
     $dt_new->subWeek();
     $date = substr($dt_new, 0, 10);
-    //$date = "2020-08-14";
     Log::Debug($date);
     $q_time = $date;
 

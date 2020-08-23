@@ -51,6 +51,10 @@ class ClearTable extends Command
         DB::table('hours')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         /**/
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('times')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         
     }
 }

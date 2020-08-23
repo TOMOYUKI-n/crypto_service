@@ -26,7 +26,7 @@ class Tweet extends Model
 
     /**
      * 自動フォロー処理時　呼び出し関数
-     * 10分バッチ対応可能
+     * herokuの10分バッチ使用対応
      */
     public static function autoFollowBatch($loginId, $TargetAccounts)
     {

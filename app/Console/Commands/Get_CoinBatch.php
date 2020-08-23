@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Day;
 use App\User;
 use App\Temp;
+use App\Time;
 use App\Tweet;
 use App\Follows;
 use App\Intercoin;
@@ -13,6 +15,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Faker\Generator as Faker;
+
 
 class Get_CoinBatch extends Command
 {
@@ -47,6 +51,6 @@ class Get_CoinBatch extends Command
      */
     public function handle()
     {
-
+        //
     }
 }

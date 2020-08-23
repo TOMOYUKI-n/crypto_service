@@ -45,29 +45,25 @@
         
         <div class="p-top__section1">
             <img class="p-top__img__trend" src="{{ asset('/images/twitter-crop.jpg') }}" alt="trend">
-            <div class="p-top__section__subtitle">Twitterの仮想通貨のトレンドがわかる</div>
+            <div class="p-top__section__subtitle">仮想通貨のトレンドがわかる</div>
             <p class="p-top__section__text">
-            もうtwitterにかじりつくことはありません。
-            これひとつでTwitter上に出回る仮想通貨の情報を収集し、
-            トレンドを把握できます
+            これひとつでTwitter上にあふれる仮想通貨の情報を収集し、
+            トレンドを把握できます。
             </p>
         </div>
         <div class="p-top__section2">
             <img class="p-top__img__follow" src="{{ asset('/images/smartphone.jpg') }}" alt="follow">
             <div class="p-top__section__subtitle">アカウントを自動フォロー</div>
             <p class="p-top__section__text">
-                通常、仮想通貨のユーザーをフォローしきれません。
-                しかしここでは自動で仮想通貨に関するアカウントを全てフォローできます。
-                あなたの時間はより分析へ充てることができます。
+                当サービスでは自動で仮想通貨に関するアカウントを全てフォローできます。
             </p>
         </div>
         <div class="p-top__section3">
             <img class="p-top__img__news" src="{{ asset('/images/newsletter-crop.png') }}" alt="news">
             <div class="p-top__section__subtitle">最新の情報をお届けします</div>
             <p class="p-top__section__text">
-                もう忙しい合間を縫ってニュースサイトを読み漁る必要はありません。
-                最新の仮想通貨に関連するニュースを揃えております。これひとつで
-                情報収集が可能になります。
+                忙しい合間を縫ってニュースサイトを読み漁る必要はありません。
+                最新の仮想通貨に関連するニュースを揃えております。
             </p>
         </div>
     </div>
