@@ -42,17 +42,11 @@ export default {
     dateExchange() {
       // 日付変換
       const getDates = this.newsline[0].lastBuildDate;
-      console.log(getDates);
       const year = getDates.substr(0, 4);
       const month = getDates.substr(5, 2);
       const days = getDates.substr(8, 2);
       const hours = getDates.substr(11, 2);
       const times = getDates.substr(14, 2);
-      console.log(year);
-      console.log(month);
-      console.log(days);
-      console.log(hours);
-      console.log(times);
       const Dates =
         year +
         "年" +

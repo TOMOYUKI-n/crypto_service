@@ -3,8 +3,8 @@
     <div id="login" class="p-login__container">
       <div>
         <!--入力エリア-->
-        <div class="p-login__inputError" v-if="errors.email">{{ message }}</div>
-        <div class="p-login__inputError" v-if="errors.password">{{ message }}</div>
+        <div class="p-login__inputError" v-if="errors.email">{{ errors.email }}</div>
+        <div class="p-login__inputError" v-if="errors.password">{{ errors.password }}</div>
 
         <div class="p-login__inner">
           <i class="fas fa-user"></i>
@@ -65,11 +65,9 @@ export default {
           location.href = "/trend";
         })
         .catch((error) => {
+          // エラー時のコメントをlaravelからキャッチする
           console.log("NG");
           const responseErrors = error.response.data.errors;
-          const errorMessage = error.response.data;
-          this.exchange(errorMessage.message);
-        
           const errorsData = {};
           for (let key in responseErrors) {
             errorsData[key] = responseErrors[key][0];
@@ -101,15 +99,6 @@ export default {
       this.password = loginArray.password;
       console.log("get data");
     },
-    exchange(message) {
-        if(message == "The given data was invalid."){
-            this.message = "メールアドレスまたはパスワードを正しく入力してください";
-        }else if(message == "validation.required"){
-            this.message = "入力してください";
-        // }else{
-        //     this.message = "メールアドレスまたはパスワードが正しくありません.";
-        }
-    }
   },
   mounted() {
     this.getLoginData();

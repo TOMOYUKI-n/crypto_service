@@ -2160,7 +2160,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 // フォロー処理を呼ぶ
-                _this.manualFollow(info.id_str);
+                _this.manualFollow(info.id_str); // 強制的にリロードする
+
 
                 _context.next = 3;
                 return _this.accountdata.splice(key, 1);
@@ -2174,7 +2175,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.load(current_page);
 
               case 7:
-                console.log("follow");
+                console.log("follow処理が実行されました");
 
               case 8:
               case "end":
@@ -2185,7 +2186,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     autoSaveLocalStrage: function autoSaveLocalStrage(isFollowedFlg, loginUserId, loginUserName) {
-      // データを格納する
+      // localstorageにデータを格納する
       var isFollowedFlgs = JSON.stringify(isFollowedFlg);
       var loginUserIds = JSON.stringify(loginUserId);
       var loginUserNames = JSON.stringify(loginUserName);
@@ -2195,7 +2196,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       console.log("write");
     },
     autoCatchLocalStrage: function autoCatchLocalStrage() {
-      // データを呼び出し、一致するか確認　-> 一致すればフラグを更新
+      // localstorageからデータを呼び出し、一致するか確認　-> 一致すればフラグを更新
       var isFollowedFlgData = localStorage.getItem("isFollowedFlg");
       var loginUserIdData = localStorage.getItem("loginUserId");
       var loginUserNameData = localStorage.getItem("loginUserName");
@@ -2225,7 +2226,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 updateTarget = _context2.sent;
 
-                //console.log(updateTarget.updateFlg);
+                // localstorageにあるデータがログインしているユーザーと一緒かどうかチェック
                 if (updateTarget.updateFlg == true && _this2.loginUserId == updateTarget.updateId && _this2.loginUserName == updateTarget.updateName) {
                   _this2.isFollowedFlg = updateTarget.updateFlg;
                 } else {
@@ -2259,10 +2260,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (usersRes.status == "200") {
                   _this3.loginUserId = usersRes.data.id;
-                  _this3.loginUserName = usersRes.data.twitter_name;
-                  console.log(usersRes.data.twitter_Id); // もしtwitterIdがない（twitterでのログインでなければ）フォローボタンを表示しない
+                  _this3.loginUserName = usersRes.data.twitter_name; // もしトークンがない場合（twitterでのログインでなければ）フォローボタンを表示しない
 
-                  if (usersRes.data.twitter_Id === undefined) {
+                  if (usersRes.data.twitter_oauth_token === null) {
                     _this3.loginFromTwitter = false;
                   } else {
                     _this3.loginFromTwitter = true;
@@ -2288,7 +2288,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                console.log("manualFollow 実行します!");
+                console.log("手動Follow 実行します!");
                 params = {
                   user_id: key
                 };
@@ -2342,11 +2342,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    // autoFollows() {
-    //   this.isFollowedFlg = !this.isFollowedFlg;
-    //   this.disableFollowBtn = !this.disableFollowBtn;
-    //   console.log(this.disableFollowBtn);
-    // },
     autoFollow: function autoFollow() {
       var _this4 = this;
 
@@ -2436,31 +2431,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee5);
       }))();
     },
-    followingCheckApi: function followingCheckApi() {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                console.log("check!!");
-                axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/account/user/followcheck").then(function (res) {
-                  var isFollow = res.data;
-                  console.log(res.data);
-                })["catch"](function (error) {
-                  console.log(response.error.data.following);
-                });
-
-              case 2:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6);
-      }))();
-    },
     load: function load(page) {
       var _this5 = this;
 
+      // アカウント情報を表示する
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/account?page=" + page).then(function (_ref) {
         var data = _ref.data;
         _this5.accountdata = data.data;
@@ -2475,6 +2449,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         console.log("認証エラー");
       });
     },
+    // 以下、ページング時の処理
     change: function change(page) {
       if (page >= 1 && page <= this.last_page) this.load(page);
       console.log("async action");
@@ -2519,36 +2494,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return page;
     },
+    // (( 遅延用の関数 ))
     delay: function delay(timeout) {
       return new Promise(function (resolve) {
         setTimeout(resolve, timeout);
       });
-    },
-    fixData: function fixData() {
-      var _this6 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
-        var res, lists;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                _context7.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/auth/following");
-
-              case 2:
-                res = _context7.sent;
-                lists = res.data;
-                console.log(lists);
-                _this6.accountdata = lists;
-
-              case 6:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7);
-      }))();
     }
   },
   computed: {
@@ -2561,30 +2511,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.load(1);
   },
   created: function created() {
-    var _this7 = this;
+    var _this6 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context8.prev = _context8.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
-              _this7.isLoading = true;
-              _context8.next = 3;
-              return _this7.getUserAccount();
+              _this6.isLoading = true;
+              _context6.next = 3;
+              return _this6.getUserAccount();
 
             case 3:
-              _context8.next = 5;
-              return _this7.userCheckSessions();
+              _context6.next = 5;
+              return _this6.userCheckSessions();
 
             case 5:
-              _this7.isLoading = false;
+              _this6.isLoading = false;
 
             case 6:
             case "end":
-              return _context8.stop();
+              return _context6.stop();
           }
         }
-      }, _callee8);
+      }, _callee6);
     }))();
   }
 });
@@ -2666,12 +2616,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log("OK");
         location.href = "/trend";
       })["catch"](function (error) {
+        // エラー時のコメントをlaravelからキャッチする
         console.log("NG");
         var responseErrors = error.response.data.errors;
-        var errorMessage = error.response.data;
-
-        _this.exchange(errorMessage.message);
-
         var errorsData = {};
 
         for (var key in responseErrors) {
@@ -2707,14 +2654,6 @@ __webpack_require__.r(__webpack_exports__);
       this.email = loginArray.email;
       this.password = loginArray.password;
       console.log("get data");
-    },
-    exchange: function exchange(message) {
-      if (message == "The given data was invalid.") {
-        this.message = "メールアドレスまたはパスワードを正しく入力してください";
-      } else if (message == "validation.required") {
-        this.message = "入力してください"; // }else{
-        //     this.message = "メールアドレスまたはパスワードが正しくありません.";
-      }
     }
   },
   mounted: function mounted() {
@@ -2777,17 +2716,11 @@ __webpack_require__.r(__webpack_exports__);
     dateExchange: function dateExchange() {
       // 日付変換
       var getDates = this.newsline[0].lastBuildDate;
-      console.log(getDates);
       var year = getDates.substr(0, 4);
       var month = getDates.substr(5, 2);
       var days = getDates.substr(8, 2);
       var hours = getDates.substr(11, 2);
       var times = getDates.substr(14, 2);
-      console.log(year);
-      console.log(month);
-      console.log(days);
-      console.log(hours);
-      console.log(times);
       var Dates = year + "年" + month + "月" + days + "日" + " " + hours + "月" + times + "時" + " 更新";
       this.getTimes = Dates;
     }
@@ -5490,13 +5423,13 @@ var render = function() {
       _c("div", [
         _vm.errors.email
           ? _c("div", { staticClass: "p-login__inputError" }, [
-              _vm._v(_vm._s(_vm.message))
+              _vm._v(_vm._s(_vm.errors.email))
             ])
           : _vm._e(),
         _vm._v(" "),
         _vm.errors.password
           ? _c("div", { staticClass: "p-login__inputError" }, [
-              _vm._v(_vm._s(_vm.message))
+              _vm._v(_vm._s(_vm.errors.password))
             ])
           : _vm._e(),
         _vm._v(" "),

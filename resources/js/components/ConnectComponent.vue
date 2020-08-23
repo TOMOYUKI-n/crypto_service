@@ -150,13 +150,14 @@ export default {
     async follow(key, info, current_page) {
       // フォロー処理を呼ぶ
       this.manualFollow(info.id_str);
+      // 強制的にリロードする
       await this.accountdata.splice(key, 1);
       await this.delay(4000);
       await this.load(current_page);
-      console.log("follow");
+      console.log("follow処理が実行されました");
     },
     autoSaveLocalStrage(isFollowedFlg, loginUserId, loginUserName) {
-      // データを格納する
+      // localstorageにデータを格納する
       const isFollowedFlgs = JSON.stringify(isFollowedFlg);
       const loginUserIds = JSON.stringify(loginUserId);
       const loginUserNames = JSON.stringify(loginUserName);
@@ -167,7 +168,7 @@ export default {
       console.log("write");
     },
     autoCatchLocalStrage() {
-      // データを呼び出し、一致するか確認　-> 一致すればフラグを更新
+      // localstorageからデータを呼び出し、一致するか確認　-> 一致すればフラグを更新
       const isFollowedFlgData = localStorage.getItem("isFollowedFlg");
       const loginUserIdData = localStorage.getItem("loginUserId");
       const loginUserNameData = localStorage.getItem("loginUserName");
@@ -186,7 +187,7 @@ export default {
     },
     async userCheckSessions() {
       const updateTarget = await this.autoCatchLocalStrage();
-      //console.log(updateTarget.updateFlg);
+      // localstorageにあるデータがログインしているユーザーと一緒かどうかチェック
       if (
         updateTarget.updateFlg == true &&
         this.loginUserId == updateTarget.updateId &&
@@ -205,9 +206,8 @@ export default {
       if (usersRes.status == "200") {
         this.loginUserId = usersRes.data.id;
         this.loginUserName = usersRes.data.twitter_name;
-        console.log(usersRes.data.twitter_Id);
-        // もしtwitterIdがない（twitterでのログインでなければ）フォローボタンを表示しない
-        if(usersRes.data.twitter_Id === undefined ){
+        // もしトークンがない場合（twitterでのログインでなければ）フォローボタンを表示しない
+        if(usersRes.data.twitter_oauth_token === null ){
           this.loginFromTwitter = false;
         }else{
           this.loginFromTwitter = true;
@@ -218,7 +218,7 @@ export default {
       }
     },
     async manualFollow(key) {
-      console.log("manualFollow 実行します!");
+      console.log("手動Follow 実行します!");
       let params = {
         user_id: key,
       };
@@ -247,11 +247,6 @@ export default {
         }
       }
     },
-    // autoFollows() {
-    //   this.isFollowedFlg = !this.isFollowedFlg;
-    //   this.disableFollowBtn = !this.disableFollowBtn;
-    //   console.log(this.disableFollowBtn);
-    // },
     async autoFollow() {
       if (this.isFollowedFlg === false) {
         // on
@@ -304,19 +299,8 @@ export default {
         }
       }
     },
-    async followingCheckApi() {
-      console.log("check!!");
-      axios
-        .get("/account/user/followcheck")
-        .then((res) => {
-          const isFollow = res.data;
-          console.log(res.data);
-        })
-        .catch((error) => {
-          console.log(response.error.data.following);
-        });
-    },
     load(page) {
+        // アカウント情報を表示する
         axios.get("/api/account?page=" + page).then(({ data }) => {
           this.accountdata = data.data;
           this.current_page = data.current_page;
@@ -331,6 +315,7 @@ export default {
           console.log("認証エラー");
         });
     },
+    // 以下、ページング時の処理
     change(page) {
       if (page >= 1 && page <= this.last_page) this.load(page);
       console.log("async action");
@@ -370,16 +355,11 @@ export default {
       }
       return page;
     },
+    // (( 遅延用の関数 ))
     delay(timeout) {
       return new Promise((resolve) => {
         setTimeout(resolve, timeout);
       });
-    },
-    async fixData() {
-      const res = await axios.get("/auth/following");
-      const lists = res.data;
-      console.log(lists);
-      this.accountdata = lists;
     },
   },
   computed: {
