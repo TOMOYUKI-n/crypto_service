@@ -5634,7 +5634,7 @@ var render = function() {
           "tr",
           {
             staticClass: "p-news__tr",
-            staticStyle: { "background-color": "#C5CAE9", "font-size": "13px" }
+            staticStyle: { "background-color": "#C5CAE9", "font-size": "14px" }
           },
           [
             _vm._m(0),

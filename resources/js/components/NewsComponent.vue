@@ -2,7 +2,7 @@
   <div class="p-news__section">
     <table class="table">
       <thead>
-        <tr class="p-news__tr" style="background-color: #C5CAE9; font-size: 13px;">
+        <tr class="p-news__tr" style="background-color: #C5CAE9; font-size: 14px;">
           <th class="p-news__th-icon">
             <i class="far fa-clock"></i>
           </th>
