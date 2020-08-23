@@ -42,13 +42,13 @@ class ClearTable extends Command
     public function handle()
     {
         
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        // DB::table('days')->truncate();
-        // DB::table('weeks')->truncate();
-        // DB::table('times')->truncate();
-        // DB::table('coins')->truncate();
-        // DB::table('hours')->truncate();
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('days')->truncate();
+        //DB::table('weeks')->truncate();
+        DB::table('times')->truncate();
+        DB::table('coins')->truncate();
+        //DB::table('hours')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         
     }
 }

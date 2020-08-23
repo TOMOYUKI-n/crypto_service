@@ -24,7 +24,6 @@ class CoinTableSeeder extends Seeder
             $date = substr($now, 0, 10);
             $id = DB::table('days')->select('id')->where('date', '=', $date)->first();
 
-
             //コインの配列化
             $coinsname_array = array("BTC", "ETH", "ETC", "LSK", "FCT", "XRP", "XEM", "LTC", "BCH", "MONA", "XLM", "QTUM", "DASH", "ZEC", "XMR", "REP");
             foreach ($coinsname_array as $key => $value) {
@@ -33,11 +32,20 @@ class CoinTableSeeder extends Seeder
 
             // 1日分のデータを格納
             for($j= 0; $j < count($coinsname_array); $j++){
+
+                if($Body[$j]['name'] == 'BTC'){
+                    $high = strval(rand(1239303, 1359303));
+                    $low = strval(rand(1222511, 1239303));
+                }else{
+                    $high = '不明';
+                    $low = '不明';
+                };
+
                 DB::table('coins')->insert([
                     [
                         'coin_name' => $Body[$j]['name'],
-                        'high' => strval(rand(101, 130)),
-                        'low' => strval(rand(96, 101)),
+                        'high' => $high,
+                        'low' => $low,
                         'created_at' => $now,
                         'updated_at' => $now,
                         'days_id' => $id->id,

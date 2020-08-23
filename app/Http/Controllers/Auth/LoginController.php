@@ -74,7 +74,7 @@ class LoginController extends Controller
         //twitterからユーザー情報を取得する
         try {
             $providerUser = \Socialite::with($provider)->user();
-            //追記　アクセストークン取得
+            //アクセストークン取得
             $token = $providerUser->token;
             $tokenSecret = $providerUser->tokenSecret;
 
@@ -92,7 +92,6 @@ class LoginController extends Controller
                     'twitter_id' => $providerUser->id,
                     'name' => $providerUser->getName(),
                     'twitter_name' => $providerUser->getName(),
-                    'twitter_avatar_original' => $providerUser->avatar_original,
                     'twitter_oauth_token' => $token,
                     'twitter_oauth_token_secret' => $tokenSecret,
                     'email' => $email,

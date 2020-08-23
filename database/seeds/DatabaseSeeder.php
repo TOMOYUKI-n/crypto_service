@@ -13,14 +13,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(
             [
+                // UserTableSeeder::class
                 DaysTableSeeder::class,
                 TimesTableSeeder::class,
+                CoinTableSeeder::class,
                 HoursTableSeeder::class,
                 WeeksTableSeeder::class,
                 AccountTableSeeder::class,
                 TempTableSeeder::class,
-                CoinTableSeeder::class,
-                UserTableSeeder::class
+                
             ]
         );
     }
