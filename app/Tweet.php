@@ -31,11 +31,17 @@ class Tweet extends Model
     public static function autoFollowBatch($loginId, $TargetAccounts)
     {
 
-        Log::Debug("LoginId");
+        Log::Debug("LoginId================");
         Log::Debug($loginId);
 
-        $userToken = DB::table("users")->select("twitter_oauth_token")->where("id", "=", $loginId)->first();
-        $userTokenSecret = DB::table("users")->select("twitter_oauth_token_secret")->where("id", $loginId)->first();
+        $token = DB::table("users")->select("twitter_oauth_token")->where("id", "=", $loginId)->first();
+        $tokenSecret = DB::table("users")->select("twitter_oauth_token_secret")->where("id", $loginId)->first();
+        
+        // Log::Debug($userToken->twitter_oauth_token);
+        // Log::Debug($userTokenSecret->twitter_oauth_token_secret);
+        $userToken = $token->twitter_oauth_token;
+        $userTokenSecret = $tokenSecret->twitter_oauth_token_secret;
+
         $config = config('twitter');
         $Twitter = new TwitterOAuth($config['api_key'], $config['secret_key'], $userToken, $userTokenSecret);
 
@@ -50,13 +56,16 @@ class Tweet extends Model
                 // リストのアカウントをフォローしていく
                 for ($i = 0; $i < $limitNum; $i++) {
                     Log::debug("follows 実行");
-                    $twitter_api_post = $Twitter->post("friendships/create", ["user_id" => $TargetAccounts[$i]]);
+                    // 順に実行
+                    $createUserId = $TargetAccounts[$i]["id_str"]["id_str"];
+
+                    $twitter_api_post = $Twitter->post("friendships/create", ["user_id" => $createUserId]);
                     $following = $twitter_api_post->following;
-                    $res = array("following" => $following);
+                    
                     Log::debug("follows 実行完了　フォローしました");
 
                     // フォローを保存
-                    Follows::GeneratefollowsList($userId, $loginId);
+                    Follows::GeneratefollowsList($createUserId, $loginId);
                     Log::Debug("FollowDBに保存しました. 一時sleepします");
                     sleep($limitTime);
                     Log::Debug("再開します");

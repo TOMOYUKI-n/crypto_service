@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Day;
+use App\Auto;
 use App\User;
 use App\Temp;
 use App\Time;
@@ -52,5 +53,30 @@ class Get_CoinBatch extends Command
     public function handle()
     {
         //
+        $tempCount = DB::table('temp')->count();
+        log::Debug("tempのトータルレコード数=================");
+        log::Debug($tempCount);
+
+        $followsNum = Follows::select("userId")->where("userId", "=", 2)->count();
+        log::Debug($followsNum);
+
+        $loopNum = $tempCount - 1;
+        log::Debug("ループする数=================");      
+        log::Debug($loopNum);
+
+        $Follows = Follows::select("accountId")->where("userId", "=", 2)->get();
+
+        for($i = 0; $i < $followsNum; $i++)
+        {
+            $array[$i] = $Follows[$i]["accountId"];;
+        }
+        $array = array(0 => "1735344702");
+        log::Debug("================");
+        log::Debug($array);
+        
+        for($i=0; $i < $loopNum; $i++){
+            $TargetAccounts[$i]["id_str"] = Temp::select("id_str")->whereNotIn("id_str", [ $array ] )->first();
+        }
+        Log::Debug(count($TargetAccounts));
     }
 }

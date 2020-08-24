@@ -6,7 +6,6 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Auto;
 use App\Follows;
 use App\Intercoin;
-use App\Temp;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -154,37 +153,34 @@ class IndexController extends Controller
         $loginId = $request->loginId;
         // responce定義
         $autoResOk = array("status" => 200);
-        $autoResErr = array("status" => "Error");
+        $autoResErr = array("status" => 400);
 
         // ログインユーザーがautoフラグ1であるか確認する
         $loginUser = Auto::select("autoFlg")->where("userId", "=", $loginId)->first();
-        var_dump($loginUser);
-
+        // レコードなしの場合は新規登録なので1をセットする
         Log::debug("== 処理実行 ==");
-        if ($loginUser == null) {$loginUser["autoFlg"] = 0;};
-        Log::debug($loginUser);
 
-        if ($loginUser["autoFlg"] == 0) {
-            // 0なら1に変更し,実行対象にする
-            try {
-                Auto::autoFlgSaved($loginId);
-                return $autoResOk;
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
-                Log::Debug("== error ==");
-                return $autoResErr;
+        // 新規登録なら0　後に１で登録させる
+        if ($loginUser == null) {
+            $loginUser["autoFlg"] = 0;
+        };
+
+        try {
+            if ($loginUser["autoFlg"] == 0) {
+                // 0なら1に変更し,実行対象にする
+                Auto::autoFlgSavedOne($loginId);
+            } else {
+                // 1なら0に変更し,実行対象外にする
+                Auto::autoFlgSavedZero($loginId);
             }
-        } else {
-            // 1なら0に変更し,実行対象外にする
-            try {
-                Auto::autoFlgDelete($loginId);
-                return $autoResOk;
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
-                Log::Debug("== error ==");
-                return $autoResErr;
-            }
+            Log::Debug("autoFollows で実行リストへの登録が完了しました");
+            return $autoResOk;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            Log::Debug("autoFollows でバッチ対象者の保存に失敗しました");
+            return $autoResErr;
         }
+
     }
 
     public function getUsers()

@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         Commands\ResetRunDay::class,
         Commands\ResetRunWeekly::class,
         Commands\TimeCatchCommand::class,
+        Commands\AutoFollowCommand::class,
     ];
 
     /**

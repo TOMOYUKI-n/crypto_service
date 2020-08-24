@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Tweet;
 use App\Coin;
 use App\Time;
+use App\Temp;
 use App\Week;
 use App\Day;
 use App\Hour;
@@ -26,14 +27,14 @@ class AutoFollowCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'command:autoFollow';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'autoDBに存在するフラグ1のユーザーに対して自動フォローを実行します';
 
     /**
      * Create a new command instance.
@@ -53,9 +54,9 @@ class AutoFollowCommand extends Command
     public function handle()
     {
         Log::debug("AutoFollowCommamdバッチ処理を実行します");
-        // autoフラグが1のユーザーを取得
+        // autoフラグが1のユーザーを取得..
         $userList = Auto::autoUserList();
-        if(is_array($userList)){
+        if(empty($userList)){
             Log::Debug("自動フォロー登録者がいません.処理を終了します.");
             return;
         }
@@ -63,11 +64,14 @@ class AutoFollowCommand extends Command
         // ユーザー分くりかえす
         for( $n = 0; $n < count($userList); $n++)
         {
-            Log::debug("===userList===");
-            Log::debug($userList[$i]);
+            Log::debug("===userList　繰り返す===");
             try{
                 // ログインユーザーにfollowしているアカウントがあるか確認
                 $followsNum = Follows::select("userId")->where("userId", "=", $userList[$n])->count();
+
+                // tempのトータルレコード数
+                $tempCount = DB::table('temp')->count();
+
                 if($followsNum !== 0){
                     // フォローしているアカウントリスト
                     $Follows = Follows::select("accountId")->where("userId", "=", $userList[$n])->get();
@@ -76,24 +80,35 @@ class AutoFollowCommand extends Command
                     {
                         $array[$i] = $Follows[$i]["accountId"];
                     }
+
+                    // フォロー済みIDを除外するために、ループ数を調整
+                    $loopNum = $tempCount - 1;
+                    log::Debug("ループする数=================");
+                    log::Debug($loopNum);
+    
+
+
+
                     // フォローしていないアカウントのみ抽出する
-                    for($i = 0; $i < $followsNum; $i++)
-                    { 
-                        $TargetAccounts[$i] = Temp::select("id_str")->whereNotIn("id_str", [ $array[$i] ])->get();
+                    for($i=0; $i < $loopNum; $i++){
+                        $TargetAccounts[$i]["id_str"] = Temp::select("id_str")->whereNotIn("id_str", [ $array ] )->first();
                     }
-                    Log::Debug("フォローありの場合");
+                    Log::Debug("自動フォローする総数====");
                     Log::Debug(count($TargetAccounts));
 
                     // フォローする
+                        Log::Debug("フォローありの場合の実行");
+                        Log::Debug($userList[$n]);
                         $followRes = Tweet::autoFollowBatch($userList[$n],$TargetAccounts);
                         Log::Debug("フォローの結果==followRes==");
                         Log::Debug($followRes);
                 }else{
                     // 0件フォロー= tempの全員を抽出
-                    $TargetAccounts[$i] = Temp::select("id_str")->get();
+                    $TargetAccounts = Temp::select("id_str")->get();
                     Log::Debug("0件フォローの場合");
                     Log::Debug(count($TargetAccounts));
                         // フォローする
+                        Log::Debug($userList[$n]);
                         $followRes = Tweet::autoFollowBatch($userList[$n],$TargetAccounts);
                         Log::Debug("フォローの結果==followRes==");
                         Log::Debug($followRes);

@@ -26,6 +26,9 @@ footer{
         display: flex;
         box-sizing: border-box;
         margin-left: 5px;
+        @include mq(){
+            font-size: 14px;
+        }
     }
     &__info{
         -webkit-margin-before: 1em;
@@ -34,7 +37,9 @@ footer{
         margin-block-end: 1em;
         box-sizing: border-box;
         margin-left: 10px;
-
+        @include mq(){
+            font-size: 16px;
+        }
     }
     &__menu{
         display: flex;

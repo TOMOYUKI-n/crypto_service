@@ -251,17 +251,19 @@ export default {
       if (this.isFollowedFlg === false) {
         // on
         if (confirm("フォローを自動で実行しますか？（中断も可能です）")) {
-          this.isFollowedFlg = !this.isFollowedFlg;
-          this.disableFollowBtn = !this.disableFollowBtn;
+          this.isFollowedFlg = true;
+          this.disableFollowBtn = true;
           // ログインユーザーのidを渡す
           const params = { loginId: this.loginUserId };
           // API実行
           const autoFollow = await axios.post("/account/autofollows", params);
+          console.log(autoFollow);
           // データ受け取り
-          const autoFollowRes = autoFollow.data;
-          // レスポンス結果が following　であれば autoDBに　1　を登録
-          if (autoFollowRes == "following") {
+          const autoFollowRes = autoFollow.data.status;
+          if (autoFollowRes === 200) {
             this.autoFlg = true;
+          }else{
+            alert("通信に失敗しました、時間を置いて再度ご利用ください");
           }
           // フラグを更新
           this.loginUserName = this.loginUserName;
@@ -276,16 +278,18 @@ export default {
       } else {
         // off
         if (confirm("フォローを中断しますか？")) {
-          this.isFollowedFlg = !this.isFollowedFlg;
-          this.disableFollowBtn = !this.disableFollowBtn;
-          const params = { user_id: this.loginUserId };
+          this.isFollowedFlg = false;
+          this.disableFollowBtn = false;
+          // ログインユーザーのidを渡す
+          const params = { loginId: this.loginUserId };
           // 自動フォロー対象から外すために、フラグを更新する処理を行う
           const autoFollow = await axios.post("/account/autofollows", params);
-          const autoFollowRes = autoFollow.data.following;
-          console.log(autoFollowRes);
-          //　処理が正常に完了したらフラグを変更する
-          if (autoFollowRes == "following") {
+          // データ受け取り
+          const autoFollowRes = autoFollow.data.status;
+          if (autoFollowRes === 200) {
             this.autoFlg = false;
+          }else{
+            alert("通信に失敗しました、時間を置いて再度ご利用ください");
           }
           // 各種フラグ更新
           this.loginUserName = this.loginUserName;

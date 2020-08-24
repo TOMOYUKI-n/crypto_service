@@ -16231,6 +16231,11 @@ footer {
   box-sizing: border-box;
   margin-left: 5px;
 }
+@media screen and (max-width: 768px) {
+  .p-footer__copyright {
+    font-size: 14px;
+  }
+}
 .p-footer__info {
   -webkit-margin-before: 1em;
   margin-block-start: 1em;
@@ -16238,6 +16243,11 @@ footer {
   margin-block-end: 1em;
   box-sizing: border-box;
   margin-left: 10px;
+}
+@media screen and (max-width: 768px) {
+  .p-footer__info {
+    font-size: 16px;
+  }
 }
 .p-footer__menu {
   display: flex;

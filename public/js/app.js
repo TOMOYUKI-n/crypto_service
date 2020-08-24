@@ -2353,17 +2353,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context5.prev = _context5.next) {
               case 0:
                 if (!(_this4.isFollowedFlg === false)) {
-                  _context5.next = 16;
+                  _context5.next = 17;
                   break;
                 }
 
                 if (!confirm("フォローを自動で実行しますか？（中断も可能です）")) {
-                  _context5.next = 14;
+                  _context5.next = 15;
                   break;
                 }
 
-                _this4.isFollowedFlg = !_this4.isFollowedFlg;
-                _this4.disableFollowBtn = !_this4.disableFollowBtn; // ログインユーザーのidを渡す
+                _this4.isFollowedFlg = true;
+                _this4.disableFollowBtn = true; // ログインユーザーのidを渡す
 
                 params = {
                   loginId: _this4.loginUserId
@@ -2374,46 +2374,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 autoFollow = _context5.sent;
-                // データ受け取り
-                autoFollowRes = autoFollow.data; // レスポンス結果が following　であれば autoDBに　1　を登録
+                console.log(autoFollow); // データ受け取り
 
-                if (autoFollowRes == "following") {
+                autoFollowRes = autoFollow.data.status;
+
+                if (autoFollowRes === 200) {
                   _this4.autoFlg = true;
+                } else {
+                  alert("通信に失敗しました、時間を置いて再度ご利用ください");
                 } // フラグを更新
 
 
                 _this4.loginUserName = _this4.loginUserName;
                 _this4.loginUserId = _this4.loginUserId; // ローカルストレージに保存
 
-                _context5.next = 14;
+                _context5.next = 15;
                 return _this4.autoSaveLocalStrage(_this4.isFollowedFlg, _this4.loginUserId, _this4.loginUserName);
 
-              case 14:
+              case 15:
                 _context5.next = 30;
                 break;
 
-              case 16:
+              case 17:
                 if (!confirm("フォローを中断しますか？")) {
                   _context5.next = 30;
                   break;
                 }
 
-                _this4.isFollowedFlg = !_this4.isFollowedFlg;
-                _this4.disableFollowBtn = !_this4.disableFollowBtn;
+                _this4.isFollowedFlg = false;
+                _this4.disableFollowBtn = false; // ログインユーザーのidを渡す
+
                 _params = {
-                  user_id: _this4.loginUserId
+                  loginId: _this4.loginUserId
                 }; // 自動フォロー対象から外すために、フラグを更新する処理を行う
 
-                _context5.next = 22;
+                _context5.next = 23;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/autofollows", _params);
 
-              case 22:
+              case 23:
                 _autoFollow = _context5.sent;
-                _autoFollowRes = _autoFollow.data.following;
-                console.log(_autoFollowRes); //　処理が正常に完了したらフラグを変更する
+                // データ受け取り
+                _autoFollowRes = _autoFollow.data.status;
 
-                if (_autoFollowRes == "following") {
+                if (_autoFollowRes === 200) {
                   _this4.autoFlg = false;
+                } else {
+                  alert("通信に失敗しました、時間を置いて再度ご利用ください");
                 } // 各種フラグ更新
 
 
