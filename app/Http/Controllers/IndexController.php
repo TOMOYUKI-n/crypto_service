@@ -32,6 +32,10 @@ class IndexController extends Controller
         return view('policy');
     }
 
+    /**
+     * trend画面での集計
+     * @return trends
+     */
     public function trends(Request $request)
     {
         $q = $request->keyword;
@@ -183,6 +187,10 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * ログインユーザーの情報を取得する処理
+     * @return users
+     */
     public function getUsers()
     {
         $users = Auth::user();
@@ -190,6 +198,9 @@ class IndexController extends Controller
         return $users;
     }
 
+    /**
+     * newsの情報を渡す処理
+     */
     public function news()
     {
         //遷移するごとに関数実行

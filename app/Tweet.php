@@ -30,24 +30,27 @@ class Tweet extends Model
      */
     public static function autoFollowBatch($loginId, $TargetAccounts)
     {
-
+        // ログインIDの確認
         Log::Debug("LoginId================");
         Log::Debug($loginId);
 
+        // apiを叩くトークン情報のセット
         $token = DB::table("users")->select("twitter_oauth_token")->where("id", "=", $loginId)->first();
         $tokenSecret = DB::table("users")->select("twitter_oauth_token_secret")->where("id", $loginId)->first();
-        
-        // Log::Debug($userToken->twitter_oauth_token);
-        // Log::Debug($userTokenSecret->twitter_oauth_token_secret);
+
         $userToken = $token->twitter_oauth_token;
         $userTokenSecret = $tokenSecret->twitter_oauth_token_secret;
-
         $config = config('twitter');
+        
+        // 署名などの生成
         $Twitter = new TwitterOAuth($config['api_key'], $config['secret_key'], $userToken, $userTokenSecret);
 
-        // フォローする(15分に4回まで),秒数
-        // 3.75分間隔で実行(216秒間隔 ->ペースは{4人/15分 (384人/1日)}
-        // *twitterユーザー認証のlimit= 400のため
+        /**
+         * フォローする(15分に4回まで)
+         * herokuの10分バッチに合わせて5分程度で終わる様にする
+         * 3.75分間隔で実行(216秒間隔 ->ペースは{4人/15分 (384人/1日)}
+         * *twitterユーザー認証のlimit= 400
+         */
 
         $limitNum = 4;
         $limitTime = 216;
@@ -67,7 +70,9 @@ class Tweet extends Model
                     // フォローを保存
                     Follows::GeneratefollowsList($createUserId, $loginId);
                     Log::Debug("FollowDBに保存しました. 一時sleepします");
+                    
                     sleep($limitTime);
+
                     Log::Debug("再開します");
                 }
                 return $res = array("auto" => "OK");
@@ -79,7 +84,9 @@ class Tweet extends Model
         }
     }
 
-    // Daysに取得時間をインサート ==============================
+    /**
+     * Daysに取得時間をインサート
+     */
     public static function DaysInsert()
     {
         $day = new Day;
@@ -87,15 +94,21 @@ class Tweet extends Model
         $day['date'] = $d->format('Y-m-d');
         $day->save();
     }
-    // DB初期化 ==============================
+
+    /**
+     * DB初期化
+     */
     public static function Dbinit()
     {
         DB::table('tweet')->truncate();
     }
-// ==========================================================================================
+
+    // ==========================================================================================
     // minutes関連
     // ==========================================================================================
-    // 1 MinutesDBにレコードを作成 ==============================
+    /**
+     * 1 MinutesDBにレコードを作成
+     */
     public static function FirstMinutesDB()
     {
         // 登録するレコードidを返す
@@ -105,10 +118,12 @@ class Tweet extends Model
         $last_insert_id = $minutes->id;
         return $last_insert_id;
     }
-    // 2 TwitterAPIを呼び出してデータを取得する ==============================
+
+    /**
+     * 2 TwitterAPIを呼び出してデータを取得する
+     */
     public static function getTweetCountApi(string $word, int $max_id)
     {
-        //TwitterAPIを呼び出してデータを取得する
         $twitter_api = \Twitter::get("search/tweets", [
             'q' => $word,
             'count' => 100,
@@ -117,7 +132,9 @@ class Tweet extends Model
         return $twitter_api;
     }
 
-    // 3 ツイート保存する処理 ==============================
+    /**
+     * 3 ツイート保存する処理
+     */
     public static function TweetCountSave(object $twitter_api)
     {
         //ステータス情報の取得
@@ -136,7 +153,10 @@ class Tweet extends Model
             }
         }
     }
-    // 4 munitesDBに銘柄分のデータを保存 ==============================
+
+    /**
+     * 4 munitesDBに銘柄分のデータを保存
+     */
     public static function TweetDBtoMinutesDB(string $word_array, int $last_insert_id)
     {
         // 1レコードに tweetDBの一意レコードの総数を格納、カラム名は引数に入っている銘柄
@@ -147,10 +167,13 @@ class Tweet extends Model
 
     }
 
-// ==========================================================================================
+    // ==========================================================================================
     // hours関連
     // ==========================================================================================
-    // Timesに取得時間をインサート ==============================
+    /**
+     * Timesに取得時間をインサート
+     * @return 最後に挿入したレコードid
+     */
     public static function TimesInsert()
     {
         $times = new Time;
@@ -161,7 +184,9 @@ class Tweet extends Model
         $last_insert_id = $times->id;
         return $last_insert_id;
     }
-    // hoursに取得時間をインサート ==============================
+    /**
+     * hoursに取得時間をインサート
+     */
     public static function HoursInsertTimeid(int $new_times_id)
     {
         $hours = new Hour;
@@ -169,7 +194,10 @@ class Tweet extends Model
         $hours->save();
     }
 
-    // 銘柄を配列化 　出力 [0] => Array([name] => BTC) =========
+    /**
+     * 銘柄を配列化 
+     * @return [0] => Array([name] => BTC)
+     */
     public static function CoinNameArrayGenerate()
     {
         $coinsname_array = array("BTC", "ETH", "ETC", "LSK", "FCT", "XRP", "XEM", "LTC", "BCH", "MONA", "XLM", "QTUM", "DASH", "ZEC", "XMR", "REP");
@@ -178,9 +206,14 @@ class Tweet extends Model
         };
         return $Body;
     }
-    // 更新対象の日付を特定、集計 ==============================
+
+    /**
+     * 更新対象の日付を特定、集計
+     * @return data
+     */
     public static function SumRecord_MinutesToHours($new_times_id, $names)
-    { // 一時間分のデータを特定するための、時刻を文字列にて作成
+    { 
+        // 一時間分のデータを特定するための、時刻を文字列にて作成
         $time = Time::select('get_dates')->where('id', '=', $new_times_id)->get();
         $q_time = substr(strval($time[0]['get_dates']), 0, 13);
         $named = array($names);
@@ -190,10 +223,13 @@ class Tweet extends Model
         )->where('datetime', 'like', $q_time . '%')->get();
         return $data;
     }
-// ==========================================================================================
+    // ==========================================================================================
     // weeks関連
     // ==========================================================================================
-    // weeksに取得日時をインサート ==============================
+    /**
+     * weeksに取得日時をインサート
+     * @return id
+     */
     public static function WeeksInsertId()
     {
         $dayid = Day::max('id');
@@ -203,7 +239,11 @@ class Tweet extends Model
         $last_insert_id = $week->id;
         return $last_insert_id;
     }
-    // hoursDBの24時間分のレコードを集計 ==============================
+
+    /**
+     * hoursDBの24時間分のレコードを集計
+     * @return data
+     */
     public static function SumRecord_HoursToDays($date, $names)
     {
         $q_time = strval($date);
@@ -218,10 +258,13 @@ class Tweet extends Model
 
         return $data;
     }
-    // 1週間分のレコードを集計 ==============================
+
+    /**
+     * 1週間分のレコードを集計
+     */
     public static function SumRecord_weeks($doneId, $minusId)
     {
-        // mysql> select sum(BTC), sum(ETH)  from weeks where days_id between 2 and 7;
+        // 想定SQL > elect sum(BTC), sum(ETH)  from weeks where days_id between 2 and 7;
         // +----------+----------+
         // | sum(BTC) | sum(ETH) |
         // +----------+----------+
@@ -238,11 +281,13 @@ class Tweet extends Model
         return $data;
     }
 
-// ==========================================================================================
+    // ==========================================================================================
     // coin関連
     // ==========================================================================================
 
-    // coincheckAPIにて取引価格を取得、coinテーブルに保存 ==============================
+    /**
+     * coinテーブルに日付だけ保存し挿入レコードの生成をおこなう
+     */
     public static function CoinInsert()
     {
         $dayid = Day::max('id');
