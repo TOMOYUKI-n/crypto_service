@@ -16462,120 +16462,6 @@ footer {
   margin-right: 5px;
 }
 
-.l-main-top-barner {
-  width: 100vw;
-  text-align: center;
-}
-@media screen and (max-width: 768px) {
-  .l-main-top-barner {
-    width: 100%;
-  }
-}
-
-.p-top__top {
-  box-sizing: border-box;
-  display: block;
-  margin: 0px auto;
-}
-.p-top__head {
-  margin: 0;
-}
-.p-top__top-message {
-  box-sizing: border-box;
-  display: block;
-  border-radius: 6px;
-}
-.p-top__introduction {
-  color: #111111;
-  font-size: 2.4vw;
-}
-.p-top__introduction__2 {
-  box-sizing: border-box;
-  position: absolute;
-  top: 60px;
-  left: calc(50%/1.9);
-}
-.p-top__login {
-  padding: 10px;
-  display: block;
-  box-sizing: border-box;
-  text-align: center;
-}
-.p-top__account {
-  border-radius: 6px;
-  box-shadow: 0 2px 4px 0 #b2b5be;
-  background-color: #fff;
-  box-sizing: border-box;
-  padding: 20px 0;
-  width: 310px;
-  margin: 60px auto 0px auto;
-}
-.p-top__register, .p-top__login {
-  padding: 10px;
-}
-.p-top__text {
-  font-size: 13px;
-  color: #111111;
-}
-.p-top__section-container {
-  text-align: center;
-  max-width: 960px;
-  margin: auto;
-}
-@media screen and (max-width: 768px) {
-  .p-top__section-container {
-    width: 100%;
-  }
-}
-.p-top__section-title {
-  color: #111111;
-  font-size: 1.4rem;
-  margin: 60px auto 30px auto;
-}
-.p-top__section-wrap {
-  margin: 10px auto 30px auto;
-  display: flex;
-}
-@media screen and (max-width: 768px) {
-  .p-top__section-wrap {
-    display: block;
-  }
-}
-.p-top__section1, .p-top__section2, .p-top__section3 {
-  margin: 0px 10px 60px 10px;
-  border-radius: 5px;
-  padding: 5px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px 2px #b2b5be33;
-}
-.p-top__section__text {
-  font-size: 13px;
-  text-align: left;
-  padding: 5px 20px;
-}
-.p-top__section__subtitle {
-  padding: 5px 20px;
-}
-.p-top__img {
-  width: 50%;
-  height: auto;
-}
-.p-top__img__main {
-  margin: 0;
-}
-.p-top__img__trend {
-  margin: 0;
-  border-radius: 6px;
-}
-.p-top__img__follow {
-  margin: 0;
-  border-radius: 6px;
-}
-.p-top__img__news {
-  margin: 0;
-  border-radius: 6px;
-}
-
 .p-btn {
   margin: 10px auto 0px auto;
   padding: 5px 35px;
@@ -16907,6 +16793,120 @@ footer {
   color: #386cfa9c;
   line-height: 1.2;
   margin-bottom: 20px;
+}
+
+.l-main-top-barner {
+  width: 100vw;
+  text-align: center;
+}
+@media screen and (max-width: 768px) {
+  .l-main-top-barner {
+    width: 100%;
+  }
+}
+
+.p-top__top {
+  box-sizing: border-box;
+  display: block;
+  margin: 0px auto;
+}
+.p-top__head {
+  margin: 0;
+}
+.p-top__top-message {
+  box-sizing: border-box;
+  display: block;
+  border-radius: 6px;
+}
+.p-top__introduction {
+  color: #111111;
+  font-size: 2.4vw;
+}
+.p-top__introduction__2 {
+  box-sizing: border-box;
+  position: absolute;
+  top: 60px;
+  left: calc(50%/1.9);
+}
+.p-top__login {
+  padding: 10px;
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
+}
+.p-top__account {
+  border-radius: 6px;
+  box-shadow: 0 2px 4px 0 #b2b5be;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 20px 0;
+  width: 310px;
+  margin: 60px auto 0px auto;
+}
+.p-top__register, .p-top__login {
+  padding: 10px;
+}
+.p-top__text {
+  font-size: 13px;
+  color: #111111;
+}
+.p-top__section-container {
+  text-align: center;
+  max-width: 960px;
+  margin: auto;
+}
+@media screen and (max-width: 768px) {
+  .p-top__section-container {
+    width: 100%;
+  }
+}
+.p-top__section-title {
+  color: #111111;
+  font-size: 1.4rem;
+  margin: 60px auto 30px auto;
+}
+.p-top__section-wrap {
+  margin: 10px auto 30px auto;
+  display: flex;
+}
+@media screen and (max-width: 768px) {
+  .p-top__section-wrap {
+    display: block;
+  }
+}
+.p-top__section1, .p-top__section2, .p-top__section3 {
+  margin: 0px 10px 60px 10px;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 2px #b2b5be33;
+}
+.p-top__section__text {
+  font-size: 13px;
+  text-align: left;
+  padding: 5px 20px;
+}
+.p-top__section__subtitle {
+  padding: 5px 20px;
+}
+.p-top__img {
+  width: 50%;
+  height: auto;
+}
+.p-top__img__main {
+  margin: 0;
+}
+.p-top__img__trend {
+  margin: 0;
+  border-radius: 6px;
+}
+.p-top__img__follow {
+  margin: 0;
+  border-radius: 6px;
+}
+.p-top__img__news {
+  margin: 0;
+  border-radius: 6px;
 }
 
 .p-account__tr {
@@ -17263,6 +17263,11 @@ footer {
   margin-top: 40px;
 }
 
+.p-regist__head {
+  text-align: center;
+  font-size: 14px;
+  margin: 30px auto;
+}
 .p-regist__form {
   margin-bottom: 1rem;
   display: block;

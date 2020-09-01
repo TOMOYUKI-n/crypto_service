@@ -50,7 +50,6 @@ class CountWeeksCommand extends Command
         $dayid = Day::max('id');
         $week = new Week;
         $week['days_id'] = $dayid;
-        //$week_id = 2;
         
         // コイン銘柄を配列化、銘柄分繰り返す
         $coinsname = Tweet::CoinNameArrayGenerate();

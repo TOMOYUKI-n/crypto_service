@@ -33,7 +33,6 @@
 // -----------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------
-@import "object/component/top";
 @import "object/component/button";
 @import "object/component/trend";
 @import "object/component/alert";
@@ -42,7 +41,7 @@
 // -----------------------------------------------------------------
 // Project
 // -----------------------------------------------------------------
-
+@import "object/project/top";
 @import "object/project/account";
 @import "object/project/news";
 @import "object/project/login";

@@ -8,7 +8,7 @@
         <div class="c-main__title p-regist__potision-center">
             {{ __('New Register') }}
         </div>
-
+        <p class="p-regist__head">※パスワードは8文字以上、半角英数文字でご入力ください</p>
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <div class="p-regist__form">

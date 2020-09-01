@@ -61,7 +61,7 @@ class GetCoinCommand extends Command
         $result['high'] = (string)$responseBody['high'];
         $result['low']  = (string)$responseBody['low'];
         $result_array = (array)$result;
-        //var_dump($result_array);
+
         // 銘柄を配列化
         $coinsname = Tweet::CoinNameArrayGenerate();
 
@@ -81,8 +81,6 @@ class GetCoinCommand extends Command
                 $coins['low'] = $result_array['low'];
                 $coins['days_id'] = $coins_days_id;
                 $coins->save();
-                
-                var_dump('== BTC ================');
             }else{
                 
                 $coins['coin_name'] = $names;
@@ -90,8 +88,6 @@ class GetCoinCommand extends Command
                 $coins['low'] = $unkwonw;
                 $coins['days_id'] = $coins_days_id;
                 $coins->save();
-
-                var_dump('== else ================');
             }
         }
     }

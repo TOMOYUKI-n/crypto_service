@@ -2175,9 +2175,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.load(current_page);
 
               case 7:
-                console.log("follow処理が実行されました");
-
-              case 8:
               case "end":
                 return _context.stop();
             }
@@ -2193,7 +2190,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       localStorage.setItem("isFollowedFlg", isFollowedFlgs);
       localStorage.setItem("loginUserId", loginUserIds);
       localStorage.setItem("loginUserName", loginUserNames);
-      console.log("write");
     },
     autoCatchLocalStrage: function autoCatchLocalStrage() {
       // localstorageからデータを呼び出し、一致するか確認　-> 一致すればフラグを更新
@@ -2208,7 +2204,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         updateId: updateId,
         updateName: updateName
       };
-      console.log("localStorageから取得しました");
       return updateTarget;
     },
     userCheckSessions: function userCheckSessions() {
@@ -2229,9 +2224,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // localstorageにあるデータがログインしているユーザーと一緒かどうかチェック
                 if (updateTarget.updateFlg == true && _this2.loginUserId == updateTarget.updateId && _this2.loginUserName == updateTarget.updateName) {
                   _this2.isFollowedFlg = updateTarget.updateFlg;
-                } else {
-                  console.log(updateTarget);
-                  console.log("idが違うか自動フォローがoffになっています");
                 }
 
               case 4:
@@ -2251,11 +2243,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log("ユーザー情報を取得します!");
-                _context3.next = 3;
+                _context3.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/auth/users");
 
-              case 3:
+              case 2:
                 usersRes = _context3.sent;
 
                 if (usersRes.status == "200") {
@@ -2267,13 +2258,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   } else {
                     _this3.loginFromTwitter = true;
                   }
-
-                  console.log(_this3.loginFromTwitter);
-                } else {
-                  console.log("user get axios is error");
                 }
 
-              case 5:
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -2288,43 +2275,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                console.log("手動Follow 実行します!");
                 params = {
                   user_id: key
                 };
-                _context4.next = 4;
+                _context4.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/followcheck", params);
 
-              case 4:
+              case 3:
                 checkRes = _context4.sent;
                 following = checkRes.data.apiRes[0];
-                console.log(following);
 
                 if (!(following == 1)) {
-                  _context4.next = 11;
+                  _context4.next = 9;
                   break;
                 }
 
                 alert("フォローに失敗しました。15分以上時間を置いて、再度実行してください。");
-                _context4.next = 21;
+                _context4.next = 18;
                 break;
 
-              case 11:
+              case 9:
                 if (!(following == "following")) {
-                  _context4.next = 15;
+                  _context4.next = 13;
                   break;
                 }
 
-                console.log("フォローしません");
-                _context4.next = 21;
+                alert("フォロー済みです");
+                _context4.next = 18;
                 break;
 
-              case 15:
-                console.log("フォローします");
-                _context4.next = 18;
+              case 13:
+                _context4.next = 15;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/follows", params);
 
-              case 18:
+              case 15:
                 followRes = _context4.sent;
                 status = followRes.status;
 
@@ -2334,7 +2318,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   alert("フォローに失敗しました。15分以上時間を置いて、再度実行してください。");
                 }
 
-              case 21:
+              case 18:
               case "end":
                 return _context4.stop();
             }
@@ -2353,12 +2337,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context5.prev = _context5.next) {
               case 0:
                 if (!(_this4.isFollowedFlg === false)) {
-                  _context5.next = 17;
+                  _context5.next = 16;
                   break;
                 }
 
                 if (!confirm("フォローを自動で実行しますか？（中断も可能です）")) {
-                  _context5.next = 15;
+                  _context5.next = 14;
                   break;
                 }
 
@@ -2374,8 +2358,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 autoFollow = _context5.sent;
-                console.log(autoFollow); // データ受け取り
-
+                // データ受け取り
                 autoFollowRes = autoFollow.data.status;
 
                 if (autoFollowRes === 200) {
@@ -2388,16 +2371,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this4.loginUserName = _this4.loginUserName;
                 _this4.loginUserId = _this4.loginUserId; // ローカルストレージに保存
 
-                _context5.next = 15;
+                _context5.next = 14;
                 return _this4.autoSaveLocalStrage(_this4.isFollowedFlg, _this4.loginUserId, _this4.loginUserName);
 
-              case 15:
-                _context5.next = 30;
+              case 14:
+                _context5.next = 29;
                 break;
 
-              case 17:
+              case 16:
                 if (!confirm("フォローを中断しますか？")) {
-                  _context5.next = 30;
+                  _context5.next = 29;
                   break;
                 }
 
@@ -2408,10 +2391,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   loginId: _this4.loginUserId
                 }; // 自動フォロー対象から外すために、フラグを更新する処理を行う
 
-                _context5.next = 23;
+                _context5.next = 22;
                 return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/account/autofollows", _params);
 
-              case 23:
+              case 22:
                 _autoFollow = _context5.sent;
                 // データ受け取り
                 _autoFollowRes = _autoFollow.data.status;
@@ -2426,10 +2409,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this4.loginUserName = _this4.loginUserName;
                 _this4.loginUserId = _this4.loginUserId; // ローカルストレージに保存
 
-                _context5.next = 30;
+                _context5.next = 29;
                 return _this4.autoSaveLocalStrage(_this4.isFollowedFlg, _this4.loginUserId, _this4.loginUserName);
 
-              case 30:
+              case 29:
               case "end":
                 return _context5.stop();
             }
@@ -2452,13 +2435,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this5.getStatus = false;
       })["catch"](function () {
         _this5.getStatus = true;
-        console.log("認証エラー");
       });
     },
     // 以下、ページング時の処理
     change: function change(page) {
       if (page >= 1 && page <= this.last_page) this.load(page);
-      console.log("async action");
     },
     countAddPage1: function countAddPage1(page) {
       if (this.current_page >= 6) {
@@ -2619,11 +2600,9 @@ __webpack_require__.r(__webpack_exports__);
         password: this.password
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, params).then(function (response) {
-        console.log("OK");
         location.href = "/trend";
       })["catch"](function (error) {
         // エラー時のコメントをlaravelからキャッチする
-        console.log("NG");
         var responseErrors = error.response.data.errors;
         var errorsData = {};
 
@@ -2631,7 +2610,6 @@ __webpack_require__.r(__webpack_exports__);
           errorsData[key] = responseErrors[key][0];
         }
 
-        console.log(errorsData);
         _this.errors = errorsData;
       });
     },
@@ -2652,19 +2630,16 @@ __webpack_require__.r(__webpack_exports__);
       };
       var loginData = JSON.stringify(loginArray);
       localStorage.setItem("loginData", loginData);
-      console.log("save storage");
     },
     getLoginData: function getLoginData() {
       var loginData = localStorage.getItem("loginData");
       var loginArray = JSON.parse(loginData);
       this.email = loginArray.email;
       this.password = loginArray.password;
-      console.log("get data");
     }
   },
   mounted: function mounted() {
     this.getLoginData();
-    console.log("mouted");
   }
 });
 
@@ -2908,17 +2883,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 } // apiにてデータ取得
 
 
-                console.log(_this.keyword);
-                console.log(apiUrl);
-                _context.prev = 5;
-                _context.next = 8;
+                _context.prev = 3;
+                _context.next = 6;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(apiUrl, {
                   params: {
                     q: _this.keyword
                   }
                 });
 
-              case 8:
+              case 6:
                 responce = _context.sent;
                 data = responce.data;
                 _this.trends = data;
@@ -2928,37 +2901,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.saveLocalStorage();
 
-                _context.next = 22;
+                _context.next = 19;
                 break;
 
-              case 16:
-                _context.prev = 16;
-                _context.t0 = _context["catch"](5);
-                console.log("error", _context.t0);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](3);
                 _this.errored = true; // localstorageから取得
 
                 _this.getLocalStorage();
 
                 _this.dateExchange();
 
-              case 22:
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[5, 16]]);
+        }, _callee, null, [[3, 14]]);
       }))();
     },
     saveLocalStorage: function saveLocalStorage() {
       var trendList = JSON.stringify(this.trends);
       localStorage.setItem("trendList", trendList);
-      console.log("save");
     },
     getLocalStorage: function getLocalStorage() {
       // データを呼び出し、一致するか確認　-> 一致すればフラグを更新
       var trendList = localStorage.getItem("trendList");
       this.trends = JSON.parse(trendList);
-      console.log("get");
     },
     filtered: function filtered() {
       var _this2 = this;
@@ -2977,7 +2947,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 for (i = 0; i < _this2.selected2.length; i++) {
                   result[i] = _this2.trends.filter(function (x) {
-                    return x["coin_name"] == _this2.selected2[i];
+                    return x["coin_name"] === _this2.selected2[i];
                   });
                 } // ネストされた配列のフラット化
 

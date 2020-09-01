@@ -100,7 +100,6 @@ class LoginController extends Controller
             return redirect('/trend')->with('flash_message', 'ログインしました');
         } else {
             // 存在しない場合は通常のログイン画面へ遷移する
-            // Log::Debug($providerUser);
             return redirect('/misslogin')->with('error_message', 'メールアドレスを取得できませんでした');
         }
     }

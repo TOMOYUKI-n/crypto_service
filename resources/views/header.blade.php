@@ -23,6 +23,7 @@
                 <li class="p-navbar__list p-navbar__text"><a href="/account"><p>アカウント一覧</p></a></li>
                 <li class="p-navbar__list p-navbar__text"><a href="/news"><p>NEWS一覧</p></a></li>
                 <li class="p-navbar__list p-navbar__text"><p>{{ Auth::user()->name }}</p></li>
+                <li class="p-navbar__list p-navbar__text"><a href="/contact"><p>お問い合わせ</p></a></li>
                 <li class="p-navbar__list p-navbar__text">
                     <a href="{{ route('logout') }}"
                         onclick ="event.preventDefault();
@@ -57,10 +58,11 @@
             </ul>
             @else
             <ul class="p-header__sp__menu">
-                <li class="p-navbar__list p-navbar__text"><p>{{ Auth::user()->name }}</p></li>
+                <li class="p-header__sp__menu__list "><p>{{ Auth::user()->name }}</p></li>
                 <li class="p-header__sp__menu__list "><a href="/trend"><p>トレンド一覧</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/account"><p>アカウント一覧</p></a></li>
                 <li class="p-header__sp__menu__list "><a href="/news"><p>NEWS一覧</p></a></li>
+                <li class="p-header__sp__menu__list "><a href="/contact"><p>お問い合わせ</p></a></li>
                 <li class="p-header__sp__menu__list ">
                     <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();

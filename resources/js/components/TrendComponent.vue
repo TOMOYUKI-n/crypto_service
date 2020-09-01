@@ -162,8 +162,6 @@ export default {
       }
 
       // apiにてデータ取得
-      console.log(this.keyword);
-      console.log(apiUrl);
       try {
         const responce = await axios.get(apiUrl, {
           params: {
@@ -177,7 +175,6 @@ export default {
         this.dateExchange();
         this.saveLocalStorage();
       } catch (ex) {
-        console.log("error", ex);
         this.errored = true;
         // localstorageから取得
         this.getLocalStorage();
@@ -187,13 +184,11 @@ export default {
     saveLocalStorage() {
       const trendList = JSON.stringify(this.trends);
       localStorage.setItem("trendList", trendList);
-      console.log("save");
     },
     getLocalStorage() {
       // データを呼び出し、一致するか確認　-> 一致すればフラグを更新
       const trendList = localStorage.getItem("trendList");
       this.trends = JSON.parse(trendList);
-      console.log("get");
     },
     async filtered() {
       await this.getSearch();
@@ -201,7 +196,7 @@ export default {
       // 選択された銘柄が、データの中にあるか否かを、照らし合わせる（選択銘柄分リピート）
       for (var i = 0; i < this.selected2.length; i++) {
         result[i] = this.trends.filter(
-          (x) => x["coin_name"] == this.selected2[i]
+          (x) => x["coin_name"] === this.selected2[i]
         );
       }
 

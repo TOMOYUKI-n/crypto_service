@@ -52,11 +52,9 @@ class CountHoursCommand extends Command
         $new_times_id = Time::max('id');
 
         //hoursに idを先に登録
-        //Tweet::HoursInsertTimeid( $new_times_id );
         $hours = new Hour;
         $hours['times_id'] = $new_times_id;
 
-        //$new_times_id = 10;
         // コイン銘柄を配列化、銘柄分繰り返す
         $coinsname = Tweet::CoinNameArrayGenerate();
             for($i = 0; $i < count($coinsname); $i++)
@@ -67,7 +65,6 @@ class CountHoursCommand extends Command
                 $sumrec = Tweet::SumRecord_MinutesToHours($new_times_id, $names);
 
                 // 保存
-                //$hour = Hour::find($new_times_id);
                 $hours[$names] = $sumrec[0]["total_tweet"];
             }
             var_dump('=== end ==========');

@@ -61,18 +61,15 @@ export default {
       axios
         .post(url, params)
         .then((response) => {
-          console.log("OK");
           location.href = "/trend";
         })
         .catch((error) => {
           // エラー時のコメントをlaravelからキャッチする
-          console.log("NG");
           const responseErrors = error.response.data.errors;
           const errorsData = {};
           for (let key in responseErrors) {
             errorsData[key] = responseErrors[key][0];
           }
-          console.log(errorsData);
           this.errors = errorsData;
         });
     },
@@ -90,19 +87,16 @@ export default {
       const loginArray = { email: this.email, password: this.password };
       const loginData = JSON.stringify(loginArray);
       localStorage.setItem("loginData", loginData);
-      console.log("save storage");
     },
     getLoginData() {
       const loginData = localStorage.getItem("loginData");
       const loginArray = JSON.parse(loginData);
       this.email = loginArray.email;
       this.password = loginArray.password;
-      console.log("get data");
     },
   },
   mounted() {
     this.getLoginData();
-    console.log("mouted");
   },
 };
 </script>

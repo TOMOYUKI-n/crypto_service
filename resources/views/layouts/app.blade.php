@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="仮想通貨のトレンドが一眼でわかります。twitterの大量の情報を集計し、投資に役立てることができます。">
+    <meta name="keywords" content="仮想通貨,twitter,トレンド">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">

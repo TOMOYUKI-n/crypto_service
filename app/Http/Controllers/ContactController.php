@@ -31,7 +31,6 @@ class ContactController extends Controller
     }
     public function send(Request $request)
     {
-        //return view('complete');
         //バリデーションを実行（結果に問題があれば処理を中断してエラーを返す）
         $request->validate([
             'email' => 'required|email',

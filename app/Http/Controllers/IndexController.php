@@ -207,8 +207,7 @@ class IndexController extends Controller
         $news = User::get_news("仮想通貨", 100);
         //json オブジェクトの形式でviewへ渡す
         $newsline = json_encode($news, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        //ユーザ情報を取得
-        // $user = Auth::user();
+
         //ビュー表示
         return view('index.news', ['newsline' => $newsline]);
     }

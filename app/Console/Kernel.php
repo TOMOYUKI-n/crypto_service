@@ -33,8 +33,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
         //日付をDaysDBへ　1日ごとに実行
         $schedule->command('DaysCatchCommand')->dailyAt('00:00')->withoutOverlapping();
         //1日ごとに実行
@@ -48,11 +46,6 @@ class Kernel extends ConsoleKernel
 
         //1日ごとに実行
         $schedule->command('GetCoinCommand')->dailyAt('07:40')->withoutOverlapping();
-
-        //リセット処理１　1週間ごとに実行
-        //$schedule->command('ResetRunWeekly')->weeklyOn(1, '8:25')->withoutOverlapping();
-        //リセット処理２　1日ごとに実行
-        //$schedule->command('ResetRunDay')->dailyAt('08:25')->withoutOverlapping();
 
     }
 
