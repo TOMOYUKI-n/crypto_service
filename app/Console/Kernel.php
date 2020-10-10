@@ -19,8 +19,6 @@ class Kernel extends ConsoleKernel
         Commands\DaysCatchCommand::class,
         Commands\GetCoinCommand::class,
         Commands\GetTweetCommand::class,
-        Commands\ResetRunDay::class,
-        Commands\ResetRunWeekly::class,
         Commands\TimeCatchCommand::class,
         Commands\AutoFollowCommand::class,
     ];
