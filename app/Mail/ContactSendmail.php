@@ -36,7 +36,6 @@ class ContactSendmail extends Mailable
     {
         //return $this->view('view.name');
         return $this
-        ->from('kajiya.app@gmail.com')
         ->subject('自動送信メール')
         ->view('contact.mail')
         ->with([
