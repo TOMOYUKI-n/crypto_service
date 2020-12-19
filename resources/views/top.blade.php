@@ -10,7 +10,7 @@
     <div class="p-top__top">
         <div class="p-top__head">
             <div class="p-top__top-message">
-                <img class="p-top__img__main" src="{{ asset('/images/interface-croped.jpg') }}" alt="top">
+                <img class="p-top__img__main" src="{{ asset('/images/small_interface.jpg') }}" srcset="{{ asset('/images/small_interface.jpg') }} 1x,{{ asset('/images/interface-croped.jpg') }} 2x" alt="top">
                 <p class="p-top__introduction p-top__introduction__2">仮想通貨のトレンドを、これひとつで。</p>
             </div>
         </div>
