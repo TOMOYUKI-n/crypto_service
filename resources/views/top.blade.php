@@ -40,7 +40,7 @@
 
 <!--特徴紹介エリア-->
 <div class="p-top__section-container">
-    <div class="p-top__section-title">Crypto Trendの特徴</div>
+    <div class="p-top__section-title">Crypto Serviceの特徴</div>
     <div class="p-top__section-wrap">
         
         <div class="p-top__section1">

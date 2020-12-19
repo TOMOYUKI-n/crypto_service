@@ -4,7 +4,7 @@
 
         <div class="logo">
             <h1 class="logo__pad">
-                <a href="/">Crypto Trend</a>
+                <a href="/">Crypto Service</a>
             </h1>
         </div>
 

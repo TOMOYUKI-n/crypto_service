@@ -12,7 +12,7 @@
         <div class="p-policy__container">
             <h2 class="p-policy__title">プライバシーポリシー</h2>
 
-            <p class="p-policy__text">Crypto Trend
+            <p class="p-policy__text">Crypto Service
                 （以下「当サイト」といいます）は、以下のとおり個人情報保護方針を定め、個人情報保護の仕組みを構築し、全従業員に個人情報保護の重要性の認識と取組みを徹底させることにより、個人情報の保護を推進致します。</p>
 
             <h3 class="p-policy__title--sub">個人情報とは</h3>
